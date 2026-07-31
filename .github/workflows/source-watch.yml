@@ -1,0 +1,37 @@
+name: Watch official Dear Passengers sources
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  steam-source-watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: check
+        run: node scripts/check-official-sources.mjs
+      - name: Open one update issue when official fields change
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHANGED_FIELDS: ${{ steps.check.outputs.changed_fields }}
+        run: |
+          title="Official Dear Passengers source changed"
+          existing="$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number // empty')"
+          if [ -z "$existing" ]; then
+            gh issue create \
+              --title "$title" \
+              --body "Steam fields changed: $CHANGED_FIELDS. Recheck the source ledger, affected guides, sitemap lastmod dates, and data/official-status.json before publishing."
+          else
+            gh issue comment "$existing" \
+              --body "The daily source check still detects changes in: $CHANGED_FIELDS."
+          fi

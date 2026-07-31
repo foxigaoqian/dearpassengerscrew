@@ -1,0 +1,37 @@
+{
+  "appId": 4534960,
+  "name": "Dear Passengers",
+  "comingSoon": true,
+  "releaseDateText": "2026",
+  "isFree": false,
+  "platforms": {
+    "windows": true,
+    "mac": false,
+    "linux": false
+  },
+  "categories": [
+    "Co-op",
+    "Family Sharing",
+    "Multi-player",
+    "Online Co-op",
+    "Single-player"
+  ],
+  "interfaceLanguages": [
+    "Arabic",
+    "English",
+    "Japanese",
+    "Simplified Chinese",
+    "Turkish",
+    "Ukrainian"
+  ],
+  "minimumRequirements": [
+    "Windows 10 (64-bit)",
+    "Intel Core i5 @ 2.5 GHz or equivalent",
+    "8 GB RAM",
+    "NVIDIA GeForce GTX 1060 or AMD Radeon RX 6600 XT",
+    "Version 12",
+    "4 GB available space"
+  ],
+  "verifiedAt": "2026-07-31",
+  "source": "https://store.steampowered.com/app/4534960/Dear_Passengers/"
+}
