@@ -246,9 +246,20 @@ function localeFromPath(pathname) {
   return languages[first] ? first : "en";
 }
 
+function localizedPath(locale, path = "") {
+  const cleanPath = String(path).replace(/^\/+|\/+$/g, "");
+  if (locale === "en") return cleanPath ? `/${cleanPath}/` : "/";
+  return cleanPath ? `/${locale}/${cleanPath}/` : `/${locale}/`;
+}
+
+function localizedUrl(locale, path = "") {
+  return `${SITE}${localizedPath(locale, path)}`;
+}
+
 function alternateLinks(slug = "") {
-  const suffix = slug ? `${slug}/` : "";
-  return Object.keys(languages).map((locale) => `<link rel="alternate" hreflang="${locale}" href="${SITE}/${locale}/${suffix}">`).join("");
+  return Object.keys(languages)
+    .map((locale) => `<link rel="alternate" hreflang="${locale}" href="${localizedUrl(locale, slug)}">`)
+    .join("");
 }
 
 function iconLinks() {
@@ -289,14 +300,68 @@ function semanticLinks(locale, sourceKey, heading) {
   return `<section class="semantic-section"><p class="kicker">SEMANTIC CONNECTIONS</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(locale === "en" ? "Continue with the next question in this topic cluster. Every link below resolves a specific adjacent search intent." : data.ui.sourceNote)}</p><ul class="semantic-list">${links}</ul></section>`;
 }
 
+function homepageEditorial(locale) {
+  if (locale !== "en") return "";
+  return `
+    <section class="section game-overview" id="overview">
+      <div class="overview-layout">
+        <div class="overview-heading">
+          <p class="kicker">DEAR PASSENGERS · GAME OVERVIEW</p>
+          <h2>What is Dear Passengers?</h2>
+          <div class="overview-stamp"><span>CURRENT VERDICT</span><strong>Announced for Windows PC in 2026</strong><small>Single-player and online co-op confirmed</small></div>
+        </div>
+        <div class="overview-copy">
+          <p class="overview-lead"><strong>Dear Passengers is a first-person co-op game about operating the world's worst airline.</strong> Developed and published by FLEXUS, it divides the pressure of a flight between the cockpit and the cabin instead of treating the aircraft as a quiet simulation.</p>
+          <p>One player can be responsible for flying while other crew members deal with passengers, food and drinks, cargo choices and whatever breaks loose when turbulence hits. Official footage shows routine airline work turning into physical comedy: unsecured objects move through the cabin, passengers become part of the problem, bad weather affects the flight and several jobs demand attention at the same time.</p>
+          <p>The official Steam listing currently confirms a Windows PC release in 2026, single-player support and online co-op. It does not yet give an exact release date, launch price, maximum player count or public-demo download. PlayStation, Xbox, Nintendo Switch, macOS and Linux versions have not been announced. Those missing details matter, so this guide keeps confirmed facts separate from footage-based observations and developer comments.</p>
+          <p>Dear Passengers Crew is an independent information site, not the developer or publisher. Its purpose is to answer the questions that appear after someone sees the trailer: when the game is coming out, whether a demo exists, how multiplayer works, which platforms are confirmed and whether a particular PC meets the published minimum requirements.</p>
+          <div class="overview-actions">
+            <a href="/gameplay/"><span>START WITH THE GAMEPLAY</span><strong>How a flight works from cockpit to cabin</strong><b>↗</b></a>
+            <a href="/developer/"><span>MEET THE DEVELOPER</span><strong>Who is FLEXUS?</strong><b>↗</b></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section search-briefings">
+      <div class="section-head split"><div><p class="kicker">THE FOUR QUESTIONS THAT DEFINE THE GAME</p><h2>Know what is real before boarding.</h2></div><p>The central search intents are connected, but they are not interchangeable. Each briefing below gives the current answer and sends readers to the evidence-led page for the full context.</p></div>
+      <div class="briefing-grid">
+        <article class="briefing-card reveal">
+          <span>01 · RELEASE & DEMO</span>
+          <h3>Can you play Dear Passengers yet?</h3>
+          <p>Not through an official public build. Steam gives the game a 2026 release window, but FLEXUS has not named a month or day. The developer has discussed a Gamescom build and a later public demo; that is a plan, not a live download. Until an official Steam demo button or developer link appears, third-party installers should not be treated as legitimate.</p>
+          <div><a href="/release-date/">Release-date evidence ↗</a><a href="/demo/">Public-demo status ↗</a></div>
+        </article>
+        <article class="briefing-card reveal">
+          <span>02 · MULTIPLAYER</span>
+          <h3>How does the crew play together?</h3>
+          <p>Online co-op is confirmed, and Steam also lists single-player. The exact maximum crew size remains unannounced, so a party of four, five or six cannot yet be guaranteed from official data. Crossplay, local split-screen and console multiplayer are also unknown because Windows PC is still the only confirmed platform.</p>
+          <div><a href="/multiplayer/">Multiplayer explained ↗</a><a href="/how-many-players/">Player-count status ↗</a></div>
+        </article>
+        <article class="briefing-card reveal">
+          <span>03 · GAMEPLAY</span>
+          <h3>Why does every flight become chaos?</h3>
+          <p>The appeal comes from overlapping responsibilities. Flying, serving passengers, protecting cargo and handling cabin incidents do not wait for one another. Dynamic weather and physics turn ordinary objects and difficult passengers into shared emergencies. The game is therefore closer to a coordination challenge with comic failure than a conventional commercial-flight simulator.</p>
+          <div><a href="/gameplay/">Complete gameplay loop ↗</a><a href="/wiki/flight-flow/">Flight-flow field guide ↗</a></div>
+        </article>
+        <article class="briefing-card reveal">
+          <span>04 · WHY PLAYERS ARE WATCHING</span>
+          <h3>Why is Dear Passengers getting attention?</h3>
+          <p>The announcement footage communicates the idea quickly: friends try to run an airline while the aircraft, cargo and customers refuse to cooperate. FLEXUS later reported 1.5 million Steam wishlists, a developer-attributed milestone rather than an independent player-count measurement. That attention explains the demand for reliable release and demo answers, but it does not fill in details the studio has not announced.</p>
+          <div><a href="/news/one-point-five-million-wishlists/">Read the milestone report ↗</a><a href="/news/">Open verified news ↗</a></div>
+        </article>
+      </div>
+      <p class="editorial-note"><strong>Editorial fit:</strong> based on the confirmed loop, Dear Passengers is most likely to appeal to players who enjoy online teamwork, role specialization, physics-driven comedy and recovering from plans that collapse in real time. This is an editorial interpretation, not an official genre promise.</p>
+    </section>`;
+}
+
 function homepageDepth(locale) {
   if (locale !== "en") return "";
   const feeds = OFFICIAL_MEDIA.slice(0, 4).map(([name, url], index) =>
-    `<a class="feed-card reveal" href="/en/media/"><img src="${url}" alt="Dear Passengers official gameplay: ${esc(name)}" loading="lazy"><span>LIVE CABIN FEED · 0${index + 1}</span><strong>${esc(name)}</strong><small>Inspect official media ↗</small></a>`
+    `<a class="feed-card reveal" href="/media/"><img src="${url}" alt="Dear Passengers official gameplay: ${esc(name)}" loading="lazy"><span>LIVE CABIN FEED · 0${index + 1}</span><strong>${esc(name)}</strong><small>Inspect official media ↗</small></a>`
   ).join("");
   const reports = ["one-point-five-million-wishlists", "gamescom-demo-plans", "steam-reveal-2026"].map((slug) => {
     const item = NEWS_CONTENT[slug];
-    return `<a class="dispatch-card" href="/en/news/${slug}/"><time>${item.date}</time><span>VERIFIED DISPATCH</span><h3>${esc(item.title)}</h3><p>${esc(item.description)}</p><b>READ SOURCE-BACKED REPORT ↗</b></a>`;
+    return `<a class="dispatch-card" href="/news/${slug}/"><time>${item.date}</time><span>VERIFIED DISPATCH</span><h3>${esc(item.title)}</h3><p>${esc(item.description)}</p><b>READ SOURCE-BACKED REPORT ↗</b></a>`;
   }).join("");
   return `
     <section class="section feed-section">
@@ -317,15 +382,15 @@ function homepageDepth(locale) {
         <div class="language-board">
           <p class="kicker">INTERFACE LANGUAGES</p><h3>Six editions on Steam.</h3>
           <p>English, Arabic, Simplified Chinese, Turkish, Ukrainian and Japanese are listed for the interface. Full audio and subtitle boxes are not checked.</p>
-          <a class="primary" href="/en/languages/">CHECK LANGUAGE STATUS ↗</a>
-          <a class="secondary dark-button" href="/en/tools/can-i-run-it/">TEST MY PC ↗</a>
+          <a class="primary" href="/languages/">CHECK LANGUAGE STATUS ↗</a>
+          <a class="secondary dark-button" href="/tools/can-i-run-it/">TEST MY PC ↗</a>
         </div>
       </div>
     </section>
     <section class="section dispatch-section">
       <div class="section-head split"><div><p class="kicker">VERIFIED UPDATE DESK</p><h2>Announcements, not recycled rumors.</h2></div><p>Dated reports preserve the original source, what changed and which details remain unknown.</p></div>
       <div class="dispatch-grid">${reports}</div>
-      <a class="source-link" href="/en/news/">OPEN THE COMPLETE NEWS ARCHIVE ↗</a>
+      <a class="source-link" href="/news/">OPEN THE COMPLETE NEWS ARCHIVE ↗</a>
     </section>
     <section class="section source-manifest">
       <div class="section-head"><p class="kicker">SOURCE MANIFEST</p><h2>First-party facts lead every answer.</h2></div>
@@ -333,7 +398,7 @@ function homepageDepth(locale) {
         <a href="${SOURCES.steam.url}" target="_blank" rel="noopener"><span>PRIMARY LISTING</span><strong>Official Steam page</strong><p>Release window, modes, languages and PC requirements.</p><b>OPEN SOURCE ↗</b></a>
         <a href="${SOURCES.trailer.url}" target="_blank" rel="noopener"><span>OFFICIAL MEDIA</span><strong>FLEXUS announcement trailer</strong><p>Visible roles, cabin hazards, cargo and flight situations.</p><b>OPEN SOURCE ↗</b></a>
         <a href="${SOURCES.devua.url}" target="_blank" rel="noopener"><span>ATTRIBUTED INTERVIEW</span><strong>Demo and release comments</strong><p>Gamescom build and later public-demo plan.</p><b>OPEN SOURCE ↗</b></a>
-        <a href="/en/editorial-policy/"><span>METHODOLOGY</span><strong>Editorial and corrections policy</strong><p>How confirmed, attributed, observed and unknown claims are labelled.</p><b>READ POLICY ↗</b></a>
+        <a href="/editorial-policy/"><span>METHODOLOGY</span><strong>Editorial and corrections policy</strong><p>How confirmed, attributed, observed and unknown claims are labelled.</p><b>READ POLICY ↗</b></a>
       </div>
     </section>`;
 }
@@ -342,15 +407,15 @@ function resourceCards(locale) {
   const data = SEO[locale] || SEO.en;
   const guides = PAGE_SLUGS.map((slug) => {
     const item = data.pages[slug];
-    return `<a class="resource-card reveal" href="/${locale}/${slug}/"><span>GUIDE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
+    return `<a class="resource-card reveal" href="${localizedPath(locale, slug)}"><span>GUIDE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
   }).join("");
   const tools = TOOL_SLUGS.map((slug) => {
     const item = data.tools[slug];
-    return `<a class="resource-card tool-card reveal" href="/${locale}/tools/${slug}/"><span>TOOL</span><h3>${esc(item[2])}</h3><p>${esc(item[1])}</p><b>${esc(data.ui.tool)} ↗</b></a>`;
+    return `<a class="resource-card tool-card reveal" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><h3>${esc(item[2])}</h3><p>${esc(item[1])}</p><b>${esc(data.ui.tool)} ↗</b></a>`;
   }).join("");
   const authority = locale === "en" ? AUTHORITY_SLUGS.map((slug) => {
     const item = AUTHORITY_CONTENT[slug];
-    return `<a class="resource-card authority-card reveal" href="/en/${slug}/"><span>INTELLIGENCE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN BRIEFING ↗</b></a>`;
+    return `<a class="resource-card authority-card reveal" href="/${slug}/"><span>INTELLIGENCE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN BRIEFING ↗</b></a>`;
   }).join("") : "";
   return `<section class="section resource-hub"><div class="section-head"><p class="kicker">SEARCH INTENT ARCHITECTURE</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div><div class="resource-grid">${guides}${authority}${tools}</div></section>`;
 }
@@ -363,7 +428,7 @@ function page(locale) {
   const evidence = t.evidence.map((item) => `<li><i></i>${esc(item)}</li>`).join("");
   const features = t.features.map(([n, title, body]) => `<article class="feature reveal"><span>${n}</span><h3>${esc(title)}</h3><p>${esc(body)}</p></article>`).join("");
   const timeline = t.timeline.map(([state, source, body]) => `<article class="timeline-item reveal"><span>${esc(state)}</span><h3>${esc(source)}</h3><p>${esc(body)}</p></article>`).join("");
-  const langMenu = Object.entries(languages).map(([code, value]) => `<a href="/${code}/" ${code === locale ? 'aria-current="page"' : ""}>${esc(value.name)}</a>`).join("");
+  const langMenu = Object.entries(languages).map(([code, value]) => `<a href="${localizedPath(code)}" ${code === locale ? 'aria-current="page"' : ""}>${esc(value.name)}</a>`).join("");
   const options = (items) => items.map((item, index) => `<option value="${index}">${esc(item)}</option>`).join("");
   const schema = {
     "@context": "https://schema.org",
@@ -371,7 +436,7 @@ function page(locale) {
       {
         "@type": "VideoGame",
         name: "Dear Passengers",
-        url: `${SITE}/${locale}/`,
+        url: localizedUrl(locale),
         image: [HERO, CAPSULE],
         description: t.description,
         gamePlatform: "Windows PC",
@@ -410,14 +475,14 @@ function page(locale) {
   <meta name="description" content="${esc(t.description)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#06101a">
-  <link rel="canonical" href="${SITE}/${locale}/">
+  <link rel="canonical" href="${localizedUrl(locale)}">
   ${iconLinks()}
   ${alternateLinks()}
-  <link rel="alternate" hreflang="x-default" href="${SITE}/en/">
+  <link rel="alternate" hreflang="x-default" href="${SITE}/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="${esc(t.title)}">
   <meta property="og:description" content="${esc(t.description)}">
-  <meta property="og:url" content="${SITE}/${locale}/">
+  <meta property="og:url" content="${localizedUrl(locale)}">
   <meta property="og:image" content="${HERO}">
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
@@ -426,7 +491,7 @@ function page(locale) {
 <body>
   <div class="ticker" aria-hidden="true"><div>${[...t.ticker, ...t.ticker, ...t.ticker].map((x) => `<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header">
-    <a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a>
     <button class="menu-button" aria-label="Menu">MENU</button>
     <nav>${t.nav.map((item, i) => `<a href="#${["status","questions","gameplay","crew"][i]}">${esc(item)}</a>`).join("")}</nav>
     <div class="language"><button>${esc(lang.label)}⌄</button><div>${langMenu}</div></div>
@@ -437,7 +502,7 @@ function page(locale) {
       <div class="hero-bg"></div><div class="hero-grid"></div>
       <div class="hero-copy">
         <p class="eyebrow"><i></i>${esc(t.eyebrow)}</p>
-        <h1><span>DEAR</span>PASSENGERS</h1>
+        <h1><span>DEAR</span> <span class="hero-title-main">PASSENGERS</span></h1>
         <p class="lead">${esc(t.intro)}</p>
         <div class="actions"><a class="primary" href="#status">${esc(t.cta1)} <b>↓</b></a><a class="secondary" href="#crew">${esc(t.cta2)} <b>↗</b></a></div>
       </div>
@@ -445,6 +510,8 @@ function page(locale) {
       <div class="hero-facts"><div><small>RELEASE</small><b>2026</b><i></i></div><div><small>PUBLIC DEMO</small><b>${esc(t.cards[2][1])}</b><i class="amber"></i></div><div><small>MAX PLAYERS</small><b>${esc(t.cards[3][1])}</b><i class="muted"></i></div></div>
       <small class="media-credit">OFFICIAL FLEXUS GAME MEDIA · © FLEXUS</small>
     </section>
+
+    ${homepageEditorial(locale)}
 
     <section id="status" class="section status">
       <div class="section-head"><p class="kicker">LIVE STATUS · ${esc(t.last)}</p><h2>${esc(t.statusTitle)}</h2><p>${esc(t.statusIntro)}</p></div>
@@ -572,14 +639,13 @@ const toolLabels = {
 function pageHeader(locale, currentPath = "") {
   const data = SEO[locale] || SEO.en;
   const lang = languages[locale];
-  const suffix = currentPath ? `${currentPath}/` : "";
-  const languageMenu = Object.entries(languages).map(([code, value]) => `<a href="/${code}/${suffix}" ${code === locale ? 'aria-current="page"' : ""}>${esc(value.name)}</a>`).join("");
+  const languageMenu = Object.entries(languages).map(([code, value]) => `<a href="${localizedPath(code, currentPath)}" ${code === locale ? 'aria-current="page"' : ""}>${esc(value.name)}</a>`).join("");
   const nav = locale === "en"
-    ? `<a href="/en/release-date/">Release</a><a href="/en/demo/">Demo</a><a href="/en/news/">News</a><a href="/en/wiki/">Wiki</a><a href="/en/media/">Media</a>`
-    : `<a href="/${locale}/release-date/">${esc(data.pages["release-date"].name)}</a><a href="/${locale}/demo/">${esc(data.pages.demo.name)}</a><a href="/${locale}/multiplayer/">${esc(data.pages.multiplayer.name)}</a><a href="/${locale}/system-requirements/">${esc(data.pages["system-requirements"].name)}</a>`;
+    ? `<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/news/">News</a><a href="/wiki/">Wiki</a><a href="/media/">Media</a>`
+    : `<a href="${localizedPath(locale, "release-date")}">${esc(data.pages["release-date"].name)}</a><a href="${localizedPath(locale, "demo")}">${esc(data.pages.demo.name)}</a><a href="${localizedPath(locale, "multiplayer")}">${esc(data.pages.multiplayer.name)}</a><a href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)}</a>`;
   return `<div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header inner-header">
-    <a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a>
     <button class="menu-button" aria-label="Menu">MENU</button>
     <nav>${nav}</nav>
     <div class="language"><button>${esc(lang.label)}⌄</button><div>${languageMenu}</div></div>
@@ -595,34 +661,34 @@ function pageFooter(locale) {
     ["gameplay", data.pages.gameplay.name],
     ["system-requirements", data.pages["system-requirements"].name],
     ["wiki", data.pages.wiki.name]
-  ].map(([slug, label]) => `<a data-sitewide-link="true" href="/${locale}/${slug}/">${esc(label)}</a>`).join("");
+  ].map(([slug, label]) => `<a data-sitewide-link="true" href="${localizedPath(locale, slug)}">${esc(label)}</a>`).join("");
   const questions = [
     ["how-many-players", data.pages["how-many-players"].name],
     ["platforms", data.pages.platforms.name],
     ["characters", data.pages.characters.name],
     ["trailer", data.pages.trailer.name],
     ["news", data.pages.news.name]
-  ].map(([slug, label]) => `<a data-sitewide-link="true" href="/${locale}/${slug}/">${esc(label)}</a>`).join("");
+  ].map(([slug, label]) => `<a data-sitewide-link="true" href="${localizedPath(locale, slug)}">${esc(label)}</a>`).join("");
   const tools = ["can-i-run-it", "crew-check", "countdown", "status-tracker"].map((slug) =>
-    `<a data-sitewide-link="true" href="/${locale}/tools/${slug}/">${esc(data.tools[slug][2])}</a>`
+    `<a data-sitewide-link="true" href="${localizedPath(locale, `tools/${slug}`)}">${esc(data.tools[slug][2])}</a>`
   ).join("");
   const intelligence = locale === "en" ? [
-    ["/en/price/", "Price status"],
-    ["/en/download/", "Safe download"],
-    ["/en/languages/", "Language support"],
-    ["/en/developer/", "FLEXUS profile"],
-    ["/en/media/", "Official media"],
-    ["/en/about/", "About this guide"],
-    ["/en/editorial-policy/", "Editorial policy"],
-    ["/en/corrections/", "Corrections"]
+    ["/price/", "Price status"],
+    ["/download/", "Safe download"],
+    ["/languages/", "Language support"],
+    ["/developer/", "FLEXUS profile"],
+    ["/media/", "Official media"],
+    ["/about/", "About this guide"],
+    ["/editorial-policy/", "Editorial policy"],
+    ["/corrections/", "Corrections"]
   ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${LAST_CHECKED}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>INTELLIGENCE</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">133-URL KNOWLEDGE GRAPH</a></div></footer>`;
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${LAST_CHECKED}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>INTELLIGENCE</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">133-URL KNOWLEDGE GRAPH</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
   const data = SEO[locale] || SEO.en;
-  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,6).map((slug)=>`<a class="mini-link" href="/${locale}/${slug}/"><span>GUIDE</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
-  const tools = TOOL_SLUGS.slice(0,3).map((slug)=>`<a class="mini-link tool-link" href="/${locale}/tools/${slug}/"><span>TOOL</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
+  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,6).map((slug)=>`<a class="mini-link" href="${localizedPath(locale, slug)}"><span>GUIDE</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
+  const tools = TOOL_SLUGS.slice(0,3).map((slug)=>`<a class="mini-link tool-link" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
   return `<div class="mini-grid">${pages}${tools}</div>`;
 }
 
@@ -635,13 +701,13 @@ function clusterHub(slug) {
   if (slug === "news") {
     return `<section class="section deep-index"><div class="section-head"><p class="kicker">VERIFIED DISPATCH ARCHIVE</p><h2>Every material update, linked to its source.</h2><p>Wishlist milestones, demo plans and store changes are recorded as dated reports—not silently folded into evergreen copy.</p></div><div class="authority-grid">${NEWS_SLUGS.map((key)=>{
       const item = NEWS_CONTENT[key];
-      return `<a class="authority-tile" href="/en/news/${key}/"><time>${item.date}</time><span>VERIFIED REPORT</span><h3>${esc(item.title)}</h3><p>${esc(item.description)}</p><b>READ REPORT ↗</b></a>`;
+      return `<a class="authority-tile" href="/news/${key}/"><time>${item.date}</time><span>VERIFIED REPORT</span><h3>${esc(item.title)}</h3><p>${esc(item.description)}</p><b>READ REPORT ↗</b></a>`;
     }).join("")}</div></section>`;
   }
   if (slug === "wiki") {
     return `<section class="section deep-index"><div class="section-head"><p class="kicker">COMMUNITY FIELD MANUAL</p><h2>Systems first. Speculation clearly marked.</h2><p>The wiki organizes cockpit, cabin, passenger, cargo and hazard topics without inventing classes, items or rules from isolated trailer frames.</p></div><div class="authority-grid">${WIKI_SLUGS.map((key)=>{
       const item = WIKI_CONTENT[key];
-      return `<a class="authority-tile wiki-tile" href="/en/wiki/${key}/"><span>WIKI ENTRY</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN ENTRY ↗</b></a>`;
+      return `<a class="authority-tile wiki-tile" href="/wiki/${key}/"><span>WIKI ENTRY</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN ENTRY ↗</b></a>`;
     }).join("")}</div></section>`;
   }
   return "";
@@ -661,7 +727,7 @@ function intentPage(locale, slug) {
     return `<a href="${source.url}" target="_blank" rel="noopener"><span>${esc(source.type)}</span><strong>${esc(source.name)}</strong><b>↗</b></a>`;
   }).join("");
   const currentPath = slug;
-  const canonical = `${SITE}/${locale}/${slug}/`;
+  const canonical = localizedUrl(locale, slug);
   const confirmed = item.confirmed.map((x)=>`<li><i class="ok"></i>${esc(x)}</li>`).join("");
   const unknown = item.unknown.map((x)=>`<li><i class="unknown"></i>${esc(x)}</li>`).join("");
   const faqs = item.faq.map(([q,a],i)=>`<details class="question"${i===0?" open":""}><summary><b>0${i+1}</b>${esc(q)}<i>+</i></summary><p>${esc(a)}</p></details>`).join("");
@@ -670,7 +736,7 @@ function intentPage(locale, slug) {
     "@graph":[
       {"@type":"Article",headline:item.title,description:item.meta,dateModified:LAST_CHECKED,mainEntityOfPage:canonical,image:HERO,author:{"@type":"Organization",name:"Dear Passengers Crew"}},
       {"@type":"BreadcrumbList",itemListElement:[
-        {"@type":"ListItem",position:1,name:data.ui.home,item:`${SITE}/${locale}/`},
+        {"@type":"ListItem",position:1,name:data.ui.home,item:localizedUrl(locale)},
         {"@type":"ListItem",position:2,name:item.name,item:canonical}
       ]},
       {"@type":"FAQPage",mainEntity:item.faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}
@@ -680,12 +746,12 @@ function intentPage(locale, slug) {
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${esc(item.title)}</title><meta name="description" content="${esc(item.meta)}">
   <meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#06101a">
-  <link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(slug)}<link rel="alternate" hreflang="x-default" href="${SITE}/en/${slug}/">
+  <link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(slug)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", slug)}">
   <meta property="og:type" content="article"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.meta)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
   <script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
   ${pageHeader(locale,currentPath)}
   <main class="inner-main">
-    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/${locale}/">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>STATUS · VERIFIED</span></div></section>
+    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>STATUS · VERIFIED</span></div></section>
     <section class="answer-strip"><span>${esc(data.ui.verified)}</span><strong>${esc(item.answer)}</strong></section>
     <section class="article-body">
       <article>
@@ -720,13 +786,13 @@ function deepCollection(kind) {
 function deepRelated(kind, currentSlug) {
   const collection = deepCollection(kind);
   const local = Object.entries(collection).filter(([slug])=>slug!==currentSlug).slice(0,5).map(([slug,item])=>
-    `<a class="mini-link" href="/en/${deepPath(kind,slug)}/"><span>${kind.toUpperCase()}</span><strong>${esc(item.name)}</strong><small>${esc(item.answer)}</small></a>`
+    `<a class="mini-link" href="/${deepPath(kind,slug)}/"><span>${kind.toUpperCase()}</span><strong>${esc(item.name)}</strong><small>${esc(item.answer)}</small></a>`
   ).join("");
   const cross = [
-    ["news","News archive","/en/news/"],
-    ["wiki","Community wiki","/en/wiki/"],
-    ["media","Official media archive","/en/media/"],
-    ["status","Live status tracker","/en/tools/status-tracker/"]
+    ["news","News archive","/news/"],
+    ["wiki","Community wiki","/wiki/"],
+    ["media","Official media archive","/media/"],
+    ["status","Live status tracker","/tools/status-tracker/"]
   ].filter(([key])=>key!==kind).map(([key,label,url])=>
     `<a class="mini-link tool-link" href="${url}"><span>${key.toUpperCase()}</span><strong>${label}</strong><small>Open the connected source-backed resource.</small></a>`
   ).join("");
@@ -736,7 +802,7 @@ function deepRelated(kind, currentSlug) {
 function deepContentPage(kind, slug) {
   const item = deepCollection(kind)[slug];
   const path = deepPath(kind, slug);
-  const canonical = `${SITE}/en/${path}/`;
+  const canonical = localizedUrl("en", path);
   const mediaIndex = [...slug].reduce((total, char) => total + char.charCodeAt(0), 0) % OFFICIAL_MEDIA.length;
   const sourceCards = item.sources.map((key)=>{
     const source = SOURCES[key];
@@ -753,8 +819,8 @@ function deepContentPage(kind, slug) {
     "@graph":[
       {"@type":articleType,headline:item.title,description:item.description,datePublished:item.date || LAST_CHECKED,dateModified:LAST_CHECKED,mainEntityOfPage:canonical,image:HERO,author:{"@type":"Organization",name:"Dear Passengers Crew"}},
       {"@type":"BreadcrumbList",itemListElement:[
-        {"@type":"ListItem",position:1,name:"Home",item:`${SITE}/en/`},
-        {"@type":"ListItem",position:2,name:kind,item:kind === "wiki" || kind === "news" ? `${SITE}/en/${kind}/` : canonical},
+        {"@type":"ListItem",position:1,name:"Home",item:`${SITE}/`},
+        {"@type":"ListItem",position:2,name:kind,item:kind === "wiki" || kind === "news" ? `${SITE}/${kind}/` : canonical},
         {"@type":"ListItem",position:3,name:item.name,item:canonical}
       ]},
       ...(item.faq?.length ? [{"@type":"FAQPage",mainEntity:item.faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}] : [])
@@ -766,19 +832,19 @@ function deepContentPage(kind, slug) {
   <meta property="og:type" content="${kind === "news" ? "article" : "website"}"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
   <script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
   ${pageHeader("en","")}
-  <main class="inner-main"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/en/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/en/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} INTELLIGENCE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${LAST_CHECKED}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
+  <main class="inner-main"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} INTELLIGENCE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${LAST_CHECKED}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
   <section class="answer-strip"><span>DIRECT ANSWER</span><strong>${esc(item.answer)}</strong></section>
-  <section class="article-body authority-body"><article>${sections}${semanticLinks("en", `${kind}:${slug}`, "Follow the connected search intent.")}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>EDITORIAL LABELS</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/en/editorial-policy/">READ POLICY ↗</a></div></aside></section>
+  <section class="article-body authority-body"><article>${sections}${semanticLinks("en", `${kind}:${slug}`, "Follow the connected search intent.")}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>EDITORIAL LABELS</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/editorial-policy/">READ POLICY ↗</a></div></aside></section>
   <section class="section compact-section"><div class="section-head"><p class="kicker">INTERNAL KNOWLEDGE GRAPH</p><h2>Continue the investigation.</h2></div>${deepRelated(kind,slug)}</section></main>${pageFooter("en")}
   <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script></body></html>`;
 }
 
 function mediaPage() {
-  const canonical = `${SITE}/en/media/`;
+  const canonical = `${SITE}/media/`;
   const gallery = OFFICIAL_MEDIA.map(([name,url],index)=>`<figure class="media-tile"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Official Dear Passengers screenshot: ${esc(name)}" loading="${index<2?"eager":"lazy"}"><span>OFFICIAL SCREENSHOT · ${String(index+1).padStart(2,"0")}</span><figcaption>${esc(name)}</figcaption></a></figure>`).join("");
   const schema = {"@context":"https://schema.org","@type":"CollectionPage",name:"Dear Passengers Official Media Archive",description:"Official screenshots and announcement trailer published by FLEXUS via Steam.",url:canonical,mainEntity:OFFICIAL_MEDIA.map(([name,url])=>({"@type":"ImageObject",name,contentUrl:url,creditText:"FLEXUS via Steam"}))};
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>${pageHeader("en","")}<main class="inner-main">
-  <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/en/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots & trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${LAST_CHECKED}</span></div></section>
+  <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots & trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${LAST_CHECKED}</span></div></section>
   <section class="section media-archive"><div class="media-grid authority-video"><div class="video"><iframe src="${TRAILER}" title="Dear Passengers official announcement trailer" loading="lazy" allowfullscreen></iframe></div><div class="media-copy"><p class="kicker">PRIMARY RECORDING</p><h2>Official announcement trailer</h2><p>Edited official footage establishes the game's cockpit-and-cabin fantasy. It should not be treated as a frame-by-frame promise of final controls or event frequency.</p><a class="primary" href="https://www.youtube.com/watch?v=hEsuA_rqTxk" target="_blank" rel="noopener">WATCH ON YOUTUBE ↗</a></div></div><div class="media-wall">${gallery}</div></section>
   <div class="section compact-section media-semantic">${semanticLinks("en", "media:media", "Read the evidence behind the footage.")}</div>
   <section class="section compact-section"><div class="section-head"><p class="kicker">READ THE FOOTAGE</p><h2>Connect images to verified context.</h2></div>${deepRelated("authority","confirmed-features")}</section></main>${pageFooter("en")}<script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));</script></body></html>`;
@@ -840,17 +906,17 @@ function toolGuide(locale, slug) {
   if (locale !== "en") {
     return `<section class="section tool-guide"><div class="section-head"><p class="kicker">VERIFIED TOOL NOTES</p><h2>${esc(data.tools[slug][2])}</h2><p>${esc(data.ui.sourceNote)}</p></div>${officialFigure(mediaIndex, data.tools[slug][2])}</section>`;
   }
-  return `<section class="section tool-guide"><div class="tool-guide-layout"><div><p class="kicker">HOW TO READ THE RESULT</p><h2>${esc(guide[0])}</h2><p>${esc(guide[1])}</p><p>${esc(guide[2])}</p><div class="tool-source-row"><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM REQUIREMENTS ↗</a><a href="/en/editorial-policy/">METHODOLOGY ↗</a></div></div>${officialFigure(mediaIndex, "Official gameplay context")}</div></section>`;
+  return `<section class="section tool-guide"><div class="tool-guide-layout"><div><p class="kicker">HOW TO READ THE RESULT</p><h2>${esc(guide[0])}</h2><p>${esc(guide[1])}</p><p>${esc(guide[2])}</p><div class="tool-source-row"><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM REQUIREMENTS ↗</a><a href="/editorial-policy/">METHODOLOGY ↗</a></div></div>${officialFigure(mediaIndex, "Official gameplay context")}</div></section>`;
 }
 
 function toolPage(locale, slug) {
   const data = SEO[locale] || SEO.en;
   const lang = languages[locale];
   const tool = data.tools[slug];
-  const canonical = `${SITE}/${locale}/tools/${slug}/`;
+  const canonical = localizedUrl(locale, `tools/${slug}`);
   const schema = {"@context":"https://schema.org","@type":"SoftwareApplication",name:tool[0],description:tool[1],applicationCategory:"GameApplication",operatingSystem:"Web",url:canonical};
-  return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${SITE}/en/tools/${slug}/"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
-  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/${locale}/">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
+  return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", `tools/${slug}`)}"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
+  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
   <section class="tool-stage">${toolMarkup(locale,slug)}</section>
   ${toolGuide(locale,slug)}
   <div class="section compact-section tool-semantic">${semanticLinks(locale, `tool:${slug}`, data.ui.related)}</div>
@@ -860,6 +926,7 @@ function toolPage(locale, slug) {
 
 function styles() {
   return `
+
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#06101a;color:#f5f7fa;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button,select,input{font:inherit}img{display:block;max-width:100%}.ticker{height:31px;background:#ff9f0a;color:#06101a;overflow:hidden;font-size:9px;font-weight:900;letter-spacing:.2em}.ticker div{display:flex;align-items:center;gap:38px;width:max-content;height:100%;animation:marquee 24s linear infinite}.ticker span{white-space:nowrap}.ticker b{font-size:7px}@keyframes marquee{to{transform:translateX(-33.333%)}}.header{height:82px;display:grid;grid-template-columns:260px 1fr 120px;align-items:center;gap:24px;padding:0 clamp(24px,5vw,82px);position:absolute;top:31px;left:0;right:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(2,9,16,.82),rgba(2,9,16,.2));backdrop-filter:blur(8px)}.brand{display:flex;align-items:center;gap:12px}.brand>span{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.24);border-radius:50%;font-size:30px;line-height:1;color:#ff9f0a;font-weight:300;transform:rotate(45deg)}.brand>b{font-size:12px;letter-spacing:.08em}.brand small{display:block;color:#738092;font-size:7px;letter-spacing:.16em;margin-top:4px}.header nav{display:flex;justify-content:center;gap:32px}.header nav a{font-size:11px;color:#b5bec9;position:relative}.header nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-10px;height:1px;background:#ff9f0a;transition:.25s}.header nav a:hover{color:white}.header nav a:hover:after{right:0}.language{position:relative;justify-self:end}.language>button{width:92px;height:38px;border:1px solid rgba(255,255,255,.22);background:rgba(4,13,22,.6);color:#fff;font-size:9px;font-weight:800;letter-spacing:.14em}.language>div{display:none;position:absolute;right:0;top:42px;width:160px;background:#07131f;border:1px solid #27333f;padding:7px}.language:hover>div,.language:focus-within>div{display:grid}.language a{padding:9px 11px;font-size:11px;color:#aeb7c2}.language a:hover,.language a[aria-current=page]{background:#ff9f0a;color:#07131f}.menu-button{display:none}.hero{min-height:880px;position:relative;display:flex;align-items:center;padding:160px clamp(24px,5.6vw,90px) 120px;isolation:isolate}.hero-bg{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(1,8,15,.98) 0%,rgba(2,10,18,.88) 30%,rgba(2,10,18,.25) 66%,rgba(2,10,18,.55) 100%),linear-gradient(0deg,#06101a 0%,transparent 38%),url("${HERO}");background-size:cover;background-position:center;z-index:-3}.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;mask-image:linear-gradient(to bottom,black,transparent 88%);z-index:-2}.hero-copy{width:min(820px,69vw);position:relative;z-index:2}.eyebrow,.kicker{font-size:9px;letter-spacing:.2em;font-weight:800;text-transform:uppercase;color:#93a0ad}.eyebrow{display:flex;align-items:center;gap:10px}.eyebrow i{width:8px;height:8px;background:#2ee6a6;border-radius:50%;box-shadow:0 0 14px #2ee6a6}.hero h1{font-size:clamp(76px,9.2vw,150px);line-height:.72;letter-spacing:-.075em;margin:32px 0 36px;text-transform:uppercase}.hero h1 span{display:block;font-size:.46em;line-height:1.08;letter-spacing:-.04em}.lead{max-width:640px;color:#aab5c0;font-size:17px;line-height:1.75}.actions{display:flex;gap:12px;margin-top:34px}.primary,.secondary{min-width:205px;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.primary{background:#ff9f0a;color:#07111b}.secondary{border:1px solid rgba(255,255,255,.65);background:rgba(3,12,20,.38)}.primary:hover{background:#ffb43e}.secondary:hover{background:white;color:#07111b}.capsule{position:absolute;right:5vw;top:150px;width:255px;padding:7px 7px 11px;background:rgba(4,12,20,.7);border:1px solid rgba(255,255,255,.18);transform:rotate(2deg);box-shadow:0 24px 60px rgba(0,0,0,.34)}.capsule span{display:block;color:#ff9f0a;font-size:7px;letter-spacing:.14em;margin:9px 5px 0}.hero-facts{position:absolute;right:5vw;bottom:88px;width:375px;border:1px solid rgba(255,255,255,.16);background:rgba(2,10,18,.72);backdrop-filter:blur(12px)}.hero-facts>div{height:62px;display:grid;grid-template-columns:1fr 1.2fr 10px;align-items:center;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.1)}.hero-facts>div:last-child{border:0}.hero-facts small{font-size:7px;color:#6f7b89;letter-spacing:.14em}.hero-facts b{font-size:10px}.hero-facts i{width:4px;height:4px;border-radius:50%;background:#2ee6a6;box-shadow:0 0 8px #2ee6a6}.hero-facts i.amber{background:#ff9f0a;box-shadow:0 0 8px #ff9f0a}.hero-facts i.muted{background:#647180;box-shadow:none}.media-credit{position:absolute;left:5.6vw;bottom:25px;color:#596572;font-size:6px;letter-spacing:.13em}.section{padding:115px clamp(24px,7vw,112px)}.section-head{max-width:760px;margin-bottom:48px}.section-head h2,.media-copy h2,.crew-layout h2,.final h2{font-size:clamp(42px,5vw,78px);line-height:.95;letter-spacing:-.045em;margin:16px 0 22px}.section-head>p:last-child,.media-copy>p,.crew-layout>div>p:last-child,.final p{color:#9ba8b5;line-height:1.7}.section-head.split{max-width:none;display:grid;grid-template-columns:1.15fr .85fr;gap:100px;align-items:end}.status{background:#081521}.status-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.status-card{min-height:210px;padding:25px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;position:relative;background:linear-gradient(135deg,rgba(255,255,255,.025),transparent)}.status-card>span{position:absolute;right:22px;top:20px;font-size:9px;color:#53616e}.status-card p{font-size:9px;color:#7d8995;letter-spacing:.12em;text-transform:uppercase;margin:0}.status-card strong{font-size:clamp(24px,2.4vw,38px);margin:auto 0 8px}.status-card small{color:#7f8c99}.source-link{display:block;margin-top:24px;color:#ff9f0a;font-size:8px;letter-spacing:.14em}.questions{background:#06101a}.question-list{border-top:1px solid #263441}.question{border-bottom:1px solid #263441}.question summary{list-style:none;cursor:pointer;min-height:92px;display:grid;grid-template-columns:54px 1fr 28px;align-items:center;font-size:clamp(18px,2vw,28px);font-weight:750}.question summary::-webkit-details-marker{display:none}.question summary b{font-size:9px;color:#ff9f0a}.question summary i{font-style:normal;font-size:24px;color:#74818e;transition:.2s}.question[open] summary i{transform:rotate(45deg)}.question p{max-width:780px;padding:0 0 32px 54px;margin:0;color:#9ba8b5;line-height:1.75}.media{padding-top:50px;padding-bottom:50px;background:#ff9f0a;color:#07111b}.media-grid{display:grid;grid-template-columns:1.3fr .7fr;min-height:570px}.video{position:relative;box-shadow:0 30px 80px rgba(0,0,0,.25)}.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.media-copy{padding:60px;background:#f3f1ec}.media-copy .kicker{color:#94600b}.media-copy h2{font-size:clamp(38px,4vw,62px)}.media-copy>p{color:#46515b}.media-copy ul{list-style:none;padding:20px 0 0;margin:0;display:grid;gap:16px}.media-copy li{font-size:12px;font-weight:700;display:flex;align-items:center;gap:12px}.media-copy li i{width:7px;height:7px;border-radius:50%;background:#ff9f0a}.gameplay{background:#07121d}.game-shot{height:590px;position:relative;overflow:hidden}.game-shot:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,12,20,.08),rgba(4,12,20,.72))}.game-shot img{width:100%;height:100%;object-fit:cover}.game-shot>div{position:absolute;z-index:2;right:6%;bottom:10%;text-align:right}.game-shot span{font-size:8px;letter-spacing:.18em;color:#ff9f0a}.game-shot b{display:block;font-size:clamp(36px,4.8vw,75px);line-height:.82;letter-spacing:-.06em;margin-top:12px}.features{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid #263441}.feature{padding:32px;border-right:1px solid #263441;border-bottom:1px solid #263441;min-height:235px}.feature span{font-size:9px;color:#ff9f0a}.feature h3{font-size:28px;margin:38px 0 12px}.feature p{color:#8c99a6;line-height:1.65;margin:0}.crew{background:#e8e6df;color:#07111b}.crew-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:90px}.crew-layout .kicker{color:#8a5b10}.crew-form{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start}.crew-form label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}.crew-form select{display:block;width:100%;height:58px;margin-top:10px;border:1px solid #a6a6a0;background:transparent;padding:0 13px;color:#07111b}.crew-form button{grid-column:1/-1;height:58px;border:0;background:#ff9f0a;color:#07111b;font-size:10px;font-weight:900;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;padding:0 20px;cursor:pointer}.result{grid-column:1/-1;display:none;padding:24px;border:1px solid #a6a6a0}.result.show{display:block}.result span{font-size:11px;font-weight:900;letter-spacing:.08em}.result span i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:10px;background:#2f8f68}.result.waiting span i{background:#d17b00}.result.partial span i{background:#ff9f0a}.result p{margin:8px 0 0;color:#515960;line-height:1.6}.evidence{background:#06101a}.timeline{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441}.timeline-item{min-height:260px;padding:28px;border-right:1px solid #263441}.timeline-item:last-child{border-right:0}.timeline-item span{font-size:9px;color:#ff9f0a;text-transform:uppercase;letter-spacing:.14em}.timeline-item h3{font-size:28px;margin:65px 0 14px}.timeline-item p{color:#8996a3;line-height:1.65}.final{min-height:650px;position:relative;display:flex;align-items:center;padding:100px clamp(24px,7vw,112px);overflow:hidden}.final>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}.final:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,11,18,.97),rgba(3,11,18,.78) 50%,rgba(3,11,18,.22));z-index:-1}.final>div{max-width:720px}.final p{max-width:620px}.final .primary{margin-top:30px;width:260px}footer{min-height:150px;padding:45px clamp(24px,5vw,82px);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;border-top:1px solid #263441;background:#040c14}footer p{font-size:8px;color:#697684;letter-spacing:.1em;text-align:center}footer p:last-child{text-align:right}.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s,transform .65s}.reveal.seen{opacity:1;transform:none}[dir=rtl] .hero-copy,[dir=rtl] .section-head,[dir=rtl] .media-copy,[dir=rtl] .crew-layout>div{text-align:right}[dir=rtl] .capsule{right:auto;left:5vw}[dir=rtl] .hero-facts{right:auto;left:5vw}[dir=rtl] .game-shot>div{right:auto;left:6%;text-align:left}[dir=rtl] .result span i{margin-right:0;margin-left:10px}.resource-hub{background:#081521}.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.resource-card{min-height:235px;padding:27px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 70%);transition:.25s}.resource-card:hover{transform:translateY(-4px);background:#0b1b28}.resource-card>span,.mini-link>span{font-size:9px;color:#ff9f0a;letter-spacing:.15em}.resource-card h3{font-size:28px;line-height:1.02;margin:44px 0 12px}.resource-card p{color:#8694a2;line-height:1.6;margin:0}.resource-card b{margin-top:auto;padding-top:25px;color:#ff9f0a;font-size:18px}.resource-card.tool-card{background:linear-gradient(145deg,rgba(255,159,10,.09),rgba(255,255,255,.015))}.resource-card.authority-card{background:linear-gradient(145deg,rgba(46,230,166,.09),rgba(255,255,255,.015))}.inner-header{position:fixed;background:rgba(4,12,20,.9)}.inner-main{padding-top:113px}.article-hero{min-height:610px;padding:112px clamp(24px,7vw,112px) 76px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate;overflow:hidden}.article-hero-bg{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(1,8,15,.97),rgba(2,10,18,.7) 52%,rgba(2,10,18,.25)),linear-gradient(0deg,#06101a,transparent 55%),url("${HERO}");background-size:cover;background-position:center 35%;z-index:-1;filter:saturate(.85)}.breadcrumbs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:54px;color:#7e8a97;font-size:10px}.breadcrumbs a{color:#ff9f0a}.article-hero h1,.tool-hero h1{max-width:1050px;font-size:clamp(58px,8vw,126px);line-height:.82;letter-spacing:-.065em;text-transform:uppercase;margin:24px 0}.article-hero>p:not(.eyebrow){max-width:800px;color:#b5c0ca;font-size:18px;line-height:1.7}.article-meta{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px;font-size:8px;font-weight:800;letter-spacing:.14em;color:#8b98a5}.answer-strip{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;padding:42px clamp(24px,7vw,112px);background:#ff9f0a;color:#07111b;align-items:center}.answer-strip span{font-size:9px;font-weight:900;letter-spacing:.16em}.answer-strip strong{font-size:clamp(23px,3vw,43px);line-height:1.15}.article-body{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:80px;padding:105px clamp(24px,7vw,112px);background:#f0eee8;color:#07111b}.article-body article>section{padding-bottom:74px;margin-bottom:74px;border-bottom:1px solid #b6b4ad}.article-body h2{font-size:clamp(35px,4.6vw,66px);line-height:.96;letter-spacing:-.045em;margin:10px 0 30px}.article-body h3{font-size:24px}.article-body p,.article-body li{color:#46515a;line-height:1.78}.long-copy{font-size:18px;max-width:850px}.evidence-list{list-style:none;padding:0;margin:0;display:grid;gap:12px}.evidence-list li{padding:18px 20px;border:1px solid #b6b4ad;background:#faf9f5;display:grid;grid-template-columns:86px 1fr;gap:16px;align-items:start}.evidence-list i{font-style:normal;font-size:8px;font-weight:900;letter-spacing:.1em}.evidence-list .ok i{color:#167954}.evidence-list .unknown i{color:#a45e00}.article-body aside{align-self:start;display:grid;gap:16px}.aside-card{padding:25px;background:#071521;color:#f4f7f9;border-top:3px solid #ff9f0a}.aside-card span{font-size:8px;color:#ff9f0a;letter-spacing:.15em}.aside-card h3{margin:28px 0 12px}.aside-card p{color:#9ba7b3}.sources-card a{display:block;padding:13px 0;border-bottom:1px solid #263441;color:#dbe2e8;font-size:12px}.source-ledger a{position:relative;padding-right:18px}.source-ledger a span{display:block;color:#71808e;margin-bottom:6px}.source-ledger a strong{display:block;line-height:1.35}.source-ledger a b{position:absolute;right:0;top:18px;color:#ff9f0a}.authority-bullets{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.authority-bullets li{padding:16px 18px;background:#fff;border-left:3px solid #ff9f0a;font-weight:700}.compact-section{padding-top:82px;padding-bottom:82px}.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.mini-link{min-height:155px;padding:22px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;transition:.2s}.mini-link strong{font-size:19px;line-height:1.2;margin:auto 0 8px}.mini-link small{color:#7c8996}.mini-link:hover{background:#0c1c29}.tool-link{background:rgba(255,159,10,.055)}.log-section{padding-top:0}.update-log{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441}.update-log article{padding:24px;border-right:1px solid #263441}.update-log article:last-child{border-right:0}.update-log time{font-size:9px;color:#ff9f0a}.update-log p{color:#8a97a4;line-height:1.55}.source-note{color:#697684;font-size:8px;letter-spacing:.08em}.deep-index{background:#07121d}.authority-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.authority-tile{min-height:300px;padding:28px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(46,230,166,.055),transparent);transition:.2s}.authority-tile:hover{background:#0d1d2a;transform:translateY(-3px)}.authority-tile time,.authority-tile>span{font-size:8px;letter-spacing:.14em;color:#2ee6a6}.authority-tile h3{font-size:28px;line-height:1.05;margin:48px 0 14px}.authority-tile p{color:#8996a3;line-height:1.6}.authority-tile b{margin-top:auto;color:#ff9f0a;font-size:10px;letter-spacing:.1em}.wiki-tile{background:linear-gradient(145deg,rgba(255,159,10,.06),transparent)}.media-archive{background:#081521;padding-top:70px}.authority-video{margin-bottom:80px}.media-wall{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:#263441}.media-tile{margin:0;background:#07121d;overflow:hidden}.media-tile a{display:block;position:relative}.media-tile img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:.45s}.media-tile:hover img{transform:scale(1.025);filter:brightness(.72)}.media-tile span{position:absolute;left:18px;top:18px;padding:8px 10px;background:#07121d;color:#ff9f0a;font-size:8px;letter-spacing:.12em}.media-tile figcaption{padding:18px 20px;font-weight:800}.tool-stage{padding:92px clamp(24px,7vw,112px);background:#e8e6df;color:#07111b}.interactive-tool{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:1050px;margin:auto}.interactive-tool.three{grid-template-columns:repeat(3,minmax(0,1fr))}.interactive-tool label{font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}.interactive-tool select,.interactive-tool input{display:block;width:100%;height:60px;margin-top:10px;border:1px solid #999b97;background:#f7f5f0;color:#07111b;padding:0 15px}.interactive-tool button{grid-column:1/-1;height:62px;border:0;background:#ff9f0a;color:#07111b;padding:0 22px;display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.tool-result{grid-column:1/-1;display:none;padding:26px;border:1px solid #999b97;background:#f7f5f0}.tool-result.show{display:block}.tool-result span{font-size:22px;font-weight:900}.tool-result p{margin-bottom:0;color:#4d575f}.tool-result.pass{border-color:#268663}.tool-result.fail{border-color:#bb3b31}.tool-result.partial{border-color:#d8870a}.countdown-tool{text-align:center;max-width:980px;margin:auto}.countdown-tool strong{display:block;font-size:clamp(100px,18vw,250px);line-height:.75;letter-spacing:-.09em}.countdown-tool>span{display:block;margin-top:30px;font-size:10px;font-weight:900;letter-spacing:.2em}.countdown-tool p{color:#5d666c;line-height:1.7}.window-line{height:6px;background:linear-gradient(90deg,#ff9f0a 0 75%,#b5b6b2 75%);margin:45px 0}.compare-table{max-width:1100px;margin:auto;border-top:1px solid #999b97;border-left:1px solid #999b97}.compare-table>div{display:grid;grid-template-columns:.6fr 1fr 1fr}.compare-table b,.compare-table span{padding:18px;border-right:1px solid #999b97;border-bottom:1px solid #999b97}.compare-table>div:first-child{background:#071521;color:white}.compare-table p{padding:10px 18px;color:#5b6369}.tracker-board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tracker-board article{min-height:230px;padding:25px;background:#071521;color:#f4f7f9;border-top:4px solid #8c98a4}.tracker-board article.green{border-color:#2ee6a6}.tracker-board article.amber{border-color:#ff9f0a}.tracker-board span{font-size:8px;letter-spacing:.15em;color:#84919d}.tracker-board strong{display:block;font-size:25px;margin:60px 0 12px}.tracker-board p{color:#9aa6b1;line-height:1.6}[dir=rtl] .article-hero,[dir=rtl] .article-body,[dir=rtl] .tool-stage{text-align:right}
 @media(max-width:980px){.header{grid-template-columns:1fr auto auto}.header nav{display:none;position:absolute;top:82px;left:0;right:0;background:#07131f;padding:25px;flex-direction:column}.header nav.open{display:flex}.menu-button{display:block;border:0;background:transparent;color:#fff;font-size:9px;letter-spacing:.14em}.hero{min-height:820px;padding-top:150px;align-items:flex-start}.hero-copy{width:100%;padding-top:145px}.capsule{top:135px;right:6vw;width:210px}.hero-facts{right:6vw;bottom:55px}.status-grid{grid-template-columns:repeat(2,1fr)}.media-grid,.crew-layout{grid-template-columns:1fr}.video{min-height:480px}.crew-layout{gap:45px}.section-head.split{grid-template-columns:1fr;gap:10px}.game-shot{height:480px}.resource-grid,.mini-grid,.authority-grid{grid-template-columns:repeat(2,1fr)}.article-body{grid-template-columns:1fr;gap:25px}.article-body aside{grid-template-columns:repeat(2,1fr)}.interactive-tool.three{grid-template-columns:1fr 1fr}.tracker-board{grid-template-columns:1fr}.update-log{grid-template-columns:1fr}.update-log article{border-right:0;border-bottom:1px solid #263441}}
 @media(max-width:680px){.ticker{height:27px}.header{top:27px;height:68px;padding:0 18px}.brand>span{width:34px;height:34px}.brand>b{font-size:10px}.language>button{width:64px}.hero{min-height:850px;padding:115px 20px 130px}.hero-bg{background-image:linear-gradient(0deg,#06101a 2%,rgba(2,10,18,.38) 55%,rgba(2,10,18,.8)),url("${HERO}");background-position:center}.hero-copy{padding-top:190px}.hero h1{font-size:19vw;margin:22px 0 24px}.lead{font-size:14px}.actions{display:grid}.primary,.secondary{width:100%;min-width:0}.capsule{top:112px;left:20px!important;right:auto!important;width:205px;transform:rotate(-2deg)}.hero-facts{left:20px!important;right:20px!important;bottom:32px;width:auto}.media-credit{display:none}.section{padding:78px 20px}.section-head{margin-bottom:34px}.section-head h2,.media-copy h2,.crew-layout h2,.final h2{font-size:42px}.status-grid{grid-template-columns:1fr}.status-card{min-height:165px}.question summary{grid-template-columns:36px 1fr 24px;font-size:18px}.question p{padding-left:36px}.media{padding:0}.media-grid{display:block}.video{min-height:240px}.media-copy{padding:55px 20px}.game-shot{height:370px}.game-shot>div{left:20px!important;right:20px!important;bottom:25px;text-align:left!important}.game-shot b{font-size:38px}.features{grid-template-columns:1fr}.feature{min-height:190px}.crew-form{grid-template-columns:1fr}.timeline{grid-template-columns:1fr}.timeline-item{min-height:200px;border-right:0;border-bottom:1px solid #263441}.timeline-item h3{margin-top:38px}.final{min-height:620px;padding:75px 20px}.final:after{background:linear-gradient(0deg,rgba(3,11,18,.98),rgba(3,11,18,.55))}footer{grid-template-columns:1fr;gap:24px;text-align:center}footer .brand{justify-content:center}footer p,footer p:last-child{text-align:center}.reveal{opacity:1;transform:none}.resource-grid,.mini-grid,.authority-grid,.media-wall{grid-template-columns:1fr}.resource-card{min-height:205px}.inner-main{padding-top:95px}.article-hero{min-height:520px;padding:85px 20px 50px}.article-hero h1,.tool-hero h1{font-size:52px}.article-hero>p:not(.eyebrow){font-size:15px}.breadcrumbs{margin-bottom:34px}.answer-strip{grid-template-columns:1fr;padding:34px 20px;gap:14px}.article-body{padding:72px 20px}.article-body article>section{padding-bottom:50px;margin-bottom:50px}.article-body aside{grid-template-columns:1fr}.evidence-list li{grid-template-columns:1fr}.authority-bullets{grid-template-columns:1fr}.authority-tile{min-height:230px}.media-archive{padding-top:30px}.tool-stage{padding:65px 20px}.interactive-tool,.interactive-tool.three{grid-template-columns:1fr}.compare-table{overflow-x:auto}.compare-table>div{min-width:650px}.tracker-board article{min-height:190px}.countdown-tool strong{font-size:32vw}}
@@ -869,22 +936,25 @@ function styles() {
 .semantic-section>p:not(.kicker){max-width:760px;color:#6c7780;line-height:1.7}.semantic-list{list-style:none!important;padding:0!important;margin:34px 0 0!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #aeb1ad;border-left:1px solid #aeb1ad}.semantic-list li{padding:0!important;margin:0!important}.semantic-link{min-height:145px;padding:22px;border-right:1px solid #aeb1ad;border-bottom:1px solid #aeb1ad;background:#faf9f5;display:grid;grid-template-columns:1fr 22px;align-content:center;transition:.2s}.semantic-link:hover{background:#fff;transform:translateY(-2px)}.semantic-link strong{font-size:19px;line-height:1.2;color:#071521}.semantic-link span{grid-column:1;display:block;margin-top:10px;color:#65717a;font-size:13px;line-height:1.55}.semantic-link b{grid-column:2;grid-row:1/3;color:#d67e00;align-self:center}.tool-semantic,.media-semantic{background:#e8e6df;color:#07111b}.tool-semantic .semantic-section,.media-semantic .semantic-section{max-width:1180px;margin:auto}.tool-semantic .semantic-section h2,.media-semantic .semantic-section h2{font-size:clamp(38px,5vw,72px);line-height:.95;letter-spacing:-.045em;margin:15px 0 25px}.site-footer{display:block;min-height:0;padding:0;background:#040c14;border-top:1px solid #263441}.footer-top{display:grid;grid-template-columns:1.35fr repeat(4,minmax(130px,1fr));gap:48px;padding:70px clamp(24px,5vw,82px)}.footer-intro p{max-width:300px;text-align:left!important;color:#7c8996!important;font-size:10px!important;line-height:1.7;letter-spacing:.04em!important;margin-top:24px}.site-footer nav{display:grid;align-content:start;gap:12px}.site-footer nav>strong{color:#ff9f0a;font-size:8px;letter-spacing:.15em;margin-bottom:10px}.site-footer nav>a{color:#9aa6b2;font-size:11px;line-height:1.35}.site-footer nav>a:hover{color:#fff}.footer-bottom{min-height:64px;padding:18px clamp(24px,5vw,82px);border-top:1px solid #263441;display:flex;align-items:center;justify-content:space-between;gap:24px;color:#64717e;font-size:8px;letter-spacing:.12em}.footer-bottom a:hover{color:#ff9f0a}
 @media(max-width:1100px){.footer-top{grid-template-columns:1.4fr repeat(2,1fr)}}
 @media(max-width:680px){.semantic-list{grid-template-columns:1fr}.semantic-link{min-height:125px}.footer-top{grid-template-columns:1fr;gap:38px;padding:55px 20px}.site-footer nav{grid-template-columns:repeat(2,1fr)}.site-footer nav>strong{grid-column:1/-1}.footer-bottom{align-items:flex-start;flex-direction:column;padding:25px 20px}}
+.hero h1 .hero-title-main{font-size:1em;line-height:.72;letter-spacing:-.075em}.game-overview{background:#f0eee8;color:#07111b}.overview-layout{display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.22fr);gap:clamp(55px,8vw,130px);align-items:start}.overview-heading{position:sticky;top:140px}.overview-heading h2{font-size:clamp(48px,6.5vw,96px);line-height:.88;letter-spacing:-.06em;margin:20px 0 42px}.overview-heading .kicker{color:#8a5b10}.overview-stamp{padding:24px;border:1px solid #aeb0ab;border-left:5px solid #ff9f0a;display:grid;gap:8px;background:#faf9f5}.overview-stamp span{font-size:8px;font-weight:900;letter-spacing:.15em;color:#8a5b10}.overview-stamp strong{font-size:18px;line-height:1.35}.overview-stamp small{color:#68727a}.overview-copy{max-width:820px}.overview-copy p{font-size:17px;line-height:1.88;color:#46515a;margin:0 0 25px}.overview-copy .overview-lead{font-size:clamp(22px,2.3vw,32px);line-height:1.48;color:#07111b;letter-spacing:-.02em}.overview-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #aaaca8;border-left:1px solid #aaaca8;margin-top:45px}.overview-actions a{min-height:145px;padding:22px;border-right:1px solid #aaaca8;border-bottom:1px solid #aaaca8;display:grid;grid-template-columns:1fr 22px;align-content:center;background:#faf9f5;transition:.2s}.overview-actions a:hover{background:#fff;transform:translateY(-2px)}.overview-actions span{font-size:8px;font-weight:900;letter-spacing:.13em;color:#a45e00}.overview-actions strong{margin-top:12px;line-height:1.35}.overview-actions b{grid-column:2;grid-row:1/3;align-self:center;color:#d67e00}.search-briefings{background:#040c14}.briefing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #263441;border-left:1px solid #263441}.briefing-card{min-height:410px;padding:clamp(25px,3vw,42px);border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(255,159,10,.045),transparent 60%)}.briefing-card>span{font-size:8px;font-weight:900;letter-spacing:.15em;color:#2ee6a6}.briefing-card h3{font-size:clamp(28px,3vw,44px);line-height:1.02;letter-spacing:-.035em;margin:55px 0 20px;max-width:560px}.briefing-card p{color:#95a2af;line-height:1.8;margin:0;max-width:650px}.briefing-card>div{display:flex;flex-wrap:wrap;gap:18px;margin-top:auto;padding-top:32px}.briefing-card a{color:#ff9f0a;font-size:9px;font-weight:900;letter-spacing:.08em}.editorial-note{margin:28px 0 0;padding:22px 24px;border:1px solid #263441;color:#8f9ca9;line-height:1.75}.editorial-note strong{color:#fff}.search-briefings .section-head>p{color:#9ba8b5;line-height:1.7}
+@media(max-width:980px){.overview-layout{grid-template-columns:1fr;gap:50px}.overview-heading{position:static}.briefing-card{min-height:370px}}
+@media(max-width:680px){.hero h1 .hero-title-main{font-size:1em}.overview-actions,.briefing-grid{grid-template-columns:1fr}.overview-copy p{font-size:16px}.overview-copy .overview-lead{font-size:23px}.briefing-card{min-height:0;padding:30px 22px}.briefing-card h3{margin:38px 0 18px}.briefing-card>div{margin-top:25px}.editorial-note{padding:20px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
 `;
 }
-
 function sitemap() {
   const entries = [];
   Object.keys(languages).forEach((locale) => {
-    entries.push([`${SITE}/${locale}/`, locale === "en" ? "1.0" : "0.8"]);
-    PAGE_SLUGS.forEach((slug) => entries.push([`${SITE}/${locale}/${slug}/`, "0.9"]));
-    TOOL_SLUGS.forEach((slug) => entries.push([`${SITE}/${locale}/tools/${slug}/`, "0.8"]));
+    entries.push([localizedUrl(locale), locale === "en" ? "1.0" : "0.8"]);
+    PAGE_SLUGS.forEach((slug) => entries.push([localizedUrl(locale, slug), "0.9"]));
+    TOOL_SLUGS.forEach((slug) => entries.push([localizedUrl(locale, `tools/${slug}`), "0.8"]));
   });
-  AUTHORITY_SLUGS.forEach((slug) => entries.push([`${SITE}/en/${slug}/`, "0.9"]));
-  WIKI_SLUGS.forEach((slug) => entries.push([`${SITE}/en/wiki/${slug}/`, "0.8"]));
-  NEWS_SLUGS.forEach((slug) => entries.push([`${SITE}/en/news/${slug}/`, "0.8"]));
-  STATIC_SLUGS.forEach((slug) => entries.push([`${SITE}/en/${slug}/`, "0.5"]));
-  entries.push([`${SITE}/en/media/`, "0.8"]);
+  AUTHORITY_SLUGS.forEach((slug) => entries.push([localizedUrl("en", slug), "0.9"]));
+  WIKI_SLUGS.forEach((slug) => entries.push([localizedUrl("en", `wiki/${slug}`), "0.8"]));
+  NEWS_SLUGS.forEach((slug) => entries.push([localizedUrl("en", `news/${slug}`), "0.8"]));
+  STATIC_SLUGS.forEach((slug) => entries.push([localizedUrl("en", slug), "0.5"]));
+  entries.push([localizedUrl("en", "media"), "0.8"]);
   const urls = entries.map(([loc, priority]) => `<url><loc>${loc}</loc><lastmod>${LAST_CHECKED}</lastmod><changefreq>weekly</changefreq><priority>${priority}</priority></url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`;
 }
@@ -908,36 +978,49 @@ export default {
     if (url.pathname === "/favicon.ico") {
       return Response.redirect(`${SITE}/favicon.svg`, 301);
     }
+    const originalPathParts = url.pathname.split("/").filter(Boolean);
+    if (originalPathParts[0]?.toLowerCase() === "en") {
+      const rest = originalPathParts.slice(1).join("/");
+      const target = rest ? `${SITE}/${rest}/` : `${SITE}/`;
+      return Response.redirect(`${target}${url.search}`, 301);
+    }
     if (url.pathname !== "/" && !url.pathname.endsWith("/") && !url.pathname.split("/").pop()?.includes(".")) {
       return Response.redirect(`${SITE}${url.pathname}/${url.search}`, 301);
     }
     const pathParts = url.pathname.split("/").filter(Boolean);
     if (pathParts.length === 0) {
-      const accept = request.headers.get("accept-language") || "";
-      const detected = accept.toLowerCase().startsWith("zh") ? "zh-cn" : accept.toLowerCase().startsWith("ja") ? "ja" : accept.toLowerCase().startsWith("ar") ? "ar" : accept.toLowerCase().startsWith("tr") ? "tr" : accept.toLowerCase().startsWith("uk") ? "uk" : "en";
-      return Response.redirect(`${SITE}/${detected}/`, 302);
+      return new Response(page("en"), {
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public,max-age=300,s-maxage=3600",
+          "x-content-type-options": "nosniff",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "permissions-policy": "camera=(), microphone=(), geolocation=()"
+        }
+      });
     }
-    const locale = localeFromPath(url.pathname);
-    if (!languages[pathParts[0]?.toLowerCase()]) {
-      return new Response("Not Found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
-    }
+    const explicitLocale = languages[pathParts[0]?.toLowerCase()] && pathParts[0]?.toLowerCase() !== "en"
+      ? pathParts[0].toLowerCase()
+      : null;
+    const locale = explicitLocale || "en";
+    const routeParts = explicitLocale ? pathParts.slice(1) : pathParts;
     let html;
-    if (pathParts.length === 1) {
+    if (routeParts.length === 0) {
       html = page(locale);
-    } else if (pathParts.length === 2 && PAGE_SLUGS.includes(pathParts[1])) {
-      html = intentPage(locale, pathParts[1]);
-    } else if (locale === "en" && pathParts.length === 2 && AUTHORITY_SLUGS.includes(pathParts[1])) {
-      html = deepContentPage("authority", pathParts[1]);
-    } else if (locale === "en" && pathParts.length === 2 && STATIC_SLUGS.includes(pathParts[1])) {
-      html = deepContentPage("static", pathParts[1]);
-    } else if (locale === "en" && pathParts.length === 2 && pathParts[1] === "media") {
+    } else if (routeParts.length === 1 && PAGE_SLUGS.includes(routeParts[0])) {
+      html = intentPage(locale, routeParts[0]);
+    } else if (locale === "en" && routeParts.length === 1 && AUTHORITY_SLUGS.includes(routeParts[0])) {
+      html = deepContentPage("authority", routeParts[0]);
+    } else if (locale === "en" && routeParts.length === 1 && STATIC_SLUGS.includes(routeParts[0])) {
+      html = deepContentPage("static", routeParts[0]);
+    } else if (locale === "en" && routeParts.length === 1 && routeParts[0] === "media") {
       html = mediaPage();
-    } else if (locale === "en" && pathParts.length === 3 && pathParts[1] === "wiki" && WIKI_SLUGS.includes(pathParts[2])) {
-      html = deepContentPage("wiki", pathParts[2]);
-    } else if (locale === "en" && pathParts.length === 3 && pathParts[1] === "news" && NEWS_SLUGS.includes(pathParts[2])) {
-      html = deepContentPage("news", pathParts[2]);
-    } else if (pathParts.length === 3 && pathParts[1] === "tools" && TOOL_SLUGS.includes(pathParts[2])) {
-      html = toolPage(locale, pathParts[2]);
+    } else if (locale === "en" && routeParts.length === 2 && routeParts[0] === "wiki" && WIKI_SLUGS.includes(routeParts[1])) {
+      html = deepContentPage("wiki", routeParts[1]);
+    } else if (locale === "en" && routeParts.length === 2 && routeParts[0] === "news" && NEWS_SLUGS.includes(routeParts[1])) {
+      html = deepContentPage("news", routeParts[1]);
+    } else if (routeParts.length === 2 && routeParts[0] === "tools" && TOOL_SLUGS.includes(routeParts[1])) {
+      html = toolPage(locale, routeParts[1]);
     } else {
       return new Response("Not Found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
     }
