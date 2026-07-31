@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/index.js && node --check src/seo-content.js",
+    "check": "node --check src/index.js && node --check src/seo-content.js && node --check src/authority-content.js",
+    "validate": "npm run check && node scripts/validate.mjs",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },

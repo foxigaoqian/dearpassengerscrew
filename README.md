@@ -4,13 +4,18 @@ Independent multilingual game-intelligence hub for **Dear Passengers**, built as
 
 ## What is included
 
-- 108 indexable URLs across English, Simplified Chinese, Japanese, Arabic, Turkish and Ukrainian
+- 133 validated indexable URLs
+- Six localized editions across English, Simplified Chinese, Japanese, Arabic, Turkish and Ukrainian
 - 11 dedicated search-intent guides in every language: release date, demo, multiplayer, player count, platforms, gameplay, trailer, characters, system requirements, news and wiki
 - Six practical player tools in every language: PC compatibility, crew compatibility, release countdown, requirements comparison, live status tracker and role quiz
+- Eight additional high-intent English briefings: price, download, Steam, solo, crossplay, languages, developer and confirmed features
+- Eight source-aware wiki entries and five dated news reports
+- Official media archive with ten full-resolution Steam screenshots and the announcement trailer
 - Official Steam media and official trailer embed
 - Confirmed/unknown evidence labels, source links, last-checked dates and update history
-- SEO essentials: unique titles and descriptions, canonical URLs, page-level hreflang, Article/FAQ/Breadcrumb/SoftwareApplication JSON-LD, 108-URL sitemap and robots
+- SEO essentials: 133 unique titles and descriptions, canonical URLs, page-level hreflang, Article/NewsArticle/FAQ/Breadcrumb/CollectionPage/SoftwareApplication JSON-LD, sitemap and robots
 - Dense internal-link architecture connecting guides, tools and localized editions
+- Automated route, title, canonical, sitemap and 404 validation in GitHub Actions
 - Responsive layout for desktop, tablet and mobile
 
 ## URL architecture
