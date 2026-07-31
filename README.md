@@ -12,7 +12,7 @@ Independent multilingual game-intelligence hub for **Dear Passengers**, built as
 - Eight additional high-intent English briefings: price, download, Steam, solo, crossplay, languages, developer and confirmed features
 - Eight source-aware wiki entries and five dated news reports
 - Official media archive with ten full-resolution Steam screenshots and the announcement trailer
-- Expanded English homepage with four official cabin feeds, PC manifest, language status, verified dispatches and a first-party source ledger
+- Expanded English homepage with a natural-language game overview, four intent briefings, four official cabin feeds, PC manifest, language status, verified dispatches and a first-party source ledger
 - Official Steam media and official trailer embed
 - Confirmed/unknown evidence labels, source links, last-checked dates and update history
 - SEO essentials: 133 unique titles and descriptions, canonical URLs, page-level hreflang, Article/NewsArticle/FAQ/Breadcrumb/CollectionPage/SoftwareApplication JSON-LD, sitemap and robots
@@ -25,20 +25,17 @@ Independent multilingual game-intelligence hub for **Dear Passengers**, built as
 
 ## URL architecture
 
+English is the canonical default at the root. Legacy `/en/*` requests receive a
+permanent redirect to the equivalent root URL. Other languages keep an explicit
+locale prefix and never depend on browser-language redirects.
+
 ```text
-/{locale}/
-/{locale}/release-date/
-/{locale}/demo/
-/{locale}/multiplayer/
-/{locale}/how-many-players/
-/{locale}/platforms/
-/{locale}/gameplay/
-/{locale}/trailer/
-/{locale}/characters/
-/{locale}/system-requirements/
-/{locale}/news/
-/{locale}/wiki/
-/{locale}/tools/{tool}/
+/                                  # English homepage
+/release-date/                     # English intent page
+/tools/{tool}/                     # English tool
+/{locale}/                         # Non-English homepage
+/{locale}/release-date/            # Non-English intent page
+/{locale}/tools/{tool}/            # Non-English tool
 ```
 
 ## Development
