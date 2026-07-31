@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dear-passengers-crew",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-31",
+  "routes": [
+    {
+      "pattern": "dearpassengerscrew.com/*",
+      "zone_name": "dearpassengerscrew.com"
+    },
+    {
+      "pattern": "www.dearpassengerscrew.com/*",
+      "zone_name": "dearpassengerscrew.com"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
