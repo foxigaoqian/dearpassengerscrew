@@ -10,9 +10,15 @@ import { INTENT_DEPTH } from "../src/intent-depth.js";
 import { LINK_GRAPH, LINK_TARGETS, targetPath } from "../src/link-graph.js";
 
 const locales = ["en", "zh-cn", "ja", "ar", "tr", "uk"];
-const paths = [];
+const nonEnglishLocales = locales.filter((locale) => locale !== "en");
+const nonEnglishPrefix = /^\/(zh-cn|ja|ar|tr|uk)(?:\/|$)/;
+const paths = [
+  "/",
+  ...PAGE_SLUGS.map((slug) => `/${slug}/`),
+  ...TOOL_SLUGS.map((slug) => `/tools/${slug}/`)
+];
 
-for (const locale of locales) {
+for (const locale of nonEnglishLocales) {
   paths.push(
     `/${locale}/`,
     ...PAGE_SLUGS.map((slug) => `/${locale}/${slug}/`),
@@ -21,11 +27,11 @@ for (const locale of locales) {
 }
 
 paths.push(
-  ...AUTHORITY_SLUGS.map((slug) => `/en/${slug}/`),
-  ...WIKI_SLUGS.map((slug) => `/en/wiki/${slug}/`),
-  ...NEWS_SLUGS.map((slug) => `/en/news/${slug}/`),
-  ...STATIC_SLUGS.map((slug) => `/en/${slug}/`),
-  "/en/media/"
+  ...AUTHORITY_SLUGS.map((slug) => `/${slug}/`),
+  ...WIKI_SLUGS.map((slug) => `/wiki/${slug}/`),
+  ...NEWS_SLUGS.map((slug) => `/news/${slug}/`),
+  ...STATIC_SLUGS.map((slug) => `/${slug}/`),
+  "/media/"
 );
 
 const titles = new Map();
@@ -78,14 +84,16 @@ for (const path of paths) {
     .replace(/\s+/g, " ")
     .trim();
   const expectedCanonical = `https://dearpassengerscrew.com${path}`;
-  const isLocalized = /^\/(en|zh-cn|ja|ar|tr|uk)\//.test(path);
+  const isEnglish = !nonEnglishPrefix.test(path);
+  const isLocalized = true;
   const isIntent = PAGE_SLUGS.some((slug) => path.endsWith(`/${slug}/`));
   const isTool = path.includes("/tools/");
-  const isEnglishIntent = path.startsWith("/en/") && isIntent;
-  const isDeepEnglish = path.startsWith("/en/") && !isIntent && !isTool && path !== "/en/" && path !== "/en/media/";
-  const requiredHreflang = isLocalized && (isIntent || isTool || /^\/(en|zh-cn|ja|ar|tr|uk)\/$/.test(path)) ? 7 : 2;
-  const minimumText = path === "/en/" ? 9_000 : isEnglishIntent ? 4_000 : isIntent ? 1_500 : isTool && path.startsWith("/en/") ? 1_650 : isTool ? 800 : 1_000;
-  const requiredImages = path === "/en/" ? 7 : path === "/en/media/" ? 10 : isIntent || isTool || isDeepEnglish ? 1 : 0;
+  const isEnglishIntent = isEnglish && isIntent;
+  const isDeepEnglish = isEnglish && !isIntent && !isTool && path !== "/" && path !== "/media/";
+  const isLocaleHome = path === "/" || nonEnglishLocales.some((locale) => path === `/${locale}/`);
+  const requiredHreflang = isLocalized && (isIntent || isTool || isLocaleHome) ? 7 : 2;
+  const minimumText = path === "/" ? 13_000 : isEnglishIntent ? 4_000 : isIntent ? 1_500 : isTool && isEnglish ? 1_650 : isTool ? 800 : 1_000;
+  const requiredImages = path === "/" ? 7 : path === "/media/" ? 10 : isIntent || isTool || isDeepEnglish ? 1 : 0;
 
   if (
     response.status !== 200 ||
@@ -181,7 +189,7 @@ for (const [sourcePath, html] of documents) {
 
 let maximumCrawlDepth = 0;
 for (const locale of locales) {
-  const start = `/${locale}/`;
+  const start = locale === "en" ? "/" : `/${locale}/`;
   const queue = [[start, 0]];
   const depths = new Map([[start, 0]]);
   while (queue.length) {
@@ -194,7 +202,7 @@ for (const locale of locales) {
   }
   const localePaths = paths.filter((path) =>
     locale === "en"
-      ? path.startsWith("/en/")
+      ? !nonEnglishPrefix.test(path)
       : path.startsWith(`/${locale}/`)
   );
   for (const path of localePaths) {
@@ -208,11 +216,11 @@ for (const locale of locales) {
 }
 
 for (const path of paths) {
-  if (path === "/en/") continue;
+  if (path === "/") continue;
   const totalIncoming = incoming.get(path).size;
   const contextualCount = contextualIncoming.get(path).size;
   if (totalIncoming < 3) failures.push({ path, insufficientIncomingLinks: totalIncoming, minimum: 3 });
-  if (path.startsWith("/en/") && contextualCount < 2) {
+  if (!nonEnglishPrefix.test(path) && contextualCount < 2) {
     failures.push({ path, insufficientContextualIncomingLinks: contextualCount, minimum: 2 });
   }
 }
@@ -227,8 +235,12 @@ if (sitemapUrls !== paths.length) {
   failures.push({ sitemapUrls, expected: paths.length });
 }
 
+if (sitemap.includes("https://dearpassengerscrew.com/en/")) {
+  failures.push({ sitemapContainsLegacyEnglishPrefix: true });
+}
+
 const missingResponse = await worker.fetch(
-  new Request("https://dearpassengerscrew.com/en/this-route-does-not-exist/")
+  new Request("https://dearpassengerscrew.com/this-route-does-not-exist/")
 );
 
 if (missingResponse.status !== 404) {
@@ -236,10 +248,44 @@ if (missingResponse.status !== 404) {
 }
 
 const trailingSlashResponse = await worker.fetch(
-  new Request("https://dearpassengerscrew.com/en/release-date")
+  new Request("https://dearpassengerscrew.com/release-date")
 );
-if (trailingSlashResponse.status !== 301 || trailingSlashResponse.headers.get("location") !== "https://dearpassengerscrew.com/en/release-date/") {
+if (trailingSlashResponse.status !== 301 || trailingSlashResponse.headers.get("location") !== "https://dearpassengerscrew.com/release-date/") {
   failures.push({ trailingSlashStatus: trailingSlashResponse.status, location: trailingSlashResponse.headers.get("location") });
+}
+
+const rootWithChineseBrowser = await worker.fetch(
+  new Request("https://dearpassengerscrew.com/", {
+    headers: { "accept-language": "zh-CN,zh;q=0.9,en;q=0.8" }
+  })
+);
+const rootWithChineseBrowserHtml = await rootWithChineseBrowser.text();
+if (
+  rootWithChineseBrowser.status !== 200 ||
+  !rootWithChineseBrowserHtml.includes('<html lang="en"') ||
+  !rootWithChineseBrowserHtml.includes('<link rel="canonical" href="https://dearpassengerscrew.com/"')
+) {
+  failures.push({
+    rootEnglishStatus: rootWithChineseBrowser.status,
+    rootEnglishLang: rootWithChineseBrowserHtml.match(/<html lang="([^"]+)"/)?.[1],
+    rootEnglishCanonical: rootWithChineseBrowserHtml.match(/<link rel="canonical" href="([^"]+)"/)?.[1]
+  });
+}
+
+for (const [legacyPath, expectedLocation] of [
+  ["/en/", "https://dearpassengerscrew.com/"],
+  ["/en/release-date/", "https://dearpassengerscrew.com/release-date/"],
+  ["/en/tools/status-tracker/", "https://dearpassengerscrew.com/tools/status-tracker/"]
+]) {
+  const response = await worker.fetch(new Request(`https://dearpassengerscrew.com${legacyPath}`));
+  if (response.status !== 301 || response.headers.get("location") !== expectedLocation) {
+    failures.push({
+      legacyEnglishPath: legacyPath,
+      status: response.status,
+      location: response.headers.get("location"),
+      expectedLocation
+    });
+  }
 }
 
 const faviconResponse = await worker.fetch(
@@ -270,7 +316,7 @@ console.log(
       minimumIncomingLinks: Math.min(...[...incoming.values()].map((sources) => sources.size)),
       minimumEnglishContextualIncomingLinks: Math.min(
         ...paths
-          .filter((path) => path.startsWith("/en/") && path !== "/en/")
+          .filter((path) => !nonEnglishPrefix.test(path) && path !== "/")
           .map((path) => contextualIncoming.get(path).size)
       ),
       maximumCrawlDepth

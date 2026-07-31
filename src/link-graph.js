@@ -90,11 +90,12 @@ export const LINK_GRAPH = {
 
 export function targetPath(target, locale = "en") {
   const [kind, slug] = target.split(":");
-  if (kind === "page") return `/${locale}/${slug}/`;
-  if (kind === "tool") return `/${locale}/tools/${slug}/`;
-  if (kind === "wiki" || kind === "news") return `/en/${kind}/${slug}/`;
-  if (kind === "media") return "/en/media/";
-  return `/en/${slug}/`;
+  const prefix = locale === "en" ? "" : `/${locale}`;
+  if (kind === "page") return `${prefix}/${slug}/`;
+  if (kind === "tool") return `${prefix}/tools/${slug}/`;
+  if (kind === "wiki" || kind === "news") return `/${kind}/${slug}/`;
+  if (kind === "media") return "/media/";
+  return `/${slug}/`;
 }
 
 export function localizedTargetAllowed(target, locale) {
