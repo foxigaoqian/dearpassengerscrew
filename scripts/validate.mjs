@@ -7,6 +7,7 @@ import {
   STATIC_SLUGS
 } from "../src/authority-content.js";
 import { INTENT_DEPTH } from "../src/intent-depth.js";
+import { LINK_GRAPH, LINK_TARGETS, targetPath } from "../src/link-graph.js";
 
 const locales = ["en", "zh-cn", "ja", "ar", "tr", "uk"];
 const paths = [];
@@ -30,14 +31,39 @@ paths.push(
 const titles = new Map();
 const descriptions = new Map();
 const failures = [];
+const documents = new Map();
 
 if (Object.keys(INTENT_DEPTH).sort().join("|") !== [...PAGE_SLUGS].sort().join("|")) {
   failures.push({ intentDepthCoverage: Object.keys(INTENT_DEPTH), expected: PAGE_SLUGS });
 }
 
+const expectedGraphKeys = [
+  ...PAGE_SLUGS.map((slug) => `page:${slug}`),
+  ...TOOL_SLUGS.map((slug) => `tool:${slug}`),
+  ...AUTHORITY_SLUGS.map((slug) => `authority:${slug}`),
+  ...WIKI_SLUGS.map((slug) => `wiki:${slug}`),
+  ...NEWS_SLUGS.map((slug) => `news:${slug}`),
+  ...STATIC_SLUGS.map((slug) => `static:${slug}`),
+  "media:media"
+];
+
+for (const key of expectedGraphKeys) {
+  if (!LINK_GRAPH[key]?.length || !LINK_TARGETS[key]) {
+    failures.push({ missingLinkGraphKey: key });
+  }
+}
+
+for (const [source, targets] of Object.entries(LINK_GRAPH)) {
+  for (const target of targets) {
+    if (!LINK_TARGETS[target]) failures.push({ source, unknownLinkTarget: target });
+    if (target === source) failures.push({ source, selfLinkTarget: target });
+  }
+}
+
 for (const path of paths) {
   const response = await worker.fetch(new Request(`https://dearpassengerscrew.com${path}`));
   const html = await response.text();
+  documents.set(path, html);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
@@ -111,6 +137,86 @@ for (const path of paths) {
   }
 }
 
+const routeSet = new Set(paths);
+const incoming = new Map(paths.map((path) => [path, new Set()]));
+const contextualIncoming = new Map(paths.map((path) => [path, new Set()]));
+const outgoing = new Map(paths.map((path) => [path, new Set()]));
+const checkedTargets = new Map();
+
+for (const [sourcePath, html] of documents) {
+  const contextualAnchors = new Set();
+  for (const match of html.matchAll(/<a\b([^>]*?)href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g)) {
+    const attributes = `${match[1]} ${match[3]}`;
+    const href = match[2];
+    if (href.startsWith("#")) continue;
+    const resolved = new URL(href, `https://dearpassengerscrew.com${sourcePath}`);
+    if (resolved.hostname !== "dearpassengerscrew.com") continue;
+    const target = resolved.pathname;
+    if (!checkedTargets.has(target)) {
+      checkedTargets.set(
+        target,
+        worker.fetch(new Request(`https://dearpassengerscrew.com${target}`)).then((response) => response.status)
+      );
+    }
+    const status = await checkedTargets.get(target);
+    if (![200, 301, 302].includes(status)) {
+      failures.push({ sourcePath, brokenInternalLink: target, status });
+    }
+    if (!routeSet.has(target) || target === sourcePath) continue;
+    incoming.get(target).add(sourcePath);
+    outgoing.get(sourcePath).add(target);
+    if (attributes.includes('data-context-link="true"')) {
+      contextualIncoming.get(target).add(sourcePath);
+      const anchorText = match[4].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (anchorText.length < 12 || /^(read|open|click|learn more)$/i.test(anchorText)) {
+        failures.push({ sourcePath, weakContextualAnchor: anchorText, target });
+      }
+      if (contextualAnchors.has(anchorText)) {
+        failures.push({ sourcePath, duplicateContextualAnchor: anchorText });
+      }
+      contextualAnchors.add(anchorText);
+    }
+  }
+}
+
+let maximumCrawlDepth = 0;
+for (const locale of locales) {
+  const start = `/${locale}/`;
+  const queue = [[start, 0]];
+  const depths = new Map([[start, 0]]);
+  while (queue.length) {
+    const [current, depth] = queue.shift();
+    for (const target of outgoing.get(current) || []) {
+      if (depths.has(target)) continue;
+      depths.set(target, depth + 1);
+      queue.push([target, depth + 1]);
+    }
+  }
+  const localePaths = paths.filter((path) =>
+    locale === "en"
+      ? path.startsWith("/en/")
+      : path.startsWith(`/${locale}/`)
+  );
+  for (const path of localePaths) {
+    const depth = depths.get(path);
+    if (depth === undefined || depth > 3) {
+      failures.push({ path, crawlDepth: depth ?? "unreachable", maximum: 3, localeStart: start });
+    } else {
+      maximumCrawlDepth = Math.max(maximumCrawlDepth, depth);
+    }
+  }
+}
+
+for (const path of paths) {
+  if (path === "/en/") continue;
+  const totalIncoming = incoming.get(path).size;
+  const contextualCount = contextualIncoming.get(path).size;
+  if (totalIncoming < 3) failures.push({ path, insufficientIncomingLinks: totalIncoming, minimum: 3 });
+  if (path.startsWith("/en/") && contextualCount < 2) {
+    failures.push({ path, insufficientContextualIncomingLinks: contextualCount, minimum: 2 });
+  }
+}
+
 const sitemapResponse = await worker.fetch(
   new Request("https://dearpassengerscrew.com/sitemap.xml")
 );
@@ -157,7 +263,17 @@ console.log(
       sitemapUrls,
       invalidRouteStatus: missingResponse.status,
       trailingSlashStatus: trailingSlashResponse.status,
-      faviconStatus: faviconResponse.status
+      faviconStatus: faviconResponse.status,
+      internalLinksChecked: checkedTargets.size,
+      uniqueInternalLinkEdges: [...outgoing.values()].reduce((total, targets) => total + targets.size, 0),
+      uniqueContextualLinkEdges: [...contextualIncoming.values()].reduce((total, sources) => total + sources.size, 0),
+      minimumIncomingLinks: Math.min(...[...incoming.values()].map((sources) => sources.size)),
+      minimumEnglishContextualIncomingLinks: Math.min(
+        ...paths
+          .filter((path) => path.startsWith("/en/") && path !== "/en/")
+          .map((path) => contextualIncoming.get(path).size)
+      ),
+      maximumCrawlDepth
     },
     null,
     2

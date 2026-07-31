@@ -17,7 +17,9 @@ Independent multilingual game-intelligence hub for **Dear Passengers**, built as
 - Confirmed/unknown evidence labels, source links, last-checked dates and update history
 - SEO essentials: 133 unique titles and descriptions, canonical URLs, page-level hreflang, Article/NewsArticle/FAQ/Breadcrumb/CollectionPage/SoftwareApplication JSON-LD, sitemap and robots
 - Dense internal-link architecture connecting guides, tools and localized editions
+- A maintained semantic link graph with contextual anchors, topic-cluster feedback loops, full footer navigation and crawl-depth auditing
 - Automated route, title, canonical, sitemap and 404 validation in GitHub Actions
+- Automated orphan-page, broken-link, weak-anchor, incoming-link and click-depth validation
 - Daily official-source monitoring that opens a GitHub issue when tracked Steam fields change
 - Responsive layout for desktop, tablet and mobile
 

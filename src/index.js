@@ -12,6 +12,7 @@ import {
   SOURCES
 } from "./authority-content.js";
 import { INTENT_DEPTH } from "./intent-depth.js";
+import { LINK_GRAPH, LINK_TARGETS, targetPath, localizedTargetAllowed } from "./link-graph.js";
 
 const SITE = "https://dearpassengerscrew.com";
 const STEAM = "https://store.steampowered.com/app/4534960/Dear_Passengers/";
@@ -259,6 +260,35 @@ function officialFigure(mediaIndex, label = "Official gameplay evidence") {
   return `<figure class="article-figure"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers official screenshot: ${esc(name)}" loading="lazy"></a><figcaption><span>${esc(label)}</span><strong>${esc(name)}</strong><small>Official FLEXUS media via Steam · Open full resolution ↗</small></figcaption></figure>`;
 }
 
+function semanticLinks(locale, sourceKey, heading) {
+  const data = SEO[locale] || SEO.en;
+  const sourceTarget = sourceKey.replace(/^intent:/, "page:");
+  const fallback = ["page:gameplay", "page:release-date", "page:multiplayer", "page:demo", "page:wiki", "tool:status-tracker"];
+  const targets = [...(LINK_GRAPH[sourceTarget] || []), ...fallback]
+    .filter((target, index, list) => target !== sourceTarget && localizedTargetAllowed(target, locale) && list.indexOf(target) === index)
+    .slice(0, locale === "en" ? 5 : 4);
+  const links = targets.map((target) => {
+    const [kind, slug] = target.split(":");
+    const english = LINK_TARGETS[target] || [slug, "Open the related verified resource."];
+    const label = locale === "en"
+      ? english[0]
+      : kind === "page"
+        ? data.pages[slug]?.name || english[0]
+        : kind === "tool"
+          ? data.tools[slug]?.[2] || english[0]
+          : english[0];
+    const reason = locale === "en"
+      ? english[1]
+      : kind === "page"
+        ? data.pages[slug]?.answer || data.ui.sourceNote
+        : kind === "tool"
+          ? data.tools[slug]?.[1] || data.ui.sourceNote
+          : data.ui.sourceNote;
+    return `<li><a class="semantic-link" data-context-link="true" href="${targetPath(target, locale)}"><strong>${esc(label)}</strong><span>${esc(reason)}</span><b>↗</b></a></li>`;
+  }).join("");
+  return `<section class="semantic-section"><p class="kicker">SEMANTIC CONNECTIONS</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(locale === "en" ? "Continue with the next question in this topic cluster. Every link below resolves a specific adjacent search intent." : data.ui.sourceNote)}</p><ul class="semantic-list">${links}</ul></section>`;
+}
+
 function homepageDepth(locale) {
   if (locale !== "en") return "";
   const feeds = OFFICIAL_MEDIA.slice(0, 4).map(([name, url], index) =>
@@ -468,7 +498,7 @@ function page(locale) {
     </section>
   </main>
 
-  <footer><a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a><p>${esc(t.footer)}</p><p>${esc(t.last)}</p></footer>
+  ${pageFooter(locale)}
   <script>
     const results=${JSON.stringify(t.results)};
     const form=document.querySelector('#crew-form'),result=document.querySelector('#result');
@@ -558,7 +588,35 @@ function pageHeader(locale, currentPath = "") {
 
 function pageFooter(locale) {
   const data = SEO[locale] || SEO.en;
-  return `<footer><a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${LAST_CHECKED}</p></footer>`;
+  const core = [
+    ["release-date", data.pages["release-date"].name],
+    ["demo", data.pages.demo.name],
+    ["multiplayer", data.pages.multiplayer.name],
+    ["gameplay", data.pages.gameplay.name],
+    ["system-requirements", data.pages["system-requirements"].name],
+    ["wiki", data.pages.wiki.name]
+  ].map(([slug, label]) => `<a data-sitewide-link="true" href="/${locale}/${slug}/">${esc(label)}</a>`).join("");
+  const questions = [
+    ["how-many-players", data.pages["how-many-players"].name],
+    ["platforms", data.pages.platforms.name],
+    ["characters", data.pages.characters.name],
+    ["trailer", data.pages.trailer.name],
+    ["news", data.pages.news.name]
+  ].map(([slug, label]) => `<a data-sitewide-link="true" href="/${locale}/${slug}/">${esc(label)}</a>`).join("");
+  const tools = ["can-i-run-it", "crew-check", "countdown", "status-tracker"].map((slug) =>
+    `<a data-sitewide-link="true" href="/${locale}/tools/${slug}/">${esc(data.tools[slug][2])}</a>`
+  ).join("");
+  const intelligence = locale === "en" ? [
+    ["/en/price/", "Price status"],
+    ["/en/download/", "Safe download"],
+    ["/en/languages/", "Language support"],
+    ["/en/developer/", "FLEXUS profile"],
+    ["/en/media/", "Official media"],
+    ["/en/about/", "About this guide"],
+    ["/en/editorial-policy/", "Editorial policy"],
+    ["/en/corrections/", "Corrections"]
+  ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="/${locale}/"><span>×</span><b>DEAR PASSENGERS<small>CREW INTELLIGENCE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${LAST_CHECKED}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>INTELLIGENCE</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">133-URL KNOWLEDGE GRAPH</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
@@ -634,6 +692,7 @@ function intentPage(locale, slug) {
         <section><p class="kicker">01 · CONFIRMED</p><h2>${esc(data.ui.confirmed)}</h2><ul class="evidence-list">${confirmed}</ul></section>
         <section><p class="kicker">02 · UNKNOWN</p><h2>${esc(data.ui.unknown)}</h2><ul class="evidence-list">${unknown}</ul></section>
         <section><p class="kicker">03 · CONTEXT</p><h2>${esc(data.ui.why)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p></section>
+        ${semanticLinks(locale, `page:${slug}`, data.ui.related)}
         ${depthMarkup}
         <section><p class="kicker">05 · FAQ</p><h2>${esc(data.ui.faq)}</h2><div class="question-list">${faqs}</div></section>
       </article>
@@ -709,7 +768,7 @@ function deepContentPage(kind, slug) {
   ${pageHeader("en","")}
   <main class="inner-main"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/en/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/en/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} INTELLIGENCE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${LAST_CHECKED}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
   <section class="answer-strip"><span>DIRECT ANSWER</span><strong>${esc(item.answer)}</strong></section>
-  <section class="article-body authority-body"><article>${sections}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>EDITORIAL LABELS</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/en/editorial-policy/">READ POLICY ↗</a></div></aside></section>
+  <section class="article-body authority-body"><article>${sections}${semanticLinks("en", `${kind}:${slug}`, "Follow the connected search intent.")}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>EDITORIAL LABELS</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/en/editorial-policy/">READ POLICY ↗</a></div></aside></section>
   <section class="section compact-section"><div class="section-head"><p class="kicker">INTERNAL KNOWLEDGE GRAPH</p><h2>Continue the investigation.</h2></div>${deepRelated(kind,slug)}</section></main>${pageFooter("en")}
   <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script></body></html>`;
 }
@@ -721,6 +780,7 @@ function mediaPage() {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>${pageHeader("en","")}<main class="inner-main">
   <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/en/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots & trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${LAST_CHECKED}</span></div></section>
   <section class="section media-archive"><div class="media-grid authority-video"><div class="video"><iframe src="${TRAILER}" title="Dear Passengers official announcement trailer" loading="lazy" allowfullscreen></iframe></div><div class="media-copy"><p class="kicker">PRIMARY RECORDING</p><h2>Official announcement trailer</h2><p>Edited official footage establishes the game's cockpit-and-cabin fantasy. It should not be treated as a frame-by-frame promise of final controls or event frequency.</p><a class="primary" href="https://www.youtube.com/watch?v=hEsuA_rqTxk" target="_blank" rel="noopener">WATCH ON YOUTUBE ↗</a></div></div><div class="media-wall">${gallery}</div></section>
+  <div class="section compact-section media-semantic">${semanticLinks("en", "media:media", "Read the evidence behind the footage.")}</div>
   <section class="section compact-section"><div class="section-head"><p class="kicker">READ THE FOOTAGE</p><h2>Connect images to verified context.</h2></div>${deepRelated("authority","confirmed-features")}</section></main>${pageFooter("en")}<script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));</script></body></html>`;
 }
 
@@ -793,6 +853,7 @@ function toolPage(locale, slug) {
   ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/${locale}/">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
   <section class="tool-stage">${toolMarkup(locale,slug)}</section>
   ${toolGuide(locale,slug)}
+  <div class="section compact-section tool-semantic">${semanticLinks(locale, `tool:${slug}`, data.ui.related)}</div>
   <section class="section compact-section"><div class="section-head"><p class="kicker">EXPLORE THE INTELLIGENCE HUB</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div>${relatedGrid(locale)}</section></main>${pageFooter(locale)}
   <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));${toolScript(locale,slug)}</script></body></html>`;
 }
@@ -805,6 +866,9 @@ function styles() {
 .feed-section{background:#040c14}.feed-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:#263441}.feed-card{position:relative;min-height:410px;overflow:hidden;background:#07121d}.feed-card:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(2,9,15,.98),rgba(2,9,15,.04) 65%)}.feed-card img{width:100%;height:100%;object-fit:cover;transition:.45s}.feed-card:hover img{transform:scale(1.025)}.feed-card span,.feed-card strong,.feed-card small{position:absolute;z-index:2;left:28px;right:28px}.feed-card span{top:24px;color:#2ee6a6;font-size:8px;font-weight:800;letter-spacing:.14em}.feed-card strong{bottom:46px;font-size:clamp(25px,3vw,42px);line-height:1}.feed-card small{bottom:23px;color:#ff9f0a;font-size:8px;letter-spacing:.12em}.manifest-section{background:#e8e6df;color:#07111b}.manifest-section .section-head>p:last-child{color:#56616a}.manifest-layout{display:grid;grid-template-columns:1.25fr .75fr;border:1px solid #9fa19d}.spec-board{display:grid;grid-template-columns:repeat(2,1fr)}.spec-board>div{min-height:135px;padding:25px;border-right:1px solid #9fa19d;border-bottom:1px solid #9fa19d;display:flex;flex-direction:column;justify-content:space-between}.spec-board span,.language-board .kicker{font-size:8px;font-weight:900;letter-spacing:.14em;color:#8a5b10}.spec-board strong{font-size:20px}.language-board{padding:42px;background:#071521;color:#f5f7fa}.language-board h3{font-size:42px;line-height:.95;margin:22px 0}.language-board p:not(.kicker){color:#9ba7b3;line-height:1.7}.language-board .primary,.language-board .secondary{margin-top:14px;width:100%}.dark-button{border-color:#53616e}.dispatch-section{background:#07121d}.dispatch-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.dispatch-card{min-height:350px;padding:28px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(255,159,10,.06),transparent)}.dispatch-card time,.dispatch-card>span{font-size:8px;letter-spacing:.13em;color:#2ee6a6}.dispatch-card h3{font-size:28px;line-height:1.05;margin:48px 0 15px}.dispatch-card p{color:#8b98a5;line-height:1.65}.dispatch-card b{margin-top:auto;color:#ff9f0a;font-size:9px;letter-spacing:.12em}.source-manifest{background:#081521}.source-manifest-grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid #263441;border-left:1px solid #263441}.source-manifest-grid>a{min-height:235px;padding:28px;border-right:1px solid #263441;border-bottom:1px solid #263441;display:flex;flex-direction:column}.source-manifest-grid span{font-size:8px;color:#2ee6a6;letter-spacing:.14em}.source-manifest-grid strong{font-size:26px;margin:35px 0 10px}.source-manifest-grid p{color:#8996a3;line-height:1.55}.source-manifest-grid b{margin-top:auto;color:#ff9f0a;font-size:9px}.article-figure{margin:38px 0 8px;background:#071521;color:#f5f7fa}.article-figure a{display:block;overflow:hidden}.article-figure img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:.4s}.article-figure:hover img{transform:scale(1.018)}.article-figure figcaption{display:grid;grid-template-columns:150px 1fr;gap:8px 20px;padding:20px}.article-figure figcaption span{color:#ff9f0a;font-size:8px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.article-figure figcaption strong{font-size:18px}.article-figure figcaption small{grid-column:2;color:#81909e}.intent-depth>.depth-block{padding:0 0 62px;margin-bottom:62px;border-bottom:1px solid #b6b4ad}.intent-depth>.depth-block:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}.tool-guide{background:#081521}.tool-guide-layout{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.tool-guide h2{font-size:clamp(38px,5vw,72px);line-height:.95;letter-spacing:-.045em;margin:18px 0 28px}.tool-guide p{color:#98a5b2;line-height:1.8;font-size:17px}.tool-guide .article-figure{margin:0}.tool-source-row{display:flex;flex-wrap:wrap;gap:24px;margin-top:30px}.tool-source-row a{color:#ff9f0a;font-size:9px;font-weight:900;letter-spacing:.1em}
 @media(max-width:980px){.manifest-layout,.tool-guide-layout{grid-template-columns:1fr}.dispatch-grid{grid-template-columns:1fr}.dispatch-card{min-height:260px}.language-board{min-height:430px}}
 @media(max-width:680px){.feed-grid,.source-manifest-grid{grid-template-columns:1fr}.feed-card{min-height:280px}.spec-board{grid-template-columns:1fr}.language-board{padding:32px 22px}.article-figure figcaption{grid-template-columns:1fr}.article-figure figcaption small{grid-column:1}.tool-guide-layout{gap:35px}}
+.semantic-section>p:not(.kicker){max-width:760px;color:#6c7780;line-height:1.7}.semantic-list{list-style:none!important;padding:0!important;margin:34px 0 0!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #aeb1ad;border-left:1px solid #aeb1ad}.semantic-list li{padding:0!important;margin:0!important}.semantic-link{min-height:145px;padding:22px;border-right:1px solid #aeb1ad;border-bottom:1px solid #aeb1ad;background:#faf9f5;display:grid;grid-template-columns:1fr 22px;align-content:center;transition:.2s}.semantic-link:hover{background:#fff;transform:translateY(-2px)}.semantic-link strong{font-size:19px;line-height:1.2;color:#071521}.semantic-link span{grid-column:1;display:block;margin-top:10px;color:#65717a;font-size:13px;line-height:1.55}.semantic-link b{grid-column:2;grid-row:1/3;color:#d67e00;align-self:center}.tool-semantic,.media-semantic{background:#e8e6df;color:#07111b}.tool-semantic .semantic-section,.media-semantic .semantic-section{max-width:1180px;margin:auto}.tool-semantic .semantic-section h2,.media-semantic .semantic-section h2{font-size:clamp(38px,5vw,72px);line-height:.95;letter-spacing:-.045em;margin:15px 0 25px}.site-footer{display:block;min-height:0;padding:0;background:#040c14;border-top:1px solid #263441}.footer-top{display:grid;grid-template-columns:1.35fr repeat(4,minmax(130px,1fr));gap:48px;padding:70px clamp(24px,5vw,82px)}.footer-intro p{max-width:300px;text-align:left!important;color:#7c8996!important;font-size:10px!important;line-height:1.7;letter-spacing:.04em!important;margin-top:24px}.site-footer nav{display:grid;align-content:start;gap:12px}.site-footer nav>strong{color:#ff9f0a;font-size:8px;letter-spacing:.15em;margin-bottom:10px}.site-footer nav>a{color:#9aa6b2;font-size:11px;line-height:1.35}.site-footer nav>a:hover{color:#fff}.footer-bottom{min-height:64px;padding:18px clamp(24px,5vw,82px);border-top:1px solid #263441;display:flex;align-items:center;justify-content:space-between;gap:24px;color:#64717e;font-size:8px;letter-spacing:.12em}.footer-bottom a:hover{color:#ff9f0a}
+@media(max-width:1100px){.footer-top{grid-template-columns:1.4fr repeat(2,1fr)}}
+@media(max-width:680px){.semantic-list{grid-template-columns:1fr}.semantic-link{min-height:125px}.footer-top{grid-template-columns:1fr;gap:38px;padding:55px 20px}.site-footer nav{grid-template-columns:repeat(2,1fr)}.site-footer nav>strong{grid-column:1/-1}.footer-bottom{align-items:flex-start;flex-direction:column;padding:25px 20px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 `;
 }
