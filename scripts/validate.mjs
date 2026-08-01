@@ -95,7 +95,9 @@ for (const path of paths) {
   const requiredHreflang = isLocalized && (isIntent || isTool || isLocaleHome) ? 7 : 2;
   const minimumText = path === "/" ? 13_000 : isEnglishIntent ? 4_000 : isIntent ? 1_500 : isTool && isEnglish ? 1_650 : isTool ? 800 : 1_000;
   const requiredImages = path === "/" ? 7 : path === "/media/" ? 10 : isIntent || isTool || isDeepEnglish ? 1 : 0;
-  const imagesMissingAlt = [...html.matchAll(/<img\b[^>]*>/g)].filter(([tag]) => !/\balt=(?:"[^"]*"|'[^']*')/.test(tag)).length;
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
+  const imagesMissingAlt = imageTags.filter((tag) => !/\balt=(?:"[^"]*"|'[^']*')/.test(tag)).length;
+  const imagesMissingDimensions = imageTags.filter((tag) => !/\bwidth="\d+"/.test(tag) || !/\bheight="\d+"/.test(tag)).length;
   const hasAccessibleShell = html.includes('class="skip-link" href="#main-content"') &&
     html.includes('id="main-content"') &&
     /class="menu-button"[^>]*aria-expanded="false"[^>]*aria-controls="site-navigation"/.test(html) &&
@@ -107,7 +109,6 @@ for (const path of paths) {
     !title ||
     !description ||
     canonical !== expectedCanonical ||
-    html.length < 10_000 ||
     h1Count !== 1 ||
     hreflangCount < requiredHreflang ||
     visibleText.length < minimumText ||
@@ -131,13 +132,31 @@ for (const path of paths) {
     });
   }
 
-  if (!hasAccessibleShell || imagesMissingAlt || html.includes("user-scalable=no")) {
+  if (!hasAccessibleShell || imagesMissingAlt || imagesMissingDimensions || html.includes("user-scalable=no")) {
     failures.push({
       path,
       accessibleShell: hasAccessibleShell,
       imagesMissingAlt,
+      imagesMissingDimensions,
       disablesViewportZoom: html.includes("user-scalable=no")
     });
+  }
+
+  if (
+    !response.headers.get("strict-transport-security") ||
+    !response.headers.get("content-security-policy") ||
+    response.headers.get("x-frame-options") !== "DENY" ||
+    !response.headers.get("cache-control")?.includes("stale-while-revalidate")
+  ) {
+    failures.push({ path, missingProductionHeaders: true });
+  }
+
+  if (isLocaleHome && (
+    !html.includes('class="hero-image"') ||
+    !html.includes('fetchpriority="high"') ||
+    !html.includes('<link rel="preload" as="image"')
+  )) {
+    failures.push({ path, missingLcpImagePriority: true });
   }
 
   if (title && titles.has(title)) {
@@ -154,9 +173,42 @@ for (const path of paths) {
 
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     try {
-      JSON.parse(match[1]);
+      const parsed = JSON.parse(match[1]);
+      const nodes = parsed["@graph"] || [parsed];
+      for (const node of nodes) {
+        if (["Article", "NewsArticle"].includes(node["@type"]) && !node.publisher) {
+          failures.push({ path, articleMissingPublisher: true });
+        }
+        if (node["@type"] === "Organization" && node.sameAs?.some((url) => url.includes("steampowered.com") || url.includes("youtube.com"))) {
+          failures.push({ path, organizationIdentityConflict: node.sameAs });
+        }
+        if (node["@type"] === "VideoGame" && node.datePublished === "2026") {
+          failures.push({ path, releaseWindowMisusedAsDatePublished: true });
+        }
+      }
     } catch {
       failures.push({ path, invalidJsonLd: true });
+    }
+  }
+}
+
+for (const [sourcePath, html] of documents) {
+  const sourceLocale = html.match(/<html lang="([^"]+)"/)?.[1];
+  const alternates = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)]
+    .map((match) => ({ locale: match[1], url: new URL(match[2]) }));
+  const self = alternates.find((entry) => entry.locale === sourceLocale);
+  if (!self || self.url.pathname !== sourcePath) {
+    failures.push({ sourcePath, invalidHreflangSelfReference: self?.url.pathname });
+  }
+  for (const alternate of alternates.filter((entry) => entry.locale !== "x-default")) {
+    const targetHtml = documents.get(alternate.url.pathname);
+    if (!targetHtml) {
+      failures.push({ sourcePath, missingHreflangTarget: alternate.url.pathname });
+      continue;
+    }
+    const returnLink = new RegExp(`<link rel="alternate" hreflang="${sourceLocale}" href="https://dearpassengerscrew\\.com${sourcePath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`);
+    if (!returnLink.test(targetHtml)) {
+      failures.push({ sourcePath, missingReciprocalHreflang: alternate.url.pathname, sourceLocale });
     }
   }
 }
@@ -246,6 +298,7 @@ const sitemapResponse = await worker.fetch(
 );
 const sitemap = await sitemapResponse.text();
 const sitemapUrls = sitemap.match(/<url>/g)?.length || 0;
+const sitemapLocations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]).pathname);
 
 if (sitemapUrls !== paths.length) {
   failures.push({ sitemapUrls, expected: paths.length });
@@ -253,6 +306,49 @@ if (sitemapUrls !== paths.length) {
 
 if (sitemap.includes("https://dearpassengerscrew.com/en/")) {
   failures.push({ sitemapContainsLegacyEnglishPrefix: true });
+}
+
+if (
+  sitemapLocations.length !== new Set(sitemapLocations).size ||
+  sitemapLocations.some((path) => !routeSet.has(path)) ||
+  [...routeSet].some((path) => !sitemapLocations.includes(path)) ||
+  sitemap.includes("<priority>") ||
+  sitemap.includes("<changefreq>")
+) {
+  failures.push({ invalidSitemapLocationSet: true });
+}
+
+const robotsResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/robots.txt"));
+const robots = await robotsResponse.text();
+if (
+  robotsResponse.status !== 200 ||
+  !robots.includes(`Sitemap: https://dearpassengerscrew.com/sitemap.xml`) ||
+  !robots.includes(`Sitemap: https://dearpassengerscrew.com/image-sitemap.xml`)
+) {
+  failures.push({ invalidRobots: true });
+}
+
+const imageSitemapResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/image-sitemap.xml"));
+const imageSitemap = await imageSitemapResponse.text();
+if (imageSitemapResponse.status !== 200 || (imageSitemap.match(/<image:image>/g)?.length || 0) < 13) {
+  failures.push({ invalidImageSitemap: true });
+}
+
+const llmsResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/llms.txt"));
+const llms = await llmsResponse.text();
+if (llmsResponse.status !== 200 || !llms.includes("Independent, unofficial") || !llms.includes("/editorial-policy/")) {
+  failures.push({ invalidLlmsText: true });
+}
+
+const cssResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/assets/site.css?v=20260801"));
+const css = await cssResponse.text();
+if (
+  cssResponse.status !== 200 ||
+  !cssResponse.headers.get("content-type")?.includes("text/css") ||
+  !cssResponse.headers.get("cache-control")?.includes("immutable") ||
+  css.length < 50_000
+) {
+  failures.push({ invalidSharedStylesheet: true, cssBytes: css.length });
 }
 
 const missingResponse = await worker.fetch(
@@ -301,6 +397,19 @@ for (const [legacyPath, expectedLocation] of [
       location: response.headers.get("location"),
       expectedLocation
     });
+  }
+}
+
+for (const [variantUrl, expectedLocation] of [
+  ["http://dearpassengerscrew.com/", "https://dearpassengerscrew.com/"],
+  ["https://www.dearpassengerscrew.com/release-date/", "https://dearpassengerscrew.com/release-date/"],
+  ["https://dearpassengerscrew.com//release-date//", "https://dearpassengerscrew.com/release-date/"],
+  ["https://dearpassengerscrew.com/ZH-CN/release-date/", "https://dearpassengerscrew.com/zh-cn/release-date/"],
+  ["https://dear-passengers-crew.workers.dev/release-date/", "https://dearpassengerscrew.com/release-date/"]
+]) {
+  const response = await worker.fetch(new Request(variantUrl));
+  if (response.status !== 301 || response.headers.get("location") !== expectedLocation) {
+    failures.push({ variantUrl, status: response.status, location: response.headers.get("location"), expectedLocation });
   }
 }
 
