@@ -236,8 +236,20 @@ for (const [sourcePath, html] of documents) {
 
 const countTags = (html, tag) => html.match(new RegExp(`<${tag}(?:\\s|>)`, "g"))?.length || 0;
 const englishHome = documents.get("/");
-if (!englishHome.includes('/assets/site.css?v=20260801-2') || !englishHome.includes('rel="stylesheet" href="/assets/site.css')) {
+if (!englishHome.includes('/assets/site.css?v=20260801-3') || !englishHome.includes('rel="stylesheet" href="/assets/site.css')) {
   failures.push({ invalidVersionedBlockingStylesheet: true });
+}
+
+const siteCssResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/assets/site.css"));
+const siteCss = await siteCssResponse.text();
+const compactTocRules = siteCss.includes(".article-toc{top:128px;justify-content:flex-start;flex-wrap:nowrap;min-height:68px;max-height:68px") &&
+  siteCss.includes("overflow-x:auto;overflow-y:hidden") &&
+  siteCss.includes(".article-body [id]{scroll-margin-top:220px}");
+const contextualCardRules = siteCss.includes(".tool-semantic .semantic-list,.media-semantic .semantic-list{counter-reset:semantic-card;grid-template-columns:repeat(2,minmax(0,1fr))") &&
+  siteCss.includes(".tool-semantic .semantic-link:hover,.media-semantic .semantic-link:hover") &&
+  siteCss.includes("@media(max-width:760px){.article-toc{top:108px;min-height:60px;max-height:60px");
+if (siteCssResponse.status !== 200 || !compactTocRules || !contextualCardRules) {
+  failures.push({ invalidInteriorLayoutRepair: true, siteCssStatus: siteCssResponse.status, compactTocRules, contextualCardRules });
 }
 for (const locale of locales) {
   const homePath = locale === "en" ? "/" : `/${locale}/`;
