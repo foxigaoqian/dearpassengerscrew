@@ -12,6 +12,7 @@ import {
   SOURCES
 } from "./authority-content.js";
 import { INTENT_DEPTH } from "./intent-depth.js";
+import { INTENT_EXPANSION } from "./intent-expansion.js";
 import { LINK_GRAPH, LINK_TARGETS, targetPath, localizedTargetAllowed } from "./link-graph.js";
 
 const SITE = "https://dearpassengerscrew.com";
@@ -263,7 +264,7 @@ function alternateLinks(slug = "") {
 }
 
 function iconLinks() {
-  return `<link rel="icon" href="${CAPSULE}" type="image/jpeg" sizes="any"><link rel="apple-touch-icon" href="${CAPSULE}">`;
+  return `<link rel="icon" href="${CAPSULE}" type="image/jpeg" sizes="any"><link rel="apple-touch-icon" href="${CAPSULE}"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">`;
 }
 
 function officialFigure(mediaIndex, label = "Official gameplay evidence") {
@@ -303,54 +304,40 @@ function semanticLinks(locale, sourceKey, heading) {
 function homepageEditorial(locale) {
   if (locale !== "en") return "";
   return `
-    <section class="section game-overview" id="overview">
-      <div class="overview-layout">
-        <div class="overview-heading">
-          <p class="kicker">DEAR PASSENGERS · GAME OVERVIEW</p>
-          <h2>What is Dear Passengers?</h2>
-          <div class="overview-stamp"><span>CURRENT VERDICT</span><strong>Announced for Windows PC in 2026</strong><small>Single-player and online co-op confirmed</small></div>
-        </div>
-        <div class="overview-copy">
-          <p class="overview-lead"><strong>Dear Passengers is a first-person co-op game about operating the world's worst airline.</strong> Developed and published by FLEXUS, it divides the pressure of a flight between the cockpit and the cabin instead of treating the aircraft as a quiet simulation.</p>
-          <p>One player can be responsible for flying while other crew members deal with passengers, food and drinks, cargo choices and whatever breaks loose when turbulence hits. Official footage shows routine airline work turning into physical comedy: unsecured objects move through the cabin, passengers become part of the problem, bad weather affects the flight and several jobs demand attention at the same time.</p>
-          <p>The official Steam listing currently confirms a Windows PC release in 2026, single-player support and online co-op. It does not yet give an exact release date, launch price, maximum player count or public-demo download. PlayStation, Xbox, Nintendo Switch, macOS and Linux versions have not been announced. Those missing details matter, so this guide keeps confirmed facts separate from footage-based observations and developer comments.</p>
-          <p>Dear Passengers Crew is an independent information site, not the developer or publisher. Its purpose is to answer the questions that appear after someone sees the trailer: when the game is coming out, whether a demo exists, how multiplayer works, which platforms are confirmed and whether a particular PC meets the published minimum requirements.</p>
-          <div class="overview-actions">
-            <a href="/gameplay/"><span>START WITH THE GAMEPLAY</span><strong>How a flight works from cockpit to cabin</strong><b>↗</b></a>
-            <a href="/developer/"><span>MEET THE DEVELOPER</span><strong>Who is FLEXUS?</strong><b>↗</b></a>
-          </div>
-        </div>
+    <section class="verification-bar" aria-label="Editorial verification">
+      <div><span>INDEPENDENT GUIDE</span><strong>Built for players, not search engines alone.</strong></div>
+      <div><span>METHOD</span><strong>Steam facts · official footage · attributed interviews</strong></div>
+      <div><span>LAST CHECKED</span><strong>${LAST_CHECKED}</strong></div>
+      <a href="/editorial-policy/">How verification works ↗</a>
+    </section>
+    <section class="editorial-chapter chapter-light" id="overview">
+      <div class="chapter-rail"><b>01</b><span>GAME OVERVIEW</span></div>
+      <div class="chapter-copy">
+        <p class="kicker">DEAR PASSENGERS · EXPLAINED</p>
+        <h2>What is Dear Passengers?</h2>
+        <p class="chapter-lead"><strong>Dear Passengers is a first-person airline management comedy in which flying the plane is only half the problem.</strong></p>
+        <p>Developed and published by FLEXUS, the game places a crew inside an aircraft where cockpit decisions, cabin service, passenger behavior, cargo and bad weather collide in real time. One player may be trying to keep the aircraft stable while another is serving food, securing a dangerous object or dealing with a passenger who has become the next emergency.</p>
+        <p>That overlap is the core idea. Dear Passengers is not presented as a quiet commercial-flight simulator. Its official footage turns routine airline work into a chain reaction: a rough maneuver shifts loose objects, the cabin crew loses control of a task, and the attempted solution creates a new problem somewhere else in the aircraft. Our <a data-context-link="true" href="/gameplay/">complete Dear Passengers gameplay guide</a> follows that loop from the passenger manifest to an airborne crisis.</p>
+        <h3>What is already confirmed?</h3>
+        <p>The official Steam record confirms a 2026 release window for Windows PC, plus single-player, multiplayer, co-op and online co-op. It also publishes the current minimum PC requirements and six interface languages. The exact launch day, price, maximum crew size and a downloadable public build are not confirmed. Check the <a data-context-link="true" href="/release-date/">evidence behind the 2026 release window</a> or the <a data-context-link="true" href="/demo/">current public demo status</a> before trusting a countdown or third-party installer.</p>
+        <h3>Who is this game likely for?</h3>
+        <p>Based on the confirmed loop, it should appeal most to groups that enjoy communication under pressure, role specialization, physical comedy and recovering from plans that collapse in public. That is an editorial reading of the available evidence, not a promise about final balance. Solo play is listed on Steam, but FLEXUS has not yet explained how unfilled jobs are handled.</p>
+        <div class="chapter-links"><a href="/developer/"><span>DEVELOPER PROFILE</span><strong>Who is FLEXUS?</strong><b>↗</b></a><a href="/wiki/"><span>SYSTEMS MANUAL</span><strong>Explore the Dear Passengers wiki</strong><b>↗</b></a></div>
       </div>
     </section>
-    <section class="section search-briefings">
-      <div class="section-head split"><div><p class="kicker">THE FOUR QUESTIONS THAT DEFINE THE GAME</p><h2>Know what is real before boarding.</h2></div><p>The central search intents are connected, but they are not interchangeable. Each briefing below gives the current answer and sends readers to the evidence-led page for the full context.</p></div>
-      <div class="briefing-grid">
-        <article class="briefing-card reveal">
-          <span>01 · RELEASE & DEMO</span>
-          <h3>Can you play Dear Passengers yet?</h3>
-          <p>Not through an official public build. Steam gives the game a 2026 release window, but FLEXUS has not named a month or day. The developer has discussed a Gamescom build and a later public demo; that is a plan, not a live download. Until an official Steam demo button or developer link appears, third-party installers should not be treated as legitimate.</p>
-          <div><a href="/release-date/">Release-date evidence ↗</a><a href="/demo/">Public-demo status ↗</a></div>
-        </article>
-        <article class="briefing-card reveal">
-          <span>02 · MULTIPLAYER</span>
-          <h3>How does the crew play together?</h3>
-          <p>Online co-op is confirmed, and Steam also lists single-player. The exact maximum crew size remains unannounced, so a party of four, five or six cannot yet be guaranteed from official data. Crossplay, local split-screen and console multiplayer are also unknown because Windows PC is still the only confirmed platform.</p>
-          <div><a href="/multiplayer/">Multiplayer explained ↗</a><a href="/how-many-players/">Player-count status ↗</a></div>
-        </article>
-        <article class="briefing-card reveal">
-          <span>03 · GAMEPLAY</span>
-          <h3>Why does every flight become chaos?</h3>
-          <p>The appeal comes from overlapping responsibilities. Flying, serving passengers, protecting cargo and handling cabin incidents do not wait for one another. Dynamic weather and physics turn ordinary objects and difficult passengers into shared emergencies. The game is therefore closer to a coordination challenge with comic failure than a conventional commercial-flight simulator.</p>
-          <div><a href="/gameplay/">Complete gameplay loop ↗</a><a href="/wiki/flight-flow/">Flight-flow field guide ↗</a></div>
-        </article>
-        <article class="briefing-card reveal">
-          <span>04 · WHY PLAYERS ARE WATCHING</span>
-          <h3>Why is Dear Passengers getting attention?</h3>
-          <p>The announcement footage communicates the idea quickly: friends try to run an airline while the aircraft, cargo and customers refuse to cooperate. FLEXUS later reported 1.5 million Steam wishlists, a developer-attributed milestone rather than an independent player-count measurement. That attention explains the demand for reliable release and demo answers, but it does not fill in details the studio has not announced.</p>
-          <div><a href="/news/one-point-five-million-wishlists/">Read the milestone report ↗</a><a href="/news/">Open verified news ↗</a></div>
-        </article>
+    <section class="editorial-chapter chapter-dark intent-chapter">
+      <div class="chapter-rail"><b>02</b><span>PLAYER QUESTIONS</span></div>
+      <div class="chapter-copy">
+        <p class="kicker">THE FOUR QUESTIONS THAT DEFINE THE SEARCH</p>
+        <h2>Know what is real before boarding.</h2>
+        <p class="chapter-lead">Each answer starts with the direct verdict, then links to a dedicated briefing where the source, uncertainty and update history are preserved.</p>
+        <div class="intent-lines">
+          <article><span>01</span><div><h3>When does Dear Passengers release?</h3><p>Steam says 2026, but no month, day, unlock time or preload schedule is public. The <a data-context-link="true" href="/release-date/">Dear Passengers release-date tracker</a> separates the official window from placeholder dates and speculation.</p></div></article>
+          <article><span>02</span><div><h3>Is there a demo you can play now?</h3><p>No public Steam demo is currently available. A Gamescom build and a later public demo have been discussed in an attributed interview. The <a data-context-link="true" href="/demo/">Dear Passengers demo guide</a> explains what is planned and how to identify the legitimate build.</p></div></article>
+          <article><span>03</span><div><h3>How does multiplayer work?</h3><p>Online co-op and single-player are confirmed; crossplay, local split-screen and matchmaking details are not. Read the <a data-context-link="true" href="/multiplayer/">multiplayer and online co-op briefing</a> before assembling a crew.</p></div></article>
+          <article><span>04</span><div><h3>How many people can play together?</h3><p>FLEXUS has not published a maximum lobby size. Trailer headcounts are visual evidence, not networking specifications. Our <a data-context-link="true" href="/how-many-players/">Dear Passengers player-count tracker</a> records the exact evidence needed before a number becomes confirmed.</p></div></article>
+        </div>
       </div>
-      <p class="editorial-note"><strong>Editorial fit:</strong> based on the confirmed loop, Dear Passengers is most likely to appeal to players who enjoy online teamwork, role specialization, physics-driven comedy and recovering from plans that collapse in real time. This is an editorial interpretation, not an official genre promise.</p>
     </section>`;
 }
 
@@ -364,6 +351,22 @@ function homepageDepth(locale) {
     return `<a class="dispatch-card" href="/news/${slug}/"><time>${item.date}</time><span>VERIFIED DISPATCH</span><h3>${esc(item.title)}</h3><p>${esc(item.description)}</p><b>READ SOURCE-BACKED REPORT ↗</b></a>`;
   }).join("");
   return `
+    <section class="editorial-chapter chapter-sand flight-loop-chapter">
+      <div class="chapter-rail"><b>03</b><span>THE FLIGHT LOOP</span></div>
+      <div class="chapter-copy">
+        <p class="kicker">FROM MANIFEST TO MAYHEM</p>
+        <h2>How a Dear Passengers flight appears to work.</h2>
+        <p class="chapter-lead">The public material suggests a continuous co-op loop rather than a collection of disconnected airline minigames.</p>
+        <h3>Before takeoff: choose the risk</h3>
+        <p>Official descriptions say the crew selects passengers and cargo before departure. That turns the manifest into a risk-versus-reward decision: valuable work may bring difficult people, awkward objects or dangerous loads aboard. The exact economy, rarity system and route structure are still unknown, but the choice is important because it gives the crew some responsibility for the disaster that follows. The <a data-context-link="true" href="/wiki/cargo-and-payouts/">cargo and payout field guide</a> separates the visible system from features that have not been documented.</p>
+        <h3>In the cockpit: fly for the whole aircraft</h3>
+        <p>The pilot is not operating in isolation. Weather, turbulence and air pockets affect the aircraft while every abrupt movement can create work in the cabin. A maneuver that protects the plane may send an unsecured object through the aisle or interrupt passenger service. That connection between outside conditions and inside physics is why the <a data-context-link="true" href="/wiki/pilot-role/">Dear Passengers pilot role guide</a> and the <a data-context-link="true" href="/wiki/weather-and-turbulence/">weather and turbulence system</a> belong in the same strategic conversation.</p>
+        <h3>In the cabin: contain the chain reaction</h3>
+        <p>Cabin crew appear to serve food and drinks, manage passenger needs, handle cargo and respond when routine tasks become emergencies. The final game may formalize these duties differently, so we describe them as visible responsibilities rather than invented character classes. See the <a data-context-link="true" href="/characters/">crew roles and passenger guide</a> for what the trailer supports and what remains open.</p>
+        <h3>Solo or co-op: the unanswered operational question</h3>
+        <p>Steam confirms both single-player and online co-op, but it does not explain whether solo players switch instantly between stations, use automated helpers or receive a different workload. It also does not give a maximum party size. Our <a data-context-link="true" href="/multiplayer/">Dear Passengers co-op briefing</a> and <a data-context-link="true" href="/how-many-players/">maximum player-count tracker</a> will be updated when FLEXUS publishes lobby rules or a public demo makes them testable.</p>
+      </div>
+    </section>
     <section class="section feed-section">
       <div class="section-head split"><div><p class="kicker">LIVE CABIN FEEDS</p><h2>One aircraft. Four simultaneous problems.</h2></div><p>Official screenshots give the page visual evidence for cockpit pressure, cabin work, passenger handling and unstable cargo—not decorative filler.</p></div>
       <div class="feed-grid">${feeds}</div>
@@ -405,6 +408,21 @@ function homepageDepth(locale) {
 
 function resourceCards(locale) {
   const data = SEO[locale] || SEO.en;
+  if (locale === "en") {
+    const groups = [
+      ["PLAN YOUR FLIGHT", ["release-date", "demo", "platforms", "system-requirements"], "page"],
+      ["BUILD THE CREW", ["multiplayer", "how-many-players", "characters", "gameplay"], "page"],
+      ["FOLLOW THE GAME", ["trailer", "news", "wiki"], "page"],
+      ["PLAYER TOOLS", ["status-tracker", "countdown", "crew-check", "can-i-run-it", "system-compare", "role-quiz"], "tool"],
+      ["VERIFIED INTELLIGENCE", ["price", "download", "steam", "solo", "crossplay", "languages", "developer", "confirmed-features"], "authority"]
+    ];
+    const columns = groups.map(([heading, slugs, kind]) => `<div class="directory-group"><strong>${heading}</strong>${slugs.map((slug) => {
+      const target = `${kind}:${slug}`;
+      const label = LINK_TARGETS[target]?.[0] || slug;
+      return `<a data-context-link="true" href="${targetPath(target, "en")}"><span>${esc(label)}</span><b>↗</b></a>`;
+    }).join("")}</div>`).join("");
+    return `<section class="section resource-hub compact-directory"><div class="section-head split"><div><p class="kicker">COMPLETE FLIGHT DIRECTORY</p><h2>Every answer has one clear destination.</h2></div><p>Browse by task instead of scrolling through duplicated cards. Core guides, player tools and evidence pages remain within two clicks of the homepage.</p></div><div class="directory-grid">${columns}</div></section>`;
+  }
   const guides = PAGE_SLUGS.map((slug) => {
     const item = data.pages[slug];
     return `<a class="resource-card reveal" href="${localizedPath(locale, slug)}"><span>GUIDE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
@@ -493,7 +511,9 @@ function page(locale) {
   <header class="header">
     <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
     <button class="menu-button" aria-label="Menu">MENU</button>
-    <nav>${t.nav.map((item, i) => `<a href="#${["status","questions","gameplay","crew"][i]}">${esc(item)}</a>`).join("")}</nav>
+    <nav>${locale === "en"
+      ? '<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/multiplayer/">Multiplayer</a><a href="/gameplay/">Gameplay</a><a href="/wiki/">Wiki</a>'
+      : [["release-date", t.nav[0]], ["demo", t.nav[1]], ["gameplay", t.nav[2]], ["multiplayer", t.nav[3]]].map(([slug, item]) => `<a href="${localizedPath(locale, slug)}">${esc(item)}</a>`).join("")}</nav>
     <div class="language"><button>${esc(lang.label)}⌄</button><div>${langMenu}</div></div>
   </header>
 
@@ -504,7 +524,7 @@ function page(locale) {
       <div class="hero-copy">
         <p class="eyebrow"><i></i>${esc(t.eyebrow)}</p>
         <h1><span>DEAR</span> <span class="hero-title-main">PASSENGERS</span></h1>
-        ${locale === "en" ? '<p class="hero-shout"><span>CO-OP CHAOS</span><strong>THE COMPLETE AIRLINE GUIDE</strong></p>' : ""}
+        ${locale === "en" ? '<p class="hero-shout"><span>FLIGHT BRIEFING 2026</span><strong>THE COMPLETE PLAYER CREW GUIDE</strong></p>' : ""}
         <p class="lead">${esc(t.intro)}</p>
         <div class="actions"><a class="primary" href="#status">${esc(t.cta1)} <b>↓</b></a><a class="secondary" href="#crew">${esc(t.cta2)} <b>↗</b></a></div>
       </div>
@@ -720,9 +740,13 @@ function intentPage(locale, slug) {
   const item = data.pages[slug];
   const lang = languages[locale];
   const depth = locale === "en" ? INTENT_DEPTH[slug] : null;
+  const depthSections = depth ? [...depth.sections, ...(INTENT_EXPANSION[slug] || [])] : [];
   const fallbackMedia = PAGE_SLUGS.indexOf(slug) % OFFICIAL_MEDIA.length;
-  const depthMarkup = depth ? `<section class="intent-depth"><p class="kicker">04 · DEEP BRIEFING</p>${depth.sections.map((entry, index) => `
-      <div class="depth-block"><h2>${esc(entry.heading)}</h2>${entry.paragraphs.map((text) => `<p class="long-copy">${esc(text)}</p>`).join("")}${entry.bullets?.length ? `<ul class="authority-bullets">${entry.bullets.map((text) => `<li>${esc(text)}</li>`).join("")}</ul>` : ""}${index === 0 ? officialFigure(depth.media[0], "Official scene evidence") : ""}${index === 1 ? officialFigure(depth.media[1], "Second official scene") : ""}</div>`).join("")}</section>` : `<section class="intent-depth localized-depth"><p class="kicker">04 · OFFICIAL MEDIA</p><h2>${esc(item.name)}</h2>${officialFigure(fallbackMedia, item.name)}</section>`;
+  const depthMarkup = depth ? `<section class="intent-depth"><p class="kicker">DEEP BRIEFING</p>${depthSections.map((entry, index) => {
+      const anchor = `briefing-${index + 1}`;
+      return `<div class="depth-block" id="${anchor}"><span class="section-number">${String(index + 2).padStart(2, "0")}</span><h2>${esc(entry.heading)}</h2>${entry.paragraphs.map((text) => `<p class="long-copy">${esc(text)}</p>`).join("")}${entry.bullets?.length ? `<ul class="authority-bullets">${entry.bullets.map((text) => `<li>${esc(text)}</li>`).join("")}</ul>` : ""}${index === 0 ? officialFigure(depth.media[0], "Official scene evidence") : ""}${index === 1 ? officialFigure(depth.media[1], "Second official scene") : ""}</div>`;
+    }).join("")}</section>` : `<section class="intent-depth localized-depth"><p class="kicker">04 · OFFICIAL MEDIA</p><h2>${esc(item.name)}</h2>${officialFigure(fallbackMedia, item.name)}</section>`;
+  const briefingToc = depth ? `<nav class="article-toc" aria-label="In this briefing"><strong>IN THIS BRIEFING</strong><a href="#current-answer">Current answer</a>${depthSections.map((entry, index) => `<a href="#briefing-${index + 1}">${esc(entry.heading)}</a>`).join("")}<a href="#frequently-asked">FAQ</a></nav>` : "";
   const sourceKeys = slug === "demo" ? ["steam", "devua", "community"] : slug === "news" ? ["steam", "steam15m", "devua"] : ["steam", "trailer"];
   const sourceCards = sourceKeys.map((key) => {
     const source = SOURCES[key];
@@ -753,18 +777,17 @@ function intentPage(locale, slug) {
   <script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
   ${pageHeader(locale,currentPath)}
   <main class="inner-main">
-    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>STATUS · VERIFIED</span></div></section>
-    <section class="answer-strip"><span>${esc(data.ui.verified)}</span><strong>${esc(item.answer)}</strong></section>
+    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>PUBLISHED · JULY 2026</span><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>STATUS · VERIFIED</span></div></section>
+    ${briefingToc}
     <section class="article-body">
       <article>
-        <section><p class="kicker">01 · CONFIRMED</p><h2>${esc(data.ui.confirmed)}</h2><ul class="evidence-list">${confirmed}</ul></section>
-        <section><p class="kicker">02 · UNKNOWN</p><h2>${esc(data.ui.unknown)}</h2><ul class="evidence-list">${unknown}</ul></section>
-        <section><p class="kicker">03 · CONTEXT</p><h2>${esc(data.ui.why)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p></section>
-        ${semanticLinks(locale, `page:${slug}`, data.ui.related)}
+        <section class="current-answer" id="current-answer"><p class="kicker">01 · CURRENT ANSWER</p><h2>${esc(item.answer)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p><div class="answer-status"><span>VERIFICATION STATUS</span><strong>Confirmed facts separated from unknowns</strong><a href="/editorial-policy/">Read the methodology ↗</a></div></section>
         ${depthMarkup}
-        <section><p class="kicker">05 · FAQ</p><h2>${esc(data.ui.faq)}</h2><div class="question-list">${faqs}</div></section>
+        <section class="fact-comparison"><p class="kicker">EVIDENCE CHECK</p><h2>What is confirmed—and what is not.</h2><div class="fact-columns"><div><h3>${esc(data.ui.confirmed)}</h3><ul class="evidence-list">${confirmed}</ul></div><div><h3>${esc(data.ui.unknown)}</h3><ul class="evidence-list">${unknown}</ul></div></div></section>
+        ${semanticLinks(locale, `page:${slug}`, data.ui.related)}
+        <section id="frequently-asked"><p class="kicker">FAQ</p><h2>${esc(data.ui.faq)}</h2><div class="question-list">${faqs}</div></section>
       </article>
-      <aside><div class="aside-card"><span>${esc(data.ui.current)}</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>${esc(data.ui.sources)}</span>${sourceCards}</div></aside>
+      <aside><div class="aside-card"><span>${esc(data.ui.current)}</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>${esc(data.ui.sources)}</span>${sourceCards}</div><div class="aside-card"><span>UPDATE STANDARD</span><p>When an official source changes, this page records the new answer and keeps the old state in its update history.</p></div></aside>
     </section>${locale === "en" ? clusterHub(slug) : ""}
     <section class="section compact-section"><div class="section-head"><p class="kicker">INTERNAL KNOWLEDGE GRAPH</p><h2>${esc(data.ui.related)}</h2></div>${relatedGrid(locale,slug)}</section>
     <section class="section compact-section log-section"><div class="section-head"><p class="kicker">SOURCE HISTORY</p><h2>${esc(data.ui.log)}</h2></div>${updateLog(locale)}</section>
@@ -948,6 +971,17 @@ body{background:radial-gradient(circle at 80% 10%,#12233a 0,#07111e 34%,#040a12 
 .section{padding-top:125px;padding-bottom:125px}.section-head h2,.media-copy h2,.crew-layout h2,.final h2{letter-spacing:.005em}.game-overview,.media,.gameplay,.crew{margin:14px;border-radius:38px;overflow:hidden}.game-overview{background:linear-gradient(145deg,#f9f5eb,#dedbd0)}.overview-stamp,.overview-actions a{border-radius:17px}.overview-actions{gap:12px;border:0}.overview-actions a{border:1px solid #b7b5ae;box-shadow:0 12px 30px rgba(20,34,43,.06)}.search-briefings{margin:14px;border-radius:38px;background:radial-gradient(circle at 100% 0,rgba(44,142,218,.17),transparent 32%),#050d17}.briefing-grid{gap:16px;border:0}.briefing-card{border:1px solid rgba(255,255,255,.13);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 18px 50px rgba(0,0,0,.12)}.briefing-card:nth-child(1){background:linear-gradient(145deg,rgba(255,139,24,.17),rgba(255,255,255,.02))}.briefing-card:nth-child(2){background:linear-gradient(145deg,rgba(45,151,225,.16),rgba(255,255,255,.02))}.briefing-card:nth-child(3){background:linear-gradient(145deg,rgba(47,219,169,.11),rgba(255,255,255,.02))}.status{background:radial-gradient(circle at 80% 10%,rgba(42,137,207,.16),transparent 32%),#07131f}.status-grid{gap:16px;border:0}.status-card{border:1px solid rgba(255,255,255,.12);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 18px 55px rgba(0,0,0,.12);transition:.3s}.status-card:hover{transform:translateY(-7px);border-color:rgba(255,175,43,.55)}.status-card:nth-child(1),.status-card:nth-child(4){background:linear-gradient(145deg,rgba(255,145,28,.16),rgba(255,255,255,.018))}.status-card:nth-child(2),.status-card:nth-child(6){background:linear-gradient(145deg,rgba(54,163,232,.14),rgba(255,255,255,.018))}.questions{background:#050c15}.question-list{display:grid;gap:12px;border:0}.question{border:1px solid #253545;border-radius:18px;padding:0 22px;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.012))}.question[open]{border-color:rgba(255,159,10,.55);background:linear-gradient(135deg,rgba(255,159,10,.08),rgba(255,255,255,.012))}.media{padding:18px;background:linear-gradient(135deg,#ff7a19,#ffb629)}.media-grid{overflow:hidden;border-radius:27px}.video{overflow:hidden;border-radius:27px 0 0 27px}.media-copy{border-radius:0 27px 27px 0}.gameplay{background:radial-gradient(circle at 10% 20%,rgba(53,154,224,.16),transparent 30%),#07121d}.game-shot{border-radius:30px;box-shadow:0 30px 80px rgba(0,0,0,.28)}.features{gap:14px;border:0;margin-top:14px}.feature{border:1px solid #263746;border-radius:21px;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015))}.feed-grid{gap:16px;background:transparent}.feed-card{border-radius:25px;box-shadow:0 22px 55px rgba(0,0,0,.22)}.manifest-section{background:linear-gradient(145deg,#f5f0e5,#dcd9cf)}.manifest-layout,.spec-board>div,.language-board{border-radius:20px}.manifest-layout{gap:16px;border:0}.spec-board{gap:12px}.spec-board>div{border:1px solid #adaaa3;background:rgba(255,255,255,.35)}.language-board{box-shadow:0 25px 55px rgba(0,0,0,.18)}.dispatch-grid,.source-manifest-grid,.resource-grid,.authority-grid{gap:14px;border:0}.dispatch-card,.source-manifest-grid>a,.resource-card,.authority-tile{border:1px solid #263746;border-radius:22px}.crew{background:linear-gradient(145deg,#f7f2e7,#dedbd1)}.crew-form select,.crew-form button,.result{border-radius:14px}.final{margin:14px;border-radius:38px;overflow:hidden}.site-footer{margin:14px;border-radius:34px 34px 0 0;overflow:hidden}
 @media(max-width:980px){.header{left:18px;right:18px;grid-template-columns:1fr auto auto}.header nav{top:86px;left:0;right:0;border-radius:18px;background:rgba(5,15,27,.97);box-shadow:0 24px 55px rgba(0,0,0,.38)}.hero{min-height:910px;margin:0 8px 8px}.floating-baggage{right:16%;opacity:.55}.capsule{top:152px}.hero-copy{width:100%}.game-overview,.media,.gameplay,.crew,.search-briefings,.final,.site-footer{margin-left:8px;margin-right:8px}.video{border-radius:24px 24px 0 0}.media-copy{border-radius:0 0 24px 24px}}
 @media(max-width:680px){.header{top:38px;left:10px;right:10px;height:66px;padding:0 9px;border-radius:18px}.brand>span.brand-mark{width:46px;height:46px;border-radius:13px}.brand b{font-size:9px}.brand small{font-size:6px}.language>button{width:58px;height:42px}.menu-button{padding:12px 7px}.hero{min-height:910px;padding-left:20px;padding-right:20px;border-radius:0 0 29px 29px}.hero-bg{background-image:linear-gradient(0deg,#06101a 1%,rgba(2,10,18,.3) 52%,rgba(2,10,18,.88)),url("${HERO}");background-position:58% center}.hero-copy{padding-top:225px}.hero h1{font-size:19vw;line-height:.77;margin:22px 0 18px}.hero h1>span:first-child{font-size:.5em}.hero-shout{align-items:flex-start;flex-direction:column;gap:8px}.hero-shout strong{font-size:13px}.lead{font-size:14px;color:#e0e7ed}.capsule{top:120px;left:20px!important;width:205px;border-radius:17px}.floating-baggage{display:none}.hero-facts{bottom:28px;border-radius:18px}.hero-facts>div{height:58px}.section{padding-top:82px;padding-bottom:82px}.game-overview,.media,.gameplay,.crew,.search-briefings,.final,.site-footer{margin-left:6px;margin-right:6px;border-radius:25px}.status-grid{gap:11px}.status-card{border-radius:19px}.question{border-radius:15px;padding:0 14px}.media{padding:8px}.briefing-grid{gap:11px}.briefing-card{border-radius:20px}.overview-stamp,.overview-actions a{border-radius:14px}.game-shot{border-radius:22px}.feed-card{border-radius:19px}.site-footer{border-radius:25px 25px 0 0}}
+/* Editorial flight-dossier system: long-form rhythm, clear hierarchy, restrained cards */
+body{font-family:"Manrope",ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.chapter-sand{background:#dfd5c5;color:#0b1729}
+.hero h1,.section-head h2,.media-copy h2,.crew-layout h2,.final h2,.overview-heading h2,.briefing-card h3,.article-hero h1,.tool-hero h1,.chapter-copy h2,.chapter-copy h3,.article-body h2,.article-body h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700}
+.hero h1{font-weight:800;letter-spacing:-.035em;line-height:.78}.hero h1 .hero-title-main{letter-spacing:-.035em;line-height:.76}.hero-shout strong{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:20px;font-weight:700}.lead{max-width:690px}
+.verification-bar{width:min(1180px,calc(100% - 48px));min-height:112px;margin:28px auto;display:grid;grid-template-columns:1fr 1.3fr .65fr auto;align-items:center;gap:28px;padding:22px 28px;background:#fffdf7;color:#0b1729;border:1px solid #d8d1c5;border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.18)}.verification-bar>div{display:grid;gap:7px}.verification-bar span{font-size:8px;letter-spacing:.16em;color:#8a5b10;font-weight:800}.verification-bar strong{font-size:12px;line-height:1.45}.verification-bar a{padding:15px 18px;border:1px solid #b9b2a6;color:#8a4c05;font-size:9px;font-weight:800;letter-spacing:.08em;text-align:center}
+.editorial-chapter{display:grid;grid-template-columns:150px minmax(0,790px);justify-content:center;gap:70px;padding:120px clamp(24px,7vw,112px)}.chapter-light{background:#f4efe4;color:#0b1729}.chapter-dark{background:#09182a;color:#f8fbff}.chapter-rail{display:flex;flex-direction:column;align-items:center;padding-top:8px;border-right:1px solid currentColor;opacity:.42}.chapter-rail b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:104px;line-height:.8;font-weight:600}.chapter-rail span{margin-top:44px;font-size:8px;letter-spacing:.22em;writing-mode:vertical-rl}.chapter-copy{max-width:790px}.chapter-copy h2{font-size:clamp(58px,6vw,86px);line-height:.9;letter-spacing:-.025em;margin:18px 0 36px}.chapter-copy h3{font-size:35px;line-height:1.05;margin:48px 0 16px}.chapter-copy p{font-size:16px;line-height:1.86;margin:0 0 24px;color:#46515a}.chapter-dark .chapter-copy p{color:#aeb9c5}.chapter-copy .chapter-lead{font-size:22px;line-height:1.55;color:inherit}.chapter-copy p a{color:#b85b00;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}.chapter-dark .chapter-copy p a{color:#ffaf2e}.chapter-links{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid #aaa399;border-left:1px solid #aaa399;margin-top:48px}.chapter-links a{min-height:126px;padding:22px;border-right:1px solid #aaa399;border-bottom:1px solid #aaa399;display:grid;grid-template-columns:1fr 20px;align-content:center}.chapter-links span{font-size:8px;letter-spacing:.14em;color:#9a570d}.chapter-links strong{margin-top:10px}.chapter-links b{grid-column:2;grid-row:1/3;align-self:center;color:#d67e00}.intent-lines{margin-top:52px;border-top:1px solid #324153}.intent-lines article{display:grid;grid-template-columns:70px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid #324153}.intent-lines article>span{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:31px;color:#ff9f0a}.intent-lines h3{margin:0 0 12px;font-size:34px}.intent-lines p{margin:0}
+.status,.questions,.feed-section,.dispatch-section,.source-manifest,.evidence,.resource-hub{border-radius:0!important;margin:0!important}.status{padding-top:105px;padding-bottom:105px}.questions .section-head,.questions .question-list{max-width:980px;margin-left:auto;margin-right:auto}.questions .question{border-left:0;border-right:0;border-radius:0;background:transparent}.questions .question[open]{background:transparent}.questions .question p{font-size:16px;max-width:790px}.feed-section{background:#f4efe4;color:#0b1729}.feed-section .section-head>p,.feed-section .feed-card small{color:#59636d}.feed-grid{gap:2px}.feed-card{border-radius:0;box-shadow:none}.feed-card img{filter:saturate(.92)}.manifest-section{border-radius:0!important;margin:0!important}.dispatch-card,.source-manifest-grid>a{border-radius:2px}.compact-directory{padding-top:105px;padding-bottom:105px}.directory-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid #2c3a49;border-left:1px solid #2c3a49}.directory-group{padding:24px;border-right:1px solid #2c3a49;border-bottom:1px solid #2c3a49;display:flex;flex-direction:column;min-width:0}.directory-group>strong{min-height:38px;color:#ff9f0a;font-size:8px;letter-spacing:.14em}.directory-group a{display:grid;grid-template-columns:1fr 12px;gap:8px;padding:13px 0;border-top:1px solid #1f2d3a;color:#a9b4bf;font-size:11px;line-height:1.35}.directory-group a:hover{color:#fff}.directory-group a b{color:#ff9f0a}
+.inner-main{padding-top:0}.inner-header{z-index:50}.article-hero{min-height:760px;padding-top:190px;padding-bottom:82px}.article-hero h1{max-width:960px;font-size:clamp(66px,7.3vw,112px);line-height:.88;letter-spacing:-.025em}.article-hero>p:not(.eyebrow){max-width:780px;line-height:1.75}.article-toc{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;padding:22px clamp(24px,7vw,112px);background:#fffdf7;color:#0b1729;border-bottom:1px solid #d2cabd;position:relative;z-index:2}.article-toc strong,.article-toc a{padding:9px 16px;border-right:1px solid #d2cabd;font-size:9px;line-height:1.25}.article-toc strong{color:#9a570d;letter-spacing:.14em}.article-toc a:hover{color:#b85b00}.article-body{grid-template-columns:minmax(0,790px) 286px;justify-content:center;gap:90px;padding-top:95px;padding-bottom:95px;background:#f4efe4}.article-body article{max-width:790px}.article-body article>section{padding-bottom:74px;margin-bottom:74px}.article-body h2{font-size:clamp(48px,5.2vw,72px);line-height:.94;letter-spacing:-.02em}.article-body h3{font-size:31px}.article-body p,.article-body li{font-size:16px;line-height:1.88}.long-copy{font-size:16px;max-width:790px}.current-answer h2{font-size:clamp(42px,4.4vw,62px);line-height:1}.answer-status{margin-top:34px;padding:22px 24px;display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;background:#0b1729;color:#fff;border-left:5px solid #ff9f0a}.answer-status span{font-size:8px;color:#ffb132;letter-spacing:.13em}.answer-status strong{font-size:12px}.answer-status a{font-size:9px;color:#ffb132}.intent-depth{padding:0!important;border-bottom:0!important}.depth-block{position:relative;padding:0 0 78px;margin:0 0 78px;border-bottom:1px solid #b6b0a7}.depth-block .section-number{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:60px;line-height:1;color:#c56a09}.depth-block h2{margin-top:12px}.article-figure{margin:42px 0 0}.article-figure img{aspect-ratio:16/9;object-fit:cover}.article-body aside{position:sticky;top:145px}.aside-card{border-radius:0}.fact-columns{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}.fact-columns>div{min-width:0}.fact-columns h3{margin-top:0}.fact-columns .evidence-list li{display:block;padding:15px 16px;font-size:13px;line-height:1.55}.fact-columns .evidence-list i{display:block;margin-bottom:6px}.semantic-list{grid-template-columns:1fr}.semantic-link{min-height:0;padding:20px 0;border-left:0;border-right:0}.compact-section{padding-top:78px;padding-bottom:78px}.compact-section .mini-grid{max-width:1180px;margin:auto}.compact-section .section-head{max-width:1180px;margin-left:auto;margin-right:auto}.mini-link{min-height:132px}.log-section{padding-top:0}
+@media(max-width:1100px){.verification-bar{grid-template-columns:1fr 1fr}.editorial-chapter{grid-template-columns:100px minmax(0,790px);gap:45px}.directory-grid{grid-template-columns:repeat(3,1fr)}.article-body{grid-template-columns:minmax(0,720px);gap:45px}.article-body aside{position:static;grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.verification-bar{width:calc(100% - 24px);grid-template-columns:1fr;padding:22px}.editorial-chapter{grid-template-columns:1fr;padding:82px 22px}.chapter-rail{display:none}.chapter-copy h2{font-size:56px}.chapter-copy h3{font-size:31px}.chapter-copy .chapter-lead{font-size:20px}.chapter-links{grid-template-columns:1fr}.intent-lines article{grid-template-columns:45px 1fr;gap:12px}.directory-grid{grid-template-columns:1fr}.directory-group{padding:22px}.article-hero{min-height:700px;padding:170px 22px 70px}.article-hero h1{font-size:58px}.article-toc{justify-content:flex-start;overflow:auto;flex-wrap:nowrap;padding:14px 12px}.article-toc strong,.article-toc a{white-space:nowrap}.article-body{padding:72px 22px}.article-body aside{grid-template-columns:1fr}.answer-status{grid-template-columns:1fr}.fact-columns{grid-template-columns:1fr}.authority-bullets{grid-template-columns:1fr}.hero h1{font-size:21vw}.hero h1 .hero-title-main{line-height:.82}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 
 `;
