@@ -29,7 +29,7 @@ export const NEWS_SLUGS = [
   "gamescom-demo-plans"
 ];
 
-export const STATIC_SLUGS = ["about", "editorial-policy", "corrections"];
+export const STATIC_SLUGS = ["about", "editorial-policy", "corrections", "contact", "privacy-policy"];
 
 export const SOURCES = {
   steam: {
@@ -76,6 +76,11 @@ export const SOURCES = {
     name: "GitHub corrections and source submissions",
     url: "https://github.com/foxigaoqian/dearpassengerscrew/issues",
     type: "Correction channel"
+  },
+  cloudflarePrivacy: {
+    name: "Cloudflare Privacy Policy",
+    url: "https://www.cloudflare.com/privacypolicy/",
+    type: "Hosting provider policy"
   }
 };
 
@@ -586,6 +591,34 @@ export const STATIC_CONTENT = {
     ],
     [],
     ["steam", "githubIssues"]
+  ),
+  contact: page(
+    "Contact",
+    "Contact Dear Passengers Crew",
+    "Contact the independent Dear Passengers Crew editorial desk about factual corrections, stronger sources, accessibility or technical problems.",
+    "Use the public GitHub issue tracker for factual corrections, source submissions, accessibility reports and technical problems with this independent guide.",
+    [
+      { heading: "What you can contact us about", paragraphs: ["Useful reports include an incorrect game fact, a broken source link, a stronger first-party source, a translation problem, an accessibility barrier or a reproducible technical issue on this website.", "Dear Passengers Crew is not affiliated with FLEXUS, Valve or Steam. We cannot provide game keys, account support, refund assistance, press access or private information about the game's development."] },
+      { heading: "What to include", paragraphs: ["Include the page URL, the exact sentence or feature involved, what you expected to see and a direct source URL when the report concerns a factual claim. For layout problems, include the browser, device width and a screenshot with sensitive information removed.", "Do not post passwords, API tokens, private keys, payment information, private correspondence or other personal data. GitHub issues are public by default."] },
+      { heading: "How to submit a report", paragraphs: ["Open an issue in the public GitHub repository and choose a short, descriptive title. One issue per factual or technical problem makes review and follow-up easier.", "There is currently no guaranteed response time. Material factual corrections are checked against the strongest available source and, when accepted, should update every affected page and the source history together."] }
+    ],
+    [["Is this the game developer's support page?","No. This is an independent guide and cannot provide official game or Steam account support."],["Can I send a new source?","Yes. Include the direct URL, publication date and the page whose answer may need to change."],["Is a GitHub issue private?","No. Treat it as public and remove personal or confidential information before posting."]],
+    ["githubIssues"]
+  ),
+  "privacy-policy": page(
+    "Privacy policy",
+    "Privacy Policy — Dear Passengers Crew",
+    "How Dear Passengers Crew handles browser tools, hosting logs, external media, outbound links and contact submissions.",
+    "The site has no user accounts, payment flow or contact form; browser tools run locally, while Cloudflare and linked third parties may process ordinary request data under their own policies.",
+    [
+      { heading: "Scope and effective date", paragraphs: ["This policy applies to dearpassengerscrew.com and is effective August 1, 2026. Dear Passengers Crew is an independent, unofficial information project and does not receive player-account data from FLEXUS, Valve or Steam.", "The current website does not offer account registration, purchases, newsletter signup or an on-site contact form. If those features are added later, this policy must be updated before they are used to collect new categories of information."] },
+      { heading: "Information processed when you visit", paragraphs: ["The site is delivered through Cloudflare. Like most hosting and security providers, Cloudflare may process request information such as IP address, traffic-routing data, browser or system configuration, requested URLs and security signals in order to deliver, protect and operate the service.", "The application code does not create a user profile database or intentionally set account, payment or advertising cookies. Server, security and performance records controlled by the hosting provider are governed by Cloudflare's terms and privacy policy."] },
+      { heading: "Interactive tools", paragraphs: ["The PC checker, crew checker, countdown, comparison and role quiz operate in your browser. Their selections are used to display an immediate result and are not submitted to a Dear Passengers Crew account or database.", "Do not enter personal information into tool fields. The tools are informational and do not inspect your computer automatically."] },
+      { heading: "Official media and external services", paragraphs: ["Pages may load official screenshots from Steam content servers and a trailer thumbnail from YouTube. The privacy-enhanced YouTube embed is created only after you choose to play the trailer. Those providers may receive normal network request information under their own policies.", "Links to Steam, YouTube, dev.ua, GitHub and other external sites leave Dear Passengers Crew. Their privacy, cookie and retention practices are controlled by those services, not this website."] },
+      { heading: "Contact, retention and choices", paragraphs: ["The contact route is the public GitHub issue tracker. Information posted there is sent to GitHub and may remain publicly visible according to GitHub's policies and repository history. Do not submit personal, confidential or security-sensitive data.", "Because this site currently has no user-account or contact-submission database, it has no visitor profile for you to access or delete. Questions about data processed by Cloudflare or GitHub should be directed to the relevant provider. A material change to this policy will update the effective date shown on this page and in the sitemap."] }
+    ],
+    [["Does this site require an account?","No. All public guides and tools work without a Dear Passengers Crew login."],["Are tool answers stored?","The current tools calculate results in the browser and do not submit those selections to a site database."],["Does the site use third-party services?","Yes. Cloudflare delivers the site, official media can load from Steam and YouTube, and contact reports use GitHub."],["Where should I avoid posting personal data?","Do not put personal or confidential information in public GitHub issues or in the website's planning tools."]],
+    ["cloudflarePrivacy", "githubIssues"]
   )
 };
 

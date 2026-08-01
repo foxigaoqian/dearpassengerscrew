@@ -41,6 +41,8 @@ export const LINK_TARGETS = {
   "static:about": ["About this independent guide", "Understand the site’s purpose and relationship to the game."],
   "static:editorial-policy": ["Editorial and corrections policy", "See how evidence labels, updates and corrections work."],
   "static:corrections": ["Report or review a correction", "Use the documented factual-correction process."],
+  "static:contact": ["Contact the editorial desk", "Report a factual, accessibility, translation or technical problem."],
+  "static:privacy-policy": ["Privacy policy", "Understand hosting logs, browser tools, external media and contact privacy."],
   "media:media": ["Official media archive", "Browse the trailer and ten full-resolution Steam screenshots."]
 };
 
@@ -84,9 +86,11 @@ export const LINK_GRAPH = {
   "news:one-point-five-million-wishlists": ["news:one-million-wishlists", "news:two-million-wishlists-top-six", "authority:steam", "page:news", "authority:developer"],
   "news:two-million-wishlists-top-six": ["news:one-point-five-million-wishlists", "authority:steam", "page:news", "authority:developer"],
   "news:gamescom-demo-plans": ["page:demo", "authority:download", "page:release-date", "page:news"],
-  "static:about": ["static:editorial-policy", "static:corrections", "authority:developer", "page:news"],
-  "static:editorial-policy": ["static:corrections", "static:about", "page:news", "tool:status-tracker"],
-  "static:corrections": ["static:editorial-policy", "static:about", "page:news", "tool:status-tracker"],
+  "static:about": ["static:editorial-policy", "static:contact", "static:privacy-policy", "static:corrections", "authority:developer"],
+  "static:editorial-policy": ["static:corrections", "static:about", "static:contact", "static:privacy-policy", "tool:status-tracker"],
+  "static:corrections": ["static:contact", "static:editorial-policy", "static:about", "static:privacy-policy", "page:news"],
+  "static:contact": ["static:corrections", "static:editorial-policy", "static:privacy-policy", "static:about", "page:news"],
+  "static:privacy-policy": ["static:contact", "static:about", "static:editorial-policy", "static:corrections", "page:news"],
   "media:media": ["page:trailer", "page:gameplay", "authority:confirmed-features", "page:wiki"]
 };
 

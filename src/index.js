@@ -982,6 +982,15 @@ function pageHeader(locale, currentPath = "") {
   </header>`;
 }
 
+const SITE_INFO_LABELS = {
+  en: { heading:"SITE INFORMATION", home:"English site", about:"About this site", policy:"Editorial & corrections", contact:"Contact us", privacy:"Privacy policy" },
+  "zh-cn": { heading:"网站信息", home:"English site", about:"关于本站", policy:"编辑与更正政策", contact:"联系我们", privacy:"隐私政策" },
+  ja: { heading:"サイト情報", home:"英語サイト", about:"このサイトについて", policy:"編集・訂正ポリシー", contact:"お問い合わせ", privacy:"プライバシーポリシー" },
+  ar: { heading:"معلومات الموقع", home:"الموقع الإنجليزي", about:"حول الموقع", policy:"سياسة التحرير والتصحيح", contact:"اتصل بنا", privacy:"سياسة الخصوصية" },
+  tr: { heading:"SİTE BİLGİLERİ", home:"İngilizce site", about:"Site hakkında", policy:"Editoryal ve düzeltme politikası", contact:"İletişim", privacy:"Gizlilik politikası" },
+  uk: { heading:"ІНФОРМАЦІЯ ПРО САЙТ", home:"Англійська версія", about:"Про сайт", policy:"Редакційна політика й виправлення", contact:"Зв’язатися з нами", privacy:"Політика конфіденційності" }
+};
+
 function pageFooter(locale) {
   const data = SEO[locale] || SEO.en;
   const labels = UI_LABELS[locale] || UI_LABELS.en;
@@ -1001,11 +1010,10 @@ function pageFooter(locale) {
   const tools = ["can-i-run-it", "status-tracker"].map((slug) =>
     `<a data-sitewide-link="true" href="${localizedPath(locale, `tools/${slug}`)}">${esc(data.tools[slug][2])}</a>`
   ).join("");
-  const intelligence = locale === "en" ? [
-    ["/editorial-policy/", "Editorial policy"],
-    ["/corrections/", "Report a correction"]
-  ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="${esc(labels.guide)}"><strong>${esc(labels.guide)}</strong>${core}</nav><nav aria-label="${esc(labels.relatedQuestions)}"><strong>${esc(labels.relatedQuestions)}</strong>${questions}</nav><nav aria-label="${esc(labels.tools)}"><strong>${esc(labels.tools)}</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a><a href="/sitemap.xml">SITEMAP</a></div></footer>`;
+  const siteInfo = SITE_INFO_LABELS[locale] || SITE_INFO_LABELS.en;
+  const information = [["/",siteInfo.home],["/about/",siteInfo.about],["/editorial-policy/",siteInfo.policy],["/contact/",siteInfo.contact],["/privacy-policy/",siteInfo.privacy]]
+    .map(([url,label]) => `<a data-sitewide-link="true" href="${url}"${locale === "en" ? "" : ' hreflang="en"'}>${esc(label)}</a>`).join("");
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="${esc(labels.guide)}"><strong>${esc(labels.guide)}</strong>${core}</nav><nav aria-label="${esc(labels.relatedQuestions)}"><strong>${esc(labels.relatedQuestions)}</strong>${questions}</nav><nav aria-label="${esc(labels.tools)}"><strong>${esc(labels.tools)}</strong>${tools}</nav><nav aria-label="${esc(siteInfo.heading)}"><strong>${esc(siteInfo.heading)}</strong>${information}</nav></div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a><a href="/sitemap.xml">SITEMAP</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
@@ -1176,10 +1184,10 @@ function deepContentPage(kind, slug) {
   }).join("");
   const sections = item.sections.map((section,index)=>{
     const bullets = section.bullets?.length ? `<ul class="authority-bullets">${section.bullets.map((text)=>`<li>${esc(text)}</li>`).join("")}</ul>` : "";
-    return `<section><p class="kicker">${String(index+1).padStart(2,"0")} · ${kind === "news" ? "REPORT" : "BRIEFING"}</p><h2>${esc(section.heading)}</h2>${section.paragraphs.map((text)=>`<p class="long-copy">${esc(text)}</p>`).join("")}${bullets}${index === 0 ? officialFigure(mediaIndex, `${item.name} · official visual record`) : ""}</section>`;
+    return `<section><p class="kicker">${String(index+1).padStart(2,"0")} · ${kind === "news" ? "REPORT" : "BRIEFING"}</p><h2>${esc(section.heading)}</h2>${section.paragraphs.map((text)=>`<p class="long-copy">${esc(text)}</p>`).join("")}${bullets}${index === 0 && kind !== "static" ? officialFigure(mediaIndex, `${item.name} · official visual record`) : ""}</section>`;
   }).join("");
   const faqs = item.faq?.length ? `<section><p class="kicker">FAQ</p><h2>Passenger questions</h2><div class="question-list">${item.faq.map(([q,a],index)=>`<details class="question"${index===0?" open":""}><summary><b>${String(index+1).padStart(2,"0")}</b>${esc(q)}<i>+</i></summary><p>${esc(a)}</p></details>`).join("")}</div></section>` : "";
-  const articleType = kind === "news" ? "NewsArticle" : "Article";
+  const articleType = kind === "news" ? "NewsArticle" : kind === "static" ? (slug === "about" ? "AboutPage" : slug === "contact" ? "ContactPage" : "WebPage") : "Article";
   const breadcrumbElements = [
     {"@type":"ListItem",position:1,name:"Home",item:`${SITE}/`},
     ...(kind === "wiki" || kind === "news"
@@ -1190,7 +1198,7 @@ function deepContentPage(kind, slug) {
   const schema = {
     "@context":"https://schema.org",
     "@graph":[
-      {"@type":articleType,"@id":`${canonical}#article`,headline:item.title,description:item.description,inLanguage:"en",...(item.date?{datePublished:item.date}:{}),dateModified:contentModified(new URL(canonical).pathname),mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":GAME_ID},citation:item.sources.map((key)=>SOURCES[key].url)},
+      {"@type":articleType,"@id":`${canonical}#article`,headline:item.title,description:item.description,inLanguage:"en",...(item.date?{datePublished:item.date}:{}),dateModified:contentModified(new URL(canonical).pathname),mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":kind === "static" ? SITE_ORGANIZATION_ID : GAME_ID},citation:item.sources.map((key)=>SOURCES[key].url)},
       {"@type":"BreadcrumbList",itemListElement:breadcrumbElements},
       ...(item.faq?.length ? [{"@type":"FAQPage",mainEntity:item.faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}] : []),
       siteOrganizationSchema(),
@@ -1369,7 +1377,7 @@ function contentModified(pathname) {
   const route = languages[parts[0]] && parts[0] !== "en" ? parts.slice(1) : parts;
   if (route[0] === "news" && route[1] && NEWS_CONTENT[route[1]]) return NEWS_CONTENT[route[1]].date;
   if (route.length === 0 || PAGE_SLUGS.includes(route[0]) || route[0] === "news") return "2026-08-01";
-  if (route[0] === "about" || route[0] === "editorial-policy") return "2026-08-01";
+  if (["about", "editorial-policy", "contact", "privacy-policy"].includes(route[0])) return "2026-08-01";
   if (route[0] === "wiki" || route[0] === "tools" || STATIC_SLUGS.includes(route[0])) return "2026-07-30";
   if (route[0] === "media") return TRAILER_PUBLISHED;
   return "2026-07-30";
@@ -1420,8 +1428,11 @@ function llmsText() {
 - [Wiki](${SITE}/wiki/)
 
 ## Editorial controls
+- [About](${SITE}/about/)
 - [Editorial policy](${SITE}/editorial-policy/)
 - [Corrections](${SITE}/corrections/)
+- [Contact](${SITE}/contact/)
+- [Privacy policy](${SITE}/privacy-policy/)
 - [XML sitemap](${SITE}/sitemap.xml)
 
 Confirmed facts are separated from observations, attributed developer statements and unknowns. The official Steam listing remains the final source for purchasing and release information.
