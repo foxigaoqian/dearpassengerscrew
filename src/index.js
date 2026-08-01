@@ -1,4 +1,4 @@
-import { LAST_CHECKED, PAGE_SLUGS, TOOL_SLUGS, UPDATE_LOG, SEO } from "./seo-content.js";
+import { LAST_CHECKED, PAGE_SLUGS, TOOL_SLUGS, UPDATE_LOGS, SEO } from "./seo-content.js";
 import {
   AUTHORITY_SLUGS,
   WIKI_SLUGS,
@@ -28,6 +28,7 @@ const TRAILER_ART = "https://i.ytimg.com/vi/hEsuA_rqTxk/maxresdefault.jpg";
 const SITE_ORGANIZATION_ID = `${SITE}/#organization`;
 const GAME_ID = `${SITE}/#dear-passengers-game`;
 const GOOGLE_SITE_VERIFICATION = "_7cJXUxMVxMiIiJFwRlgOQ_AY5a8MZybpMWZu3GurBM";
+const STYLE_VERSION = "20260801-2";
 
 const languages = {
   en: { label: "EN", name: "English", dir: "ltr" },
@@ -361,7 +362,7 @@ function iconLinks() {
 }
 
 function styleTag() {
-  return `<style>${SITE_CSS}</style><noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`;
+  return `<style>html{background:#06101a;color:#f5f7fa}body{margin:0;background:#06101a;color:#f5f7fa;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.header{z-index:20}.hero,.article-hero{position:relative}.reveal{opacity:1}</style><link rel="preload" href="/assets/site.css?v=${STYLE_VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="/assets/site.css?v=${STYLE_VERSION}" rel="stylesheet"><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`;
 }
 
 function siteOrganizationSchema() {
@@ -371,8 +372,10 @@ function siteOrganizationSchema() {
     name: "Dear Passengers Crew Editorial Team",
     url: SITE,
     logo: BRAND_ICON,
+    description: "Independent source-led Dear Passengers game guides, status tracking and player tools.",
     publishingPrinciples: `${SITE}/editorial-policy/`,
-    correctionsPolicy: `${SITE}/corrections/`
+    correctionsPolicy: `${SITE}/corrections/`,
+    sameAs: ["https://github.com/foxigaoqian/dearpassengerscrew"]
   };
 }
 
@@ -565,7 +568,7 @@ function localizedHomepageEditorial(locale) {
       <div><span>${esc(depth.briefing)}</span><strong>${esc(depth.briefingText)}</strong></div>
       <div><span>${esc(depth.monitoring)}</span><strong>${esc(depth.monitoringText)}</strong></div>
       <div><span>${esc(depth.lastVerified)}</span><strong>${esc(formattedVerifiedDate(locale))} · ${esc(depth.noChange)}</strong></div>
-      <a href="${localizedPath(locale, "news")}">${esc(depth.policy)} ↗</a>
+      <a href="/editorial-policy/" hreflang="en">${esc(depth.policy)} ↗</a>
     </section>
     <section class="editorial-chapter chapter-light" id="overview">
       <div class="chapter-rail"><b>01</b><span>${esc(depth.overviewRail)}</span></div>
@@ -632,7 +635,7 @@ function localizedHomepageDepth(locale) {
     `<a class="feed-card reveal" href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers · ${esc(depth.feedNames[index])}" width="1920" height="1080" loading="lazy" decoding="async"><span>${esc(depth.feed)} · 0${index + 1}</span><strong>${esc(depth.feedNames[index])}</strong><small>${esc(depth.inspect)} ↗</small></a>`
   ).join("");
   const loop = depth.loopHeads.map((heading, index) => `<h3>${esc(heading)}</h3><p>${esc(depth.loopText[index])}</p>`).join("");
-  const sourceUrls = [SOURCES.steam.url, SOURCES.trailer.url, SOURCES.devua.url, localizedPath(locale, "news")];
+  const sourceUrls = [SOURCES.steam.url, SOURCES.trailer.url, SOURCES.devua.url, "/editorial-policy/"];
   const sources = depth.sourceTitles.map((title, index) => `<a href="${sourceUrls[index]}"${index < 3 ? ' target="_blank" rel="noopener"' : ""}><span>${esc(depth.sourceLabels[index])}</span><strong>${esc(title)}</strong><p>${esc(depth.sourceTexts[index])}</p><b>↗</b></a>`).join("");
   return `
     <section class="editorial-chapter chapter-sand flight-loop-chapter">
@@ -1015,7 +1018,8 @@ function relatedGrid(locale, currentSlug = "") {
 
 function updateLog(locale) {
   const data = SEO[locale] || SEO.en;
-  return `<div class="update-log">${UPDATE_LOG.map((item)=>`<article><time>${item.date}</time><span>${esc(item.status)}</span><h3>${esc(item.title)}</h3><p>${esc(item.detail)}</p></article>`).join("")}<p class="source-note">${esc(data.ui.sourceNote)}</p></div>`;
+  const log = UPDATE_LOGS[locale] || UPDATE_LOGS.en;
+  return `<div class="update-log">${log.map((item)=>`<article><time datetime="${item.date}">${item.date}</time><span>${esc(item.status)}</span><h3>${esc(item.title)}</h3><p>${esc(item.detail)}</p></article>`).join("")}<p class="source-note">${esc(data.ui.sourceNote)}</p></div>`;
 }
 
 function clusterHub(slug) {
@@ -1048,6 +1052,19 @@ function localizedClusterHub(locale, slug) {
   return `<section class="section deep-index localized-cluster"><div class="section-head"><p class="kicker">${esc(labels.relatedQuestions)}</p><h2>${esc(data.pages[slug].name)}</h2><p>${esc(data.pages[slug].why)}</p></div><div class="authority-grid">${cards}</div></section>`;
 }
 
+const SOURCE_DISPLAY_NAMES = {
+  en: { steam:"Official Steam page", trailer:"Official FLEXUS trailer", devua:"dev.ua developer interview", community:"Official Steam community update", steam15m:"Official Steam wishlist report", steam2m:"Official Steam milestone report" },
+  "zh-cn": { steam:"Steam 官方页面", trailer:"FLEXUS 官方预告片", devua:"dev.ua 开发者采访", community:"Steam 官方社区公告", steam15m:"Steam 官方愿望单报告", steam2m:"Steam 官方里程碑公告" },
+  ja: { steam:"Steam公式ページ", trailer:"FLEXUS公式トレーラー", devua:"dev.ua開発者インタビュー", community:"Steam公式コミュニティ更新", steam15m:"Steam公式ウィッシュリスト報告", steam2m:"Steam公式マイルストーン発表" },
+  ar: { steam:"صفحة Steam الرسمية", trailer:"إعلان FLEXUS الرسمي", devua:"مقابلة المطور على dev.ua", community:"تحديث مجتمع Steam الرسمي", steam15m:"تقرير قائمة الأمنيات الرسمي", steam2m:"إعلان الإنجاز الرسمي على Steam" },
+  tr: { steam:"Resmî Steam sayfası", trailer:"Resmî FLEXUS fragmanı", devua:"dev.ua geliştirici röportajı", community:"Resmî Steam topluluk duyurusu", steam15m:"Resmî Steam istek listesi raporu", steam2m:"Resmî Steam kilometre taşı duyurusu" },
+  uk: { steam:"Офіційна сторінка Steam", trailer:"Офіційний трейлер FLEXUS", devua:"Інтерв’ю розробника для dev.ua", community:"Офіційне оновлення спільноти Steam", steam15m:"Офіційний звіт про списки бажаного", steam2m:"Офіційне оголошення про досягнення" }
+};
+
+function sourceDisplayName(locale, key) {
+  return SOURCE_DISPLAY_NAMES[locale]?.[key] || SOURCE_DISPLAY_NAMES.en[key] || SOURCES[key].name;
+}
+
 function intentPage(locale, slug) {
   const data = SEO[locale] || SEO.en;
   const item = data.pages[slug];
@@ -1071,7 +1088,7 @@ function intentPage(locale, slug) {
   const sourceKeys = slug === "demo" ? ["steam", "devua", "community"] : slug === "news" ? ["steam", "steam15m", "devua"] : ["steam", "trailer"];
   const sourceCards = sourceKeys.map((key) => {
     const source = SOURCES[key];
-    return `<a href="${source.url}" target="_blank" rel="noopener"><span>${esc(source.type)}</span><strong>${esc(source.name)}</strong><b>↗</b></a>`;
+    return `<a href="${source.url}" target="_blank" rel="noopener"><span>${esc(data.ui.sources)}</span><strong>${esc(sourceDisplayName(locale,key))}</strong><b>↗</b></a>`;
   }).join("");
   const currentPath = slug;
   const canonical = localizedUrl(locale, slug);
@@ -1105,7 +1122,7 @@ function intentPage(locale, slug) {
     ${briefingToc}
     <section class="article-body">
       <article>
-        <section class="current-answer" id="current-answer"><p class="kicker">01 · ${esc(labels.currentAnswer)}</p><h2>${esc(item.answer)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p><div class="inline-sources"><span>${esc(labels.sourcesChecked)} · ${esc(formattedVerifiedDate(locale))}</span>${sourceKeys.map((key)=>`<a href="${SOURCES[key].url}" target="_blank" rel="noopener">${esc(SOURCES[key].name)} ↗</a>`).join("")}</div><div class="answer-status"><span>${esc(labels.verificationStatus)}</span><strong>${esc(labels.separated)}</strong><a href="${locale === "en" ? "/editorial-policy/" : localizedPath(locale, "news")}">${esc(labels.methodology)} ↗</a></div></section>
+        <section class="current-answer" id="current-answer"><p class="kicker">01 · ${esc(labels.currentAnswer)}</p><h2>${esc(item.answer)}</h2><div class="editorial-byline"><strong>Dear Passengers Crew Editorial Desk</strong><span>${esc(data.ui.sourceNote)}</span><a href="/editorial-policy/" hreflang="en">${esc(labels.methodology)} ↗</a></div><p class="long-copy">${esc(item.why)}</p><div class="inline-sources"><span>${esc(labels.sourcesChecked)} · ${esc(formattedVerifiedDate(locale))}</span>${sourceKeys.map((key)=>`<a href="${SOURCES[key].url}" target="_blank" rel="noopener">${esc(sourceDisplayName(locale,key))} ↗</a>`).join("")}</div><div class="answer-status"><span>${esc(labels.verificationStatus)}</span><strong>${esc(labels.separated)}</strong><a href="/editorial-policy/" hreflang="en">${esc(labels.methodology)} ↗</a></div></section>
         ${depthMarkup}
         <section class="fact-comparison"><p class="kicker">${esc(labels.evidenceCheck)}</p><h2>${esc(labels.factTitle)}</h2><div class="fact-columns"><div><h3>${esc(data.ui.confirmed)}</h3><ul class="evidence-list">${confirmed}</ul></div><div><h3>${esc(data.ui.unknown)}</h3><ul class="evidence-list">${unknown}</ul></div></div></section>
         ${semanticLinks(locale, `page:${slug}`, data.ui.related)}
@@ -1341,7 +1358,8 @@ html[lang="zh-cn"] .hero h1,html[lang="ja"] .hero h1,html[lang="ar"] .hero h1{fo
 @media(max-width:430px){.header .brand>b{max-width:118px;overflow:hidden;text-overflow:ellipsis}.actions{grid-template-columns:1fr}.hero-copy{padding-top:225px}.hero-facts{grid-template-columns:1fr}.hero-facts>div{min-height:66px;border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}.hero-facts>div:last-child{border-bottom:0}.status-grid{grid-template-columns:1fr}.status-card,.status-card:nth-child(1),.status-card:nth-child(2){grid-column:1;min-height:156px}.mobile-dock span{font-size:8px}}
 .hero-picture{position:absolute;inset:0;z-index:-4}.hero-picture .hero-image{position:static;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.14) contrast(1.05)}.capsule img,.brand-mark img{width:100%;height:auto;object-fit:cover}.brand-mark{overflow:hidden;transform:none!important}.feed-section .section-head .kicker{color:#46515a}.language-board .kicker{color:#ffb12c}.feed-section .feed-card small{color:#46515a}.hero-direct-answer{max-width:900px;margin-top:24px;padding:16px 20px;border-left:4px solid #ff9f0a;background:rgba(4,14,24,.78)}.hero-direct-answer span{display:block;margin-bottom:7px;color:#ffb12c;font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero-direct-answer strong{font-size:clamp(15px,1.5vw,20px);line-height:1.5}
 .feed-section .section-head>p{color:#59636d}.feed-section .section-head h2{color:#0b1729}.feed-section .feed-card{color:#f7fbff}.feed-section .feed-card:after{background:linear-gradient(0deg,rgba(2,9,15,.99) 0%,rgba(2,9,15,.82) 32%,rgba(2,9,15,.14) 72%)}.feed-section .feed-card strong{color:#fff;text-shadow:0 3px 24px rgba(0,0,0,.95)}.feed-section .feed-card span{color:#55f4c4;text-shadow:0 2px 14px rgba(0,0,0,.9)}.feed-section .feed-card small{color:#ffd37a;text-shadow:0 2px 14px rgba(0,0,0,.95)}.dispatch-section .section-head h2,.source-manifest .section-head h2,.dispatch-card h3,.source-manifest-grid strong,.resource-hub .section-head h2,.tool-guide .section-head h2{color:#f7fbff}.manifest-section .section-head h2,.chapter-light h2,.chapter-sand h2{color:#0b1729}.chapter-dark h2{color:#f7fbff}[dir=rtl] .feed-card span,[dir=rtl] .feed-card strong,[dir=rtl] .feed-card small{left:28px;right:28px;text-align:right}
-@media(max-width:760px){.hero-picture .hero-image{object-position:center top}.header .brand small{font-size:8px}.mobile-dock b{font-size:9px}.mobile-dock span{font-size:10px}.primary,.secondary{font-size:11px}.capsule span{font-size:8px}.hero-facts small{font-size:9px}.article-hero{min-height:520px;padding-top:150px;padding-bottom:44px}.article-hero h1{font-size:clamp(40px,12vw,54px)}}
+.editorial-byline{display:grid;gap:8px;margin:24px 0;padding:18px 20px;border-left:3px solid #2ee6a6;background:#eef3f5;color:#0b1729}.editorial-byline strong{font-size:13px;letter-spacing:.04em}.editorial-byline span{font-size:14px;line-height:1.65;color:#46515a}.editorial-byline a{width:max-content;color:#925800;font-size:12px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}a,button,summary,select{cursor:pointer}:focus-visible{outline:3px solid #2ee6a6;outline-offset:4px}
+@media(max-width:760px){.hero-picture .hero-image{object-position:center top}.header .brand>b{font-size:11px}.header .brand small{font-size:9px}.mobile-dock b{font-size:10px}.mobile-dock span{font-size:11px}.primary,.secondary{font-size:12px}.capsule span{font-size:10px}.hero-facts small{font-size:10px}.hero-facts b{font-size:12px}.article-hero{min-height:520px;padding-top:150px;padding-bottom:44px}.article-hero h1{font-size:clamp(40px,12vw,54px)}.editorial-byline{padding:17px 16px}.editorial-byline span{font-size:15px}}
   `;
 }
 const SITE_CSS = styles();
@@ -1350,9 +1368,11 @@ function contentModified(pathname) {
   const parts = pathname.split("/").filter(Boolean);
   const route = languages[parts[0]] && parts[0] !== "en" ? parts.slice(1) : parts;
   if (route[0] === "news" && route[1] && NEWS_CONTENT[route[1]]) return NEWS_CONTENT[route[1]].date;
+  if (route.length === 0 || PAGE_SLUGS.includes(route[0]) || route[0] === "news") return "2026-08-01";
+  if (route[0] === "about" || route[0] === "editorial-policy") return "2026-08-01";
   if (route[0] === "wiki" || route[0] === "tools" || STATIC_SLUGS.includes(route[0])) return "2026-07-30";
   if (route[0] === "media") return TRAILER_PUBLISHED;
-  return LAST_CHECKED;
+  return "2026-07-30";
 }
 
 function sitemap() {
