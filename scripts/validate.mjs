@@ -239,6 +239,21 @@ const englishHome = documents.get("/");
 if (!englishHome.includes('/assets/site.css?v=20260801-2') || !englishHome.includes('rel="preload" href="/assets/site.css')) {
   failures.push({ invalidVersionedAsyncStylesheet: true });
 }
+for (const locale of locales) {
+  const homePath = locale === "en" ? "/" : `/${locale}/`;
+  const homeHtml = documents.get(homePath);
+  for (const siteInfoPath of ["/about/", "/editorial-policy/", "/contact/", "/privacy-policy/"]) {
+    if (!homeHtml.includes(`href="${siteInfoPath}"`)) failures.push({ homePath, missingSiteInformationLink: siteInfoPath });
+  }
+}
+const contactHtml = documents.get("/contact/");
+const privacyHtml = documents.get("/privacy-policy/");
+if (!contactHtml.includes("GitHub issue tracker") || !contactHtml.includes("github.com/foxigaoqian/dearpassengerscrew/issues") || !contactHtml.includes('"@type":"ContactPage"')) {
+  failures.push({ invalidContactPage: true });
+}
+if (!privacyHtml.includes("no user accounts") || !privacyHtml.includes("Cloudflare Privacy Policy") || !privacyHtml.includes('"@type":"WebPage"') || privacyHtml.includes("official visual record")) {
+  failures.push({ invalidPrivacyPage: true });
+}
 const englishHomeH2 = countTags(englishHome, "h2");
 const englishHomeSections = countTags(englishHome, "section");
 const untranslatedShellLabels = [
@@ -385,7 +400,7 @@ if (sitemap.includes("https://dearpassengerscrew.com/en/")) {
   failures.push({ sitemapContainsLegacyEnglishPrefix: true });
 }
 
-for (const [path, expectedLastmod] of [["/", "2026-08-01"], ["/about/", "2026-08-01"], ["/editorial-policy/", "2026-08-01"], ["/corrections/", "2026-07-30"], ["/media/", "2026-07-14"]]) {
+for (const [path, expectedLastmod] of [["/", "2026-08-01"], ["/about/", "2026-08-01"], ["/editorial-policy/", "2026-08-01"], ["/corrections/", "2026-07-30"], ["/contact/", "2026-08-01"], ["/privacy-policy/", "2026-08-01"], ["/media/", "2026-07-14"]]) {
   if (sitemapEntries.get(path) !== expectedLastmod) failures.push({ path, sitemapLastmod: sitemapEntries.get(path), expectedLastmod });
 }
 
@@ -417,7 +432,7 @@ if (imageSitemapResponse.status !== 200 || (imageSitemap.match(/<image:image>/g)
 
 const llmsResponse = await worker.fetch(new Request("https://dearpassengerscrew.com/llms.txt"));
 const llms = await llmsResponse.text();
-if (llmsResponse.status !== 200 || !llms.includes("Independent, unofficial") || !llms.includes("/editorial-policy/")) {
+if (llmsResponse.status !== 200 || !llms.includes("Independent, unofficial") || !llms.includes("/editorial-policy/") || !llms.includes("/contact/") || !llms.includes("/privacy-policy/")) {
   failures.push({ invalidLlmsText: true });
 }
 
