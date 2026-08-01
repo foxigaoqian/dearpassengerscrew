@@ -1,4 +1,5 @@
 import worker from "../src/index.js";
+import fs from "node:fs/promises";
 import { PAGE_SLUGS, TOOL_SLUGS } from "../src/seo-content.js";
 import {
   AUTHORITY_SLUGS,
@@ -160,9 +161,12 @@ for (const path of paths) {
   if (isLocaleHome && (
     !html.includes('class="hero-image"') ||
     !html.includes('fetchpriority="high"') ||
-    !html.includes('<link rel="preload" as="image"')
+    !html.includes('<link rel="preload" as="image"') ||
+    !html.includes('<picture class="hero-picture">') ||
+    html.includes('fonts.googleapis.com') ||
+    html.includes('<link rel="stylesheet"')
   )) {
-    failures.push({ path, missingLcpImagePriority: true });
+    failures.push({ path, invalidLcpOrRenderBlockingSetup: true });
   }
 
   if (title && titles.has(title)) {
@@ -355,6 +359,14 @@ if (
   css.length < 50_000
 ) {
   failures.push({ invalidSharedStylesheet: true, cssBytes: css.length });
+}
+
+for (const asset of ["public/media/hero-1920.webp", "public/media/hero-mobile.webp", "public/media/game-header.webp", "public/favicon.png", "public/favicon.ico"]) {
+  try {
+    await fs.access(new URL(`../${asset}`, import.meta.url));
+  } catch {
+    failures.push({ missingStaticAsset: asset });
+  }
 }
 
 const missingResponse = await worker.fetch(

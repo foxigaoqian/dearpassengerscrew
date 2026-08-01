@@ -25,6 +25,7 @@ export const NEWS_SLUGS = [
   "700k-wishlists",
   "one-million-wishlists",
   "one-point-five-million-wishlists",
+  "two-million-wishlists-top-six",
   "gamescom-demo-plans"
 ];
 
@@ -56,6 +57,11 @@ export const SOURCES = {
     url: "https://store.steampowered.com/news/app/4534960/view/698770449667982669",
     type: "FLEXUS announcement"
   },
+  steam2m: {
+    name: "2,000,000 wishlists and Steam Top 6",
+    url: "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1839676055888602",
+    type: "FLEXUS announcement"
+  },
   devua: {
     name: "FLEXUS interview reported by dev.ua",
     url: "https://dev.ua/en/news/1-billion-dear-passengers-1784294360",
@@ -65,6 +71,11 @@ export const SOURCES = {
     name: "Official Steam Community hub",
     url: "https://steamcommunity.com/app/4534960",
     type: "Official community channel"
+  },
+  githubIssues: {
+    name: "GitHub corrections and source submissions",
+    url: "https://github.com/foxigaoqian/dearpassengerscrew/issues",
+    type: "Correction channel"
   }
 };
 
@@ -509,6 +520,18 @@ export const NEWS_CONTENT = {
     ],
     ["steam15m", "steam"]
   ),
+  "two-million-wishlists-top-six": news(
+    "Two million wishlists",
+    "Dear Passengers Reaches 2 Million Wishlists and Steam Top 6",
+    "FLEXUS reported two million Dear Passengers wishlists and a Top 6 position among Steam's most-wishlisted games on July 31, 2026.",
+    "FLEXUS says Dear Passengers has passed two million Steam wishlists and reached the platform's Top 6 most-wishlisted games. The figures are developer-reported, not a public live Steam counter.",
+    "2026-07-31",
+    [
+      { heading: "The latest official milestone", paragraphs: ["FLEXUS published the two-million figure through the game's official Steam news feed on July 31, 2026. The same announcement described Dear Passengers as number six among Steam's most-wishlisted games.", "Wishlist totals are private publisher data. This site can verify that FLEXUS made the statement, but cannot independently audit a live Valve counter."] },
+      { heading: "The product status did not change", paragraphs: ["The announcement did not publish an exact release date, price, maximum crew size or live public-demo download. The verified store status therefore remains: Windows PC, 2026, single-player and online co-op.", "Milestone coverage is linked to the evergreen release, demo and multiplayer pages so readers can distinguish popularity news from product availability."] }
+    ],
+    ["steam2m", "steam"]
+  ),
   "gamescom-demo-plans": news(
     "Gamescom demo",
     "FLEXUS Plans a Gamescom Demo and Later Public Demo",
@@ -561,7 +584,7 @@ export const STATIC_CONTENT = {
       { heading: "Contact", paragraphs: ["Until a dedicated mailbox is configured, factual issues can be submitted through the GitHub repository issue tracker. Do not send account credentials, private keys or personal data."] }
     ],
     [],
-    ["steam"]
+    ["steam", "githubIssues"]
   )
 };
 

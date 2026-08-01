@@ -26,9 +26,9 @@ export const TOOL_SLUGS = [
 export const UPDATE_LOG = [
   {
     date: "2026-08-01",
-    status: "Verified",
-    title: "Official Steam record checked again",
-    detail: "The 2026 release window, Windows support, single-player, online co-op, six interface languages and minimum PC requirements remain unchanged. No public demo, exact date, price or maximum crew size is listed."
+    status: "Published",
+    title: "Two-million-wishlist and Steam Top 6 report added",
+    detail: "The July 31 FLEXUS announcement was verified and added to the news archive. Core store fields remain unchanged: 2026, Windows, single-player and online co-op; exact date, price, public demo and maximum crew size remain unannounced."
   },
   {
     date: "2026-07-31",
@@ -71,7 +71,7 @@ const en = {
       confirmed: ["The official Steam page has no Download Demo button.", "The full game is not yet available.", "No public demo build is linked by the official store page."],
       unknown: ["Whether a time-limited festival demo will be released", "Whether playtests will be public or invite-only"],
       why: "Unreleased games attract fake download pages. A legitimate PC demo should be distributed by the developer through Steam or another clearly verified official channel.",
-      faq: [["Can I download the demo from another website?", "Do not trust an executable unless FLEXUS links to it from an official channel."], ["Is there a Steam playtest?", "No public Steam playtest is visible right now."], ["Will there be a demo later?", "It is possible, but not confirmed on the current store page."]]
+      faq: [["Can I download the demo from another website?", "Do not trust an executable unless FLEXUS links to it from an official channel."], ["Is there a Steam playtest?", "No public Steam playtest is visible right now."], ["Will there be a demo later?", "A FLEXUS co-founder said a public demo would follow the Gamescom build, but no public date or download is available yet."]]
     },
     multiplayer: {
       name: "Multiplayer", title: "Dear Passengers Multiplayer and Online Co-op Explained",

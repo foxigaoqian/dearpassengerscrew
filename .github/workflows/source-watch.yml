@@ -30,7 +30,7 @@ jobs:
           if [ -z "$existing" ]; then
             gh issue create \
               --title "$title" \
-              --body "Steam fields changed: $CHANGED_FIELDS. Recheck the source ledger, affected guides, sitemap lastmod dates, and data/official-status.json before publishing."
+              --body "Official Steam source fields changed: $CHANGED_FIELDS. Recheck the source ledger, affected guides, sitemap lastmod dates, and data/official-status.json before publishing."
           else
             gh issue comment "$existing" \
               --body "The daily source check still detects changes in: $CHANGED_FIELDS."

@@ -13,22 +13,22 @@ Independent multilingual game-intelligence hub for **Dear Passengers**, built as
 
 ## What is included
 
-- 133 validated indexable URLs
+- 134 validated indexable URLs
 - Six localized editions across English, Simplified Chinese, Japanese, Arabic, Turkish and Ukrainian
 - 11 dedicated search-intent guides in every language: release date, demo, multiplayer, player count, platforms, gameplay, trailer, characters, system requirements, news and wiki
 - Long-form English intent briefings with page-specific evidence, two official screenshots, direct answers and source-aware FAQs
 - Six practical player tools in every language: PC compatibility, crew compatibility, release countdown, requirements comparison, live status tracker and role quiz
 - Eight additional high-intent English briefings: price, download, Steam, solo, crossplay, languages, developer and confirmed features
-- Eight source-aware wiki entries and five dated news reports
+- Eight source-aware wiki entries and six dated news reports, including the July 31 two-million-wishlist / Steam Top 6 announcement
 - Official media archive with ten full-resolution Steam screenshots and the announcement trailer
 - Expanded English homepage with a natural-language game overview, four intent briefings, four official cabin feeds, PC manifest, language status, verified dispatches and a first-party source ledger
 - Official Steam media and a click-to-play privacy-enhanced trailer facade
 - Confirmed/unknown evidence labels, source links, last-checked dates and update history
-- SEO essentials: 133 unique titles and descriptions, canonical URLs, reciprocal page-level hreflang, corrected Article/NewsArticle/VideoGame/VideoObject/Breadcrumb/CollectionPage JSON-LD, XML sitemap, image sitemap and robots
+- SEO essentials: 134 unique titles and descriptions, canonical URLs, reciprocal page-level hreflang, corrected Article/NewsArticle/VideoGame/VideoObject/Breadcrumb/CollectionPage JSON-LD, page-specific sitemap dates, image sitemap and robots
 - Search-engine-readable `/llms.txt` index for AI discovery (supplementary, not treated as a ranking factor)
-- Discoverable high-priority hero imagery, explicit image dimensions, below-fold lazy loading and an official-media image sitemap
+- Responsive self-hosted WebP hero imagery, branded favicon assets, explicit image dimensions, below-fold lazy loading and an official-media image sitemap
 - One-hop HTTPS, host, locale-case and repeated-slash normalization, with the public `workers.dev` duplicate disabled
-- Shared immutable stylesheet caching, HTML stale-while-revalidate caching and centralized CSP/HSTS/frame/referrer/permissions headers
+- Inlined critical site CSS, no external font dependency, HTML stale-while-revalidate caching and centralized CSP/HSTS/frame/referrer/permissions headers
 - Dense internal-link architecture connecting guides, tools and localized editions
 - A maintained semantic link graph with contextual anchors, topic-cluster feedback loops, full footer navigation and crawl-depth auditing
 - Automated route, title, canonical, exact sitemap, image sitemap, robots, structured-data semantics, security-header and 404 validation in GitHub Actions

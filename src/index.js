@@ -20,8 +20,10 @@ const STEAM = "https://store.steampowered.com/app/4534960/Dear_Passengers/";
 const TRAILER = "https://www.youtube-nocookie.com/embed/hEsuA_rqTxk";
 const TRAILER_PAGE = "https://www.youtube.com/watch?v=hEsuA_rqTxk";
 const TRAILER_PUBLISHED = "2026-07-14";
-const HERO = "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4534960/12ea170121330ac9040a00257436552a9b2368a1/ss_12ea170121330ac9040a00257436552a9b2368a1.1920x1080.jpg?t=1784401335";
-const CAPSULE = "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4534960/7ddef53346afe3e3d4d479dbed740cdb38cfe09a/header.jpg?t=1784401335";
+const HERO = `${SITE}/media/hero-1920.webp`;
+const HERO_MOBILE = `${SITE}/media/hero-mobile.webp`;
+const CAPSULE = `${SITE}/media/game-header.webp`;
+const BRAND_ICON = `${SITE}/favicon.png`;
 const TRAILER_ART = "https://i.ytimg.com/vi/hEsuA_rqTxk/maxresdefault.jpg";
 const SITE_ORGANIZATION_ID = `${SITE}/#organization`;
 const GAME_ID = `${SITE}/#dear-passengers-game`;
@@ -280,7 +282,11 @@ function alternateLinks(slug = "") {
 }
 
 function iconLinks() {
-  return `<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate icon" href="${CAPSULE}" type="image/jpeg"><link rel="apple-touch-icon" href="${CAPSULE}"><link rel="preconnect" href="https://shared.fastly.steamstatic.com" crossorigin><link rel="preconnect" href="https://shared.akamai.steamstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="image" href="${HERO}" fetchpriority="high"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">`;
+  return `<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png"><link rel="preload" as="image" href="${HERO_MOBILE}" type="image/webp" media="(max-width:760px)" fetchpriority="high"><link rel="preload" as="image" href="${HERO}" type="image/webp" media="(min-width:761px)" fetchpriority="high">`;
+}
+
+function styleTag() {
+  return `<style>${SITE_CSS}</style><noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`;
 }
 
 function siteOrganizationSchema() {
@@ -289,7 +295,7 @@ function siteOrganizationSchema() {
     "@id": SITE_ORGANIZATION_ID,
     name: "Dear Passengers Crew Editorial Team",
     url: SITE,
-    logo: `${SITE}/favicon.svg`,
+    logo: BRAND_ICON,
     publishingPrinciples: `${SITE}/editorial-policy/`,
     correctionsPolicy: `${SITE}/corrections/`
   };
@@ -325,7 +331,7 @@ function videoSchema() {
   };
 }
 
-function trailerFacade(title = "Play the Dear Passengers official announcement trailer") {
+function trailerFacade(title = "Play official trailer") {
   return `<button class="video-facade" type="button" data-trailer="${TRAILER}" aria-label="${esc(title)}"><img src="${TRAILER_ART}" alt="" width="1280" height="720" loading="lazy" decoding="async"><span><b>▶</b> PLAY OFFICIAL TRAILER</span></button><noscript><a class="video-fallback" href="${TRAILER_PAGE}" target="_blank" rel="noopener">Watch the official trailer on YouTube ↗</a></noscript>`;
 }
 
@@ -377,7 +383,7 @@ function shellScript() {
         queued=false;
       };
       addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(updateProgress)}},{passive:true});
-      updateProgress();
+      requestAnimationFrame(updateProgress);
     }
     document.querySelectorAll('[data-trailer]').forEach(button=>button.addEventListener('click',()=>{
       const iframe=document.createElement('iframe');
@@ -598,7 +604,8 @@ function page(locale) {
 <html lang="${locale}" dir="${lang.dir}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}">
   <title>${esc(t.title)}</title>
   <meta name="description" content="${esc(t.description)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
@@ -614,19 +621,19 @@ function page(locale) {
   <meta property="og:image" content="${HERO}">
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
-  <link rel="stylesheet" href="/assets/site.css?v=20260801">
+  ${styleTag()}
 </head>
 <body class="home-page">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="ticker" aria-hidden="true"><div>${[...t.ticker, ...t.ticker, ...t.ticker].map((x) => `<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <div class="scroll-progress" aria-hidden="true"><i></i></div>
   <header class="header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true" width="460" height="215"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
     <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
     <nav id="site-navigation" aria-label="Primary navigation">${locale === "en"
       ? '<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/multiplayer/">Multiplayer</a><a href="/gameplay/">Gameplay</a><a href="/wiki/">Wiki</a>'
       : [["release-date", t.nav[0]], ["demo", t.nav[1]], ["gameplay", t.nav[2]], ["multiplayer", t.nav[3]]].map(([slug, item]) => `<a href="${localizedPath(locale, slug)}">${esc(item)}</a>`).join("")}</nav>
-    <div class="language"><button class="language-button" type="button" aria-label="Choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${langMenu}</div></div>
+    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${langMenu}</div></div>
   </header>
 
   <nav class="mobile-dock" aria-label="Quick page navigation">
@@ -635,7 +642,7 @@ function page(locale) {
 
   <main id="main-content">
     <section class="hero">
-      <img class="hero-image" src="${HERO}" alt="Dear Passengers crew managing a chaotic flight" width="1920" height="1080" fetchpriority="high" decoding="async"><div class="hero-bg"></div><div class="hero-grid"></div>
+      <picture class="hero-picture"><source media="(max-width:760px)" srcset="${HERO_MOBILE}" type="image/webp"><img class="hero-image" src="${HERO}" alt="Dear Passengers crew managing a chaotic flight" width="1920" height="1080" fetchpriority="high" decoding="async"></picture><div class="hero-bg"></div><div class="hero-grid"></div>
       <div class="floating-baggage" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="hero-copy">
         <p class="eyebrow"><i></i>${esc(t.eyebrow)}</p>
@@ -784,10 +791,10 @@ function pageHeader(locale, currentPath = "") {
     : `<a href="${localizedPath(locale, "release-date")}">${esc(data.pages["release-date"].name)}</a><a href="${localizedPath(locale, "demo")}">${esc(data.pages.demo.name)}</a><a href="${localizedPath(locale, "multiplayer")}">${esc(data.pages.multiplayer.name)}</a><a href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)}</a>`;
   return `<a class="skip-link" href="#main-content">Skip to main content</a><div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header inner-header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true" width="460" height="215"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
     <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
     <nav id="site-navigation" aria-label="Primary navigation">${nav}</nav>
-    <div class="language"><button class="language-button" type="button" aria-label="Choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
+    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
   </header>`;
 }
 
@@ -804,27 +811,22 @@ function pageFooter(locale) {
   const questions = [
     ["how-many-players", data.pages["how-many-players"].name],
     ["platforms", data.pages.platforms.name],
-    ["characters", data.pages.characters.name],
-    ["trailer", data.pages.trailer.name],
     ["news", data.pages.news.name]
   ].map(([slug, label]) => `<a data-sitewide-link="true" href="${localizedPath(locale, slug)}">${esc(label)}</a>`).join("");
-  const tools = ["can-i-run-it", "crew-check", "countdown", "status-tracker"].map((slug) =>
+  const tools = ["can-i-run-it", "status-tracker"].map((slug) =>
     `<a data-sitewide-link="true" href="${localizedPath(locale, `tools/${slug}`)}">${esc(data.tools[slug][2])}</a>`
   ).join("");
   const intelligence = locale === "en" ? [
-    ["/price/", "Price status"],
-    ["/download/", "Safe download"],
-    ["/developer/", "FLEXUS profile"],
-    ["/media/", "Official media"],
+    ["/editorial-policy/", "Editorial policy"],
     ["/corrections/", "Report a correction"]
   ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true" width="460" height="215"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">COMPLETE SITE INDEX</a></div></footer>`;
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">COMPLETE SITE INDEX</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
   const data = SEO[locale] || SEO.en;
-  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,6).map((slug)=>`<a class="mini-link" href="${localizedPath(locale, slug)}"><span>GUIDE</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
-  const tools = TOOL_SLUGS.slice(0,3).map((slug)=>`<a class="mini-link tool-link" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
+  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,4).map((slug)=>`<a class="mini-link" href="${localizedPath(locale, slug)}"><span>GUIDE</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
+  const tools = TOOL_SLUGS.slice(0,2).map((slug)=>`<a class="mini-link tool-link" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
   return `<div class="mini-grid">${pages}${tools}</div>`;
 }
 
@@ -874,7 +876,7 @@ function intentPage(locale, slug) {
   const schema = {
     "@context":"https://schema.org",
     "@graph":[
-      {"@type":"Article","@id":`${canonical}#article`,headline:item.title,description:item.meta,inLanguage:locale,dateModified:LAST_CHECKED,mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":GAME_ID},citation:sourceKeys.map((key)=>SOURCES[key].url)},
+      {"@type":"Article","@id":`${canonical}#article`,headline:item.title,description:item.meta,inLanguage:locale,dateModified:contentModified(new URL(canonical).pathname),mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":GAME_ID},citation:sourceKeys.map((key)=>SOURCES[key].url)},
       {"@type":"BreadcrumbList",itemListElement:[
         {"@type":"ListItem",position:1,name:data.ui.home,item:localizedUrl(locale)},
         {"@type":"ListItem",position:2,name:item.name,item:canonical}
@@ -885,15 +887,16 @@ function intentPage(locale, slug) {
     ]
   };
   return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}">
   <title>${esc(item.title)}</title><meta name="description" content="${esc(item.meta)}">
   <meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#06101a">
   <link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(slug)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", slug)}">
   <meta property="og:type" content="article"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.meta)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
-  <script type="application/ld+json">${JSON.stringify(schema)}</script><link rel="stylesheet" href="/assets/site.css?v=20260801"></head><body>
+  <script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>
   ${pageHeader(locale,currentPath)}
   <main class="inner-main" id="main-content">
-    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>OFFICIAL SOURCE MONITORING · DAILY</span><span>STATUS · VERIFIED</span></div></section>
+    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>OFFICIAL SOURCE MONITORING · DAILY</span><span>STATUS · VERIFIED</span></div><div class="hero-direct-answer"><span>${esc(data.ui.verified)}</span><strong>${esc(item.answer)}</strong></div></section>
     ${briefingToc}
     <section class="article-body">
       <article>
@@ -965,7 +968,7 @@ function deepContentPage(kind, slug) {
   const schema = {
     "@context":"https://schema.org",
     "@graph":[
-      {"@type":articleType,"@id":`${canonical}#article`,headline:item.title,description:item.description,inLanguage:"en",...(item.date?{datePublished:item.date}:{}),dateModified:LAST_CHECKED,mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":GAME_ID},citation:item.sources.map((key)=>SOURCES[key].url)},
+      {"@type":articleType,"@id":`${canonical}#article`,headline:item.title,description:item.description,inLanguage:"en",...(item.date?{datePublished:item.date}:{}),dateModified:contentModified(new URL(canonical).pathname),mainEntityOfPage:{"@type":"WebPage","@id":canonical},image:{"@type":"ImageObject",url:HERO,width:1920,height:1080},author:{"@id":SITE_ORGANIZATION_ID},publisher:{"@id":SITE_ORGANIZATION_ID},about:{"@id":GAME_ID},citation:item.sources.map((key)=>SOURCES[key].url)},
       {"@type":"BreadcrumbList",itemListElement:breadcrumbElements},
       ...(item.faq?.length ? [{"@type":"FAQPage",mainEntity:item.faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))}] : []),
       siteOrganizationSchema(),
@@ -976,7 +979,7 @@ function deepContentPage(kind, slug) {
   <title>${esc(item.title)}</title><meta name="description" content="${esc(item.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}">
   <meta property="og:type" content="${kind === "news" ? "article" : "website"}"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
-  <script type="application/ld+json">${JSON.stringify(schema)}</script><link rel="stylesheet" href="/assets/site.css?v=20260801"></head><body>
+  <script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>
   ${pageHeader("en","")}
   <main class="inner-main" id="main-content"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} PLAYER GUIDE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${esc(formattedVerifiedDate("en"))}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
   <section class="answer-strip"><span>DIRECT ANSWER</span><strong>${esc(item.answer)}</strong></section>
@@ -989,7 +992,7 @@ function mediaPage() {
   const canonical = `${SITE}/media/`;
   const gallery = OFFICIAL_MEDIA.map(([name,url],index)=>`<figure class="media-tile"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Official Dear Passengers screenshot: ${esc(name)}" width="1920" height="1080" loading="lazy" decoding="async"><span>OFFICIAL SCREENSHOT · ${String(index+1).padStart(2,"0")}</span><figcaption>${esc(name)}</figcaption></a></figure>`).join("");
   const schema = {"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":canonical,name:"Dear Passengers Official Media Archive",description:"Official screenshots and announcement trailer published by FLEXUS via Steam.",url:canonical,inLanguage:"en",about:{"@id":GAME_ID},publisher:{"@id":SITE_ORGANIZATION_ID},mainEntity:[videoSchema(),...OFFICIAL_MEDIA.map(([name,url])=>({"@type":"ImageObject",name,contentUrl:url,width:1920,height:1080,creditText:"FLEXUS via Steam"}))]},videoSchema(),siteOrganizationSchema(),gameSchema()]};
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script><link rel="stylesheet" href="/assets/site.css?v=20260801"></head><body>${pageHeader("en","")}<main class="inner-main" id="main-content">
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>${pageHeader("en","")}<main class="inner-main" id="main-content">
   <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots and trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${esc(formattedVerifiedDate("en"))}</span></div></section>
   <section class="section media-archive"><div class="media-grid authority-video"><div class="video">${trailerFacade()}</div><div class="media-copy"><p class="kicker">PRIMARY RECORDING</p><h2>Official announcement trailer</h2><p>Edited official footage establishes the game's cockpit-and-cabin fantasy. It should not be treated as a frame-by-frame promise of final controls or event frequency.</p><a class="primary" href="${TRAILER_PAGE}" target="_blank" rel="noopener">WATCH ON YOUTUBE ↗</a></div></div><div class="media-wall">${gallery}</div></section>
   <div class="section compact-section media-semantic">${semanticLinks("en", "media:media", "Read the evidence behind the footage.")}</div>
@@ -1061,7 +1064,7 @@ function toolPage(locale, slug) {
   const tool = data.tools[slug];
   const canonical = localizedUrl(locale, `tools/${slug}`);
   const schema = {"@context":"https://schema.org","@type":"SoftwareApplication",name:tool[0],description:tool[1],applicationCategory:"GameApplication",operatingSystem:"Web",url:canonical};
-  return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", `tools/${slug}`)}"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script><link rel="stylesheet" href="/assets/site.css?v=20260801"></head><body>
+  return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", `tools/${slug}`)}"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>
   ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main" id="main-content"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
   <section class="tool-stage">${toolMarkup(locale,slug)}</section>
   ${toolGuide(locale,slug)}
@@ -1129,9 +1132,20 @@ html[lang="zh-cn"] .hero h1,html[lang="ja"] .hero h1,html[lang="ar"] .hero h1{fo
 .hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-4;filter:saturate(1.14) contrast(1.05)}.hero-bg{background-image:linear-gradient(90deg,rgba(2,8,16,.99) 0%,rgba(3,12,22,.88) 34%,rgba(3,12,22,.08) 72%,rgba(3,12,22,.42) 100%),linear-gradient(0deg,#06101a 0%,transparent 38%)!important;filter:none!important;transform:none!important}.video-facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;overflow:hidden;background:#050c15;color:#fff}.video-facade img{width:100%;height:100%;object-fit:cover;filter:saturate(.95) brightness(.74);transition:transform .35s ease,filter .35s ease}.video-facade span{position:absolute;left:50%;top:50%;display:flex;align-items:center;gap:12px;min-height:54px;padding:0 20px;border:1px solid rgba(255,255,255,.65);border-radius:999px;background:rgba(4,13,23,.78);font-size:11px;font-weight:800;letter-spacing:.08em;transform:translate(-50%,-50%);white-space:nowrap}.video-facade b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#ff9f0a;color:#07111b}.video-facade:hover img{transform:scale(1.025);filter:saturate(1.05) brightness(.62)}.video-fallback{position:absolute;left:20px;bottom:20px}.media-credit{color:#a6b3c0;font-size:12px}.footer-bottom{color:#a6b3c0;font-size:12px}.source-link{min-height:44px;display:flex;align-items:center}.inline-sources{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;padding:18px 0;border-top:1px solid #b7b0a7;border-bottom:1px solid #b7b0a7}.inline-sources span{width:100%;font-size:9px;font-weight:800;letter-spacing:.12em;color:#76500e}.inline-sources a{min-height:44px;display:flex;align-items:center;padding:0 13px;border:1px solid #9f978b;color:#7c4304;font-size:12px;font-weight:700}html{overscroll-behavior-y:auto}.feed-grid,.manifest-section,.dispatch-section,.resource-hub{content-visibility:auto;contain-intrinsic-size:800px}
 @media(max-width:760px){.hero-image{object-position:58% top}.hero-bg{background-image:linear-gradient(0deg,#06101a 1%,rgba(2,10,18,.16) 45%,rgba(2,10,18,.88) 100%),linear-gradient(90deg,rgba(2,10,18,.4),transparent 75%)!important}.header,.mobile-dock{backdrop-filter:none;background:#071522}}
 @media(max-width:430px){.header .brand>b{max-width:118px;overflow:hidden;text-overflow:ellipsis}.actions{grid-template-columns:1fr}.hero-copy{padding-top:225px}.hero-facts{grid-template-columns:1fr}.hero-facts>div{min-height:66px;border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}.hero-facts>div:last-child{border-bottom:0}.status-grid{grid-template-columns:1fr}.status-card,.status-card:nth-child(1),.status-card:nth-child(2){grid-column:1;min-height:156px}.mobile-dock span{font-size:8px}}
+.hero-picture{position:absolute;inset:0;z-index:-4}.hero-picture .hero-image{position:static;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.14) contrast(1.05)}.capsule img,.brand-mark img{width:100%;height:auto;object-fit:cover}.brand-mark{overflow:hidden;transform:none!important}.feed-section .section-head .kicker{color:#46515a}.language-board .kicker{color:#ffb12c}.feed-section .feed-card small{color:#46515a}.hero-direct-answer{max-width:900px;margin-top:24px;padding:16px 20px;border-left:4px solid #ff9f0a;background:rgba(4,14,24,.78)}.hero-direct-answer span{display:block;margin-bottom:7px;color:#ffb12c;font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero-direct-answer strong{font-size:clamp(15px,1.5vw,20px);line-height:1.5}
+@media(max-width:760px){.hero-picture .hero-image{object-position:center top}.header .brand small{font-size:8px}.mobile-dock b{font-size:9px}.mobile-dock span{font-size:10px}.primary,.secondary{font-size:11px}.capsule span{font-size:8px}.hero-facts small{font-size:9px}.article-hero{min-height:520px;padding-top:150px;padding-bottom:44px}.article-hero h1{font-size:clamp(40px,12vw,54px)}}
   `;
 }
 const SITE_CSS = styles();
+
+function contentModified(pathname) {
+  const parts = pathname.split("/").filter(Boolean);
+  const route = languages[parts[0]] && parts[0] !== "en" ? parts.slice(1) : parts;
+  if (route[0] === "news" && route[1] && NEWS_CONTENT[route[1]]) return NEWS_CONTENT[route[1]].date;
+  if (route[0] === "wiki" || route[0] === "tools" || STATIC_SLUGS.includes(route[0])) return "2026-07-30";
+  if (route[0] === "media") return TRAILER_PUBLISHED;
+  return LAST_CHECKED;
+}
 
 function sitemap() {
   const entries = [];
@@ -1145,7 +1159,7 @@ function sitemap() {
   NEWS_SLUGS.forEach((slug) => entries.push([localizedUrl("en", `news/${slug}`), "0.8"]));
   STATIC_SLUGS.forEach((slug) => entries.push([localizedUrl("en", slug), "0.5"]));
   entries.push([localizedUrl("en", "media"), "0.8"]);
-  const urls = entries.map(([loc]) => `<url><loc>${loc}</loc><lastmod>${LAST_CHECKED}</lastmod></url>`).join("");
+  const urls = entries.map(([loc]) => `<url><loc>${loc}</loc><lastmod>${contentModified(new URL(loc).pathname)}</lastmod></url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`;
 }
 
@@ -1166,21 +1180,21 @@ function llmsText() {
 > Independent, unofficial and source-led player guide for the FLEXUS game Dear Passengers.
 
 ## Primary entry points
-- Home: ${SITE}/
-- Release date: ${SITE}/release-date/
-- Demo status: ${SITE}/demo/
-- Multiplayer: ${SITE}/multiplayer/
-- Player count: ${SITE}/how-many-players/
-- Platforms: ${SITE}/platforms/
-- System requirements: ${SITE}/system-requirements/
-- Official media archive: ${SITE}/media/
-- News: ${SITE}/news/
-- Wiki: ${SITE}/wiki/
+- [Home](${SITE}/)
+- [Release date](${SITE}/release-date/)
+- [Demo status](${SITE}/demo/)
+- [Multiplayer](${SITE}/multiplayer/)
+- [Player count](${SITE}/how-many-players/)
+- [Platforms](${SITE}/platforms/)
+- [System requirements](${SITE}/system-requirements/)
+- [Official media archive](${SITE}/media/)
+- [News](${SITE}/news/)
+- [Wiki](${SITE}/wiki/)
 
 ## Editorial controls
-- Editorial policy: ${SITE}/editorial-policy/
-- Corrections: ${SITE}/corrections/
-- XML sitemap: ${SITE}/sitemap.xml
+- [Editorial policy](${SITE}/editorial-policy/)
+- [Corrections](${SITE}/corrections/)
+- [XML sitemap](${SITE}/sitemap.xml)
 
 Confirmed facts are separated from observations, attributed developer statements and unknowns. The official Steam listing remains the final source for purchasing and release information.
 `;
@@ -1192,15 +1206,15 @@ const SECURITY_HEADERS = {
   "x-frame-options": "DENY",
   "referrer-policy": "strict-origin-when-cross-origin",
   "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
-  "content-security-policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https://shared.fastly.steamstatic.com https://shared.akamai.steamstatic.com https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src 'self'; upgrade-insecure-requests"
+  "content-security-policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https://shared.fastly.steamstatic.com https://shared.akamai.steamstatic.com https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; upgrade-insecure-requests"
 };
 
-function responseHeaders(contentType, cacheControl = "public,max-age=300,s-maxage=3600,stale-while-revalidate=86400") {
+function responseHeaders(contentType, cacheControl = "public,max-age=300,s-maxage=3600,stale-while-revalidate=86400", modified = LAST_CHECKED) {
   return {
     ...SECURITY_HEADERS,
     "content-type": contentType,
     "cache-control": cacheControl,
-    "last-modified": new Date(`${LAST_CHECKED}T00:00:00Z`).toUTCString()
+    "last-modified": new Date(`${modified}T00:00:00Z`).toUTCString()
   };
 }
 
@@ -1280,7 +1294,7 @@ export default {
       return new Response("Not Found", { status: 404, headers: { ...responseHeaders("text/plain; charset=utf-8", "no-store"), "x-robots-tag": "noindex" } });
     }
     return new Response(html, {
-      headers: responseHeaders("text/html; charset=utf-8")
+      headers: responseHeaders("text/html; charset=utf-8", undefined, contentModified(url.pathname))
     });
   }
 };

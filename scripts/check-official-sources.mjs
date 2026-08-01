@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 
 const APP_ID = 4534960;
 const API = `https://store.steampowered.com/api/appdetails?appids=${APP_ID}&l=english`;
+const NEWS_API = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${APP_ID}&count=20&maxlength=1000&format=json`;
 const SNAPSHOT_URL = new URL("../data/official-status.json", import.meta.url);
 
 const clean = (value = "") =>
@@ -33,12 +34,17 @@ const minimumLines = (value = "") => {
     .filter(Boolean);
 };
 
-const response = await fetch(API, {
-  headers: { "user-agent": "DearPassengersCrewSourceMonitor/1.0" }
-});
+const headers = { "user-agent": "DearPassengersCrewSourceMonitor/1.0" };
+const [response, newsResponse] = await Promise.all([
+  fetch(API, { headers }),
+  fetch(NEWS_API, { headers })
+]);
 
 if (!response.ok) {
   throw new Error(`Steam source check failed with HTTP ${response.status}`);
+}
+if (!newsResponse.ok) {
+  throw new Error(`Steam news check failed with HTTP ${newsResponse.status}`);
 }
 
 const payload = await response.json();
@@ -48,6 +54,15 @@ if (!record?.success || !record.data) {
 }
 
 const data = record.data;
+const newsPayload = await newsResponse.json();
+const latestOfficialNews = (newsPayload.appnews?.newsitems || [])
+  .filter((item) => item.feedlabel === "Community Announcements")
+  .map((item) => ({
+    gid: String(item.gid),
+    title: clean(item.title),
+    date: new Date(item.date * 1000).toISOString().slice(0, 10),
+    url: clean(item.url)
+  }))[0] || null;
 const live = {
   appId: APP_ID,
   name: data.name,
@@ -61,7 +76,8 @@ const live = {
   },
   categories: (data.categories || []).map((item) => clean(item.description)).filter(Boolean).sort(),
   interfaceLanguages: languageNames(data.supported_languages),
-  minimumRequirements: minimumLines(data.pc_requirements?.minimum)
+  minimumRequirements: minimumLines(data.pc_requirements?.minimum),
+  latestOfficialNews
 };
 
 const stored = JSON.parse(await fs.readFile(SNAPSHOT_URL, "utf8"));
