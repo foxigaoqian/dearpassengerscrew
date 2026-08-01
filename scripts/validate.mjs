@@ -10,6 +10,7 @@ import { INTENT_DEPTH } from "../src/intent-depth.js";
 import { LINK_GRAPH, LINK_TARGETS, targetPath } from "../src/link-graph.js";
 
 const locales = ["en", "zh-cn", "ja", "ar", "tr", "uk"];
+const googleSiteVerification = "_7cJXUxMVxMiIiJFwRlgOQ_AY5a8MZybpMWZu3GurBM";
 const nonEnglishLocales = locales.filter((locale) => locale !== "en");
 const nonEnglishPrefix = /^\/(zh-cn|ja|ar|tr|uk)(?:\/|$)/;
 const paths = [
@@ -95,6 +96,7 @@ for (const path of paths) {
   const requiredHreflang = isLocalized && (isIntent || isTool || isLocaleHome) ? 7 : 2;
   const minimumText = path === "/" ? 13_000 : isEnglishIntent ? 4_000 : isIntent ? 1_500 : isTool && isEnglish ? 1_650 : isTool ? 800 : 1_000;
   const requiredImages = path === "/" ? 7 : path === "/media/" ? 10 : isIntent || isTool || isDeepEnglish ? 1 : 0;
+  const verificationTags = html.match(new RegExp(`<meta name="google-site-verification" content="${googleSiteVerification}">`, "g"))?.length || 0;
   const imageTags = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
   const imagesMissingAlt = imageTags.filter((tag) => !/\balt=(?:"[^"]*"|'[^']*')/.test(tag)).length;
   const imagesMissingDimensions = imageTags.filter((tag) => !/\bwidth="\d+"/.test(tag) || !/\bheight="\d+"/.test(tag)).length;
@@ -140,6 +142,10 @@ for (const path of paths) {
       imagesMissingDimensions,
       disablesViewportZoom: html.includes("user-scalable=no")
     });
+  }
+
+  if (verificationTags !== 1) {
+    failures.push({ path, googleSiteVerificationTags: verificationTags, expected: 1 });
   }
 
   if (
