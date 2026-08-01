@@ -1,6 +1,15 @@
 # Dear Passengers Crew
 
+**Live website:** [Dear Passengers game guide](https://dearpassengerscrew.com/)
+
 Independent multilingual game-intelligence hub for **Dear Passengers**, built as a Cloudflare Worker.
+
+## Start here
+
+- [Dear Passengers release date tracker](https://dearpassengerscrew.com/release-date/)
+- [Dear Passengers demo status](https://dearpassengerscrew.com/demo/)
+- [Dear Passengers multiplayer guide](https://dearpassengerscrew.com/multiplayer/)
+- [Dear Passengers wiki](https://dearpassengerscrew.com/wiki/)
 
 ## What is included
 
