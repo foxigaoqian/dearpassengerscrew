@@ -38,6 +38,7 @@ const titles = new Map();
 const descriptions = new Map();
 const failures = [];
 const documents = new Map();
+let accessibilityPagesChecked = 0;
 
 if (Object.keys(INTENT_DEPTH).sort().join("|") !== [...PAGE_SLUGS].sort().join("|")) {
   failures.push({ intentDepthCoverage: Object.keys(INTENT_DEPTH), expected: PAGE_SLUGS });
@@ -94,6 +95,12 @@ for (const path of paths) {
   const requiredHreflang = isLocalized && (isIntent || isTool || isLocaleHome) ? 7 : 2;
   const minimumText = path === "/" ? 13_000 : isEnglishIntent ? 4_000 : isIntent ? 1_500 : isTool && isEnglish ? 1_650 : isTool ? 800 : 1_000;
   const requiredImages = path === "/" ? 7 : path === "/media/" ? 10 : isIntent || isTool || isDeepEnglish ? 1 : 0;
+  const imagesMissingAlt = [...html.matchAll(/<img\b[^>]*>/g)].filter(([tag]) => !/\balt=(?:"[^"]*"|'[^']*')/.test(tag)).length;
+  const hasAccessibleShell = html.includes('class="skip-link" href="#main-content"') &&
+    html.includes('id="main-content"') &&
+    /class="menu-button"[^>]*aria-expanded="false"[^>]*aria-controls="site-navigation"/.test(html) &&
+    /class="language-button"[^>]*aria-expanded="false"[^>]*aria-controls="language-menu"/.test(html);
+  accessibilityPagesChecked += 1;
 
   if (
     response.status !== 200 ||
@@ -121,6 +128,15 @@ for (const path of paths) {
       minimumText,
       imageCount,
       requiredImages
+    });
+  }
+
+  if (!hasAccessibleShell || imagesMissingAlt || html.includes("user-scalable=no")) {
+    failures.push({
+      path,
+      accessibleShell: hasAccessibleShell,
+      imagesMissingAlt,
+      disablesViewportZoom: html.includes("user-scalable=no")
     });
   }
 
@@ -310,6 +326,7 @@ console.log(
       invalidRouteStatus: missingResponse.status,
       trailingSlashStatus: trailingSlashResponse.status,
       faviconStatus: faviconResponse.status,
+      accessibilityPagesChecked,
       internalLinksChecked: checkedTargets.size,
       uniqueInternalLinkEdges: [...outgoing.values()].reduce((total, targets) => total + targets.size, 0),
       uniqueContextualLinkEdges: [...contextualIncoming.values()].reduce((total, sources) => total + sources.size, 0),
