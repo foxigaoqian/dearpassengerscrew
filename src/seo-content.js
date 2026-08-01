@@ -44,6 +44,35 @@ export const UPDATE_LOG = [
   }
 ];
 
+export const UPDATE_LOGS = {
+  en: UPDATE_LOG,
+  "zh-cn": [
+    { date:"2026-08-01", status:"已发布", title:"新增200万愿望单与Steam前六名报告", detail:"已核实FLEXUS于7月31日发布的公告并加入新闻档案。商店核心信息没有变化：2026年、Windows、单人和在线合作；具体日期、价格、公开Demo及最大队伍人数仍未公布。" },
+    { date:"2026-07-31", status:"已核实", title:"重新核查Steam信息", detail:"发售窗口仍为2026年，Windows、单人和在线合作保持确认；具体日期、价格与最大玩家人数仍未知。" },
+    { date:"2026-07-30", status:"已扩展", title:"多语言情报中心上线", detail:"为六种游戏支持语言加入本地化状态页、搜索意图指南、系统工具与来源追踪。" }
+  ],
+  ja: [
+    { date:"2026-08-01", status:"公開", title:"200万ウィッシュリストとSteamトップ6の報告を追加", detail:"7月31日のFLEXUS発表を確認してニュース記録へ追加しました。2026年、Windows、シングルプレイ、オンライン協力というストア情報は変わらず、正確な日付、価格、公開デモ、最大人数は未発表です。" },
+    { date:"2026-07-31", status:"確認済み", title:"Steam情報を再確認", detail:"発売予定は2026年のままです。Windows、シングルプレイ、オンライン協力は確認済みで、正確な日付、価格、最大人数は未発表です。" },
+    { date:"2026-07-30", status:"拡張", title:"多言語情報ハブを公開", detail:"6つの対応言語で状況ページ、検索目的別ガイド、プレイヤーツール、出典履歴を追加しました。" }
+  ],
+  ar: [
+    { date:"2026-08-01", status:"نُشر", title:"إضافة تقرير مليوني قائمة أمنيات والمركز السادس على Steam", detail:"تم التحقق من إعلان FLEXUS في 31 يوليو وإضافته إلى الأرشيف. لم تتغير بيانات المتجر: 2026 وWindows واللعب الفردي والتعاوني عبر الإنترنت؛ التاريخ الدقيق والسعر والتجربة العامة والحد الأقصى للطاقم غير معلنة." },
+    { date:"2026-07-31", status:"تم التحقق", title:"إعادة فحص معلومات Steam", detail:"نافذة الإصدار ما زالت 2026. Windows واللعب الفردي والتعاوني مؤكدون، بينما التاريخ والسعر والحد الأقصى للاعبين غير معلنة." },
+    { date:"2026-07-30", status:"توسعة", title:"إطلاق مركز المعلومات متعدد اللغات", detail:"أضيفت صفحات حالة وأدلة حسب نية البحث وأدوات وتتبع للمصادر بست لغات مدعومة." }
+  ],
+  tr: [
+    { date:"2026-08-01", status:"Yayımlandı", title:"İki milyon istek listesi ve Steam ilk 6 raporu eklendi", detail:"FLEXUS'un 31 Temmuz duyurusu doğrulanarak haber arşivine eklendi. Mağaza bilgileri değişmedi: 2026, Windows, tek oyunculu ve çevrimiçi eşli oyun; kesin tarih, fiyat, herkese açık demo ve azami ekip sayısı açıklanmadı." },
+    { date:"2026-07-31", status:"Doğrulandı", title:"Steam bilgileri yeniden kontrol edildi", detail:"Çıkış aralığı hâlâ 2026. Windows, tek oyunculu ve çevrimiçi eşli oyun doğrulanmış durumda; kesin tarih, fiyat ve azami oyuncu sayısı bilinmiyor." },
+    { date:"2026-07-30", status:"Genişletildi", title:"Çok dilli bilgi merkezi açıldı", detail:"Desteklenen altı dil için yerelleştirilmiş durum sayfaları, arama niyeti rehberleri, araçlar ve kaynak takibi eklendi." }
+  ],
+  uk: [
+    { date:"2026-08-01", status:"Опубліковано", title:"Додано звіт про 2 млн бажаного та шосте місце у Steam", detail:"Оголошення FLEXUS від 31 липня перевірено й додано до архіву. Дані магазину не змінилися: 2026 рік, Windows, одиночна та онлайн-кооперативна гра; точна дата, ціна, публічне демо й максимум екіпажу не оголошені." },
+    { date:"2026-07-31", status:"Перевірено", title:"Повторно перевірено інформацію Steam", detail:"Вікно релізу залишається 2026 роком. Windows, одиночна гра й онлайн-кооператив підтверджені; точна дата, ціна й максимум гравців невідомі." },
+    { date:"2026-07-30", status:"Розширено", title:"Запущено багатомовний інформаційний центр", detail:"Для шести підтримуваних мов додано локалізовані сторінки стану, гайди за пошуковими намірами, інструменти й журнал джерел." }
+  ]
+};
+
 const en = {
   ui: {
     home: "Home", verified: "Verified answer", confirmed: "What official sources confirm",
@@ -232,5 +261,76 @@ const uk = localized(en, {
   pages:Object.fromEntries(Object.entries(en.pages).map(([slug,p])=>[slug,{name:({"release-date":"Дата виходу","demo":"Демо","multiplayer":"Мультиплеєр","how-many-players":"Кількість гравців","platforms":"Платформи","gameplay":"Геймплей","trailer":"Трейлер","characters":"Персонажі","system-requirements":"Вимоги","news":"Новини","wiki":"Вікі"})[slug],title:`Dear Passengers — ${({"release-date":"дата виходу","demo":"демо-версія","multiplayer":"кооператив","how-many-players":"кількість гравців","platforms":"платформи","gameplay":"геймплей","trailer":"офіційний трейлер","characters":"персонажі та ролі","system-requirements":"системні вимоги","news":"новини й оновлення","wiki":"перевірена вікі"})[slug]}`,meta:`Перевірений гайд про ${({"release-date":"вихід","demo":"демо","multiplayer":"кооператив","how-many-players":"гравців","platforms":"платформи","gameplay":"геймплей","trailer":"трейлер","characters":"ролі","system-requirements":"PC-вимоги","news":"новини","wiki":"гру"})[slug]} Dear Passengers.`,answer:({"release-date":"Вихід заплановано на 2026 рік; точну дату не оголошено.","demo":"Публічного демо в Steam немає.","multiplayer":"Онлайн-кооператив і одиночна гра підтверджені; локальний режим та кросплей не оголошені.","how-many-players":"Максимальну кількість гравців не оголошено.","platforms":"Підтверджено лише Windows PC.","gameplay":"Політ, сервіс, вантаж і фізичний хаос формують основний цикл.","trailer":"Офіційний трейлер показує пілота, салон, турбулентність і фізику.","characters":"Ролі відомі, але повний список іменованих персонажів не оголошено.","system-requirements":"Мінімум: Windows 10 64-bit, 8GB RAM, GTX 1060 або RX 6600 XT і 4GB.","news":"Точна дата, ціна, демо та максимум гравців не оголошені.","wiki":"Незалежний індекс перевіреної інформації без вигаданих деталей."})[slug],confirmed:["Steam є основним офіційним джерелом.","Спостереження з трейлера позначені окремо.","Дата й джерело фіксуються."],unknown:["Деталі очікують заяви розробника","Інформація може змінитися до релізу"],why:"Ми не заповнюємо прогалини здогадками. Сторінка оновлюється після нових офіційних даних Steam або FLEXUS.",faq:[[p.name+" підтверджено?","Основою є Steam і офіційний трейлер."],["Сторінка оновлюватиметься?","Так, коли зміниться офіційне джерело."],["Як позначені невідомі дані?","Вони чітко вказані як неоголошені."]]}])),
   tools:{"can-i-run-it":["Чи запуститься Dear Passengers?","Порівняйте ПК з офіційним мінімумом.","Перевірка ПК"],"crew-check":["Перевірка команди","Перевірте платформу, режим і склад.","Команда"],countdown:["Лічильник вікна виходу","Показує залишок 2026 року без вигаданої дати.","Вікно виходу"],"system-compare":["Порівняння систем","Мінімальна й практична конфігурації.","Порівняння"],"status-tracker":["Трекер статусу","Підтверджене, показане й невідоме.","Статус"],"role-quiz":["Яка ваша роль в екіпажі?","Пілот, салон, вантаж або кризовий спеціаліст.","Тест ролі"]}
 });
+
+const LOCALIZED_INTENT_DETAILS = {
+  ja: {
+    "release-date":["年だけの発売予定は、開発やテストの進行で変わる可能性があります。FLEXUSまたはSteamが新しい日付を掲載するまでは、特定の月日を確定情報として扱いません。",["Steamは発売年を2026年と表示。","ゲームはまだ購入・ダウンロード不可。","ウィッシュリスト登録でSteam通知を受け取れる。"],["正確な発売月と日","早期アクセスや発売前テストの有無"]],
+    demo:["未発売ゲームの検索では偽のダウンロードが混ざりやすいため、SteamまたはFLEXUSが直接案内するビルドだけを正規版として扱います。",["SteamにDownload Demoボタンはない。","一般公開のSteam Playtestは表示されていない。","正式版もまだ配信されていない。"],["公開デモの配信日と期間","Gamescom向けビルドの一般配布方法"]],
+    multiplayer:["協力プレイは中核ですが、ロビーやクロスプレイの仕様は発売に近づいてから決まることがあります。現時点ではPCのオンライン協力だけを前提にしてください。",["オンライン協力がSteam機能に掲載。","シングルプレイも掲載。","操縦と機内作業を分担する構成。"],["クロスプレイとクロスプログレッション","ローカル分割、マッチメイク、非公開ロビー"]],
+    "how-many-players":["映像に映る人数はネットワーク上限の証明になりません。最大人数はストアの機能欄か開発者の明示的な説明が出た時点で掲載します。",["オンライン協力は確認済み。","シングルプレイは確認済み。","公式説明は複数人のクルーを想定。"],["最大ロビー人数","推奨される最小・最大のクルー構成"]],
+    platforms:["コントローラー映像だけでは家庭用機版の証拠になりません。プラットフォームストアやFLEXUSの発表が公開されるまでWindows版のみを確定とします。",["Windows向けSteamページが公開。","最低OSはWindows 10 64-bit。","PC要件にDirectX 12を記載。"],["PlayStation、Xbox、Switch版","macOS、Linux、Steam Deck対応"]],
+    gameplay:["本作の特徴は単独のフライト操作ではなく、操縦、接客、貨物、天候が同時に影響することです。未公開の進行システムは映像から補いません。",["出発前に乗客と貨物を選択。","操縦担当と機内担当が連携。","乱気流と物理演算が乗客や物体に影響。"],["ミッション時間と進行構造","アップグレード、難易度、リプレイ要素の全体像"]],
+    trailer:["公式映像は体験の方向性を示しますが、価格、最大人数、発売日など映っていない仕様までは証明しません。映像観察とストア情報を分けて記録します。",["一人称のコックピットと機内を確認。","同じフライトで複数の作業を確認。","乗客と物体の物理演算を確認。"],["全シーンが発売版に残るか","最終UI、性能、機能範囲"]],
+    characters:["スクリーンショットの外見だけで名前やクラスを作ると誤情報になります。役割、名称、カスタマイズはFLEXUSが公開した範囲だけを掲載します。",["操縦と機内作業の役割が存在。","乗客の要求と物理的な混乱が描かれる。","危険な乗客や貨物は高報酬につながる。"],["プレイアブルキャラクターの氏名と経歴","クラス固定、外見変更、成長要素"]],
+    "system-requirements":["最低要件は起動の目安であり、高設定や一定フレームレートを保証しません。推奨要件と実測が出るまでは性能予測を断定しません。",["Windows 10 64-bitとDirectX 12。","2.5 GHz相当Core i5と8 GB RAM。","GTX 1060またはRX 6600 XT、空き4 GB。"],["推奨要件と目標解像度・FPS","Steam Deck、ノートGPU、内蔵GPUの実性能"]],
+    news:["噂を増やすページではなく、日付、元の出典、変化した事実を残す確認履歴です。人気の発表と製品の配信状況も分けて扱います。",["発売予定は2026年。","公式トレーラーとSteam説明が公開済み。","7月31日に200万ウィッシュリストが発表された。"],["次の発表日時","正確な発売日、価格、公開デモ、最大人数"]],
+    wiki:["発売前のWikiはページ数より正確さが重要です。公式文書や実際のプレイで確認できるまで、アイテム、ミッション、キャラクター名を作りません。",["主要ガイドから一次情報へリンク。","確定、観察、未発表を別表示。","6言語版が同じ確認済み状態を参照。"],["発売後に判明するミッションとアイテム","完全な乗客、貨物、進行システム一覧"]]
+  },
+  ar: {
+    "release-date":["نافذة العام قد تتغير مع التطوير والاختبار. لن نعرض يوماً أو شهراً محدداً قبل أن ينشره FLEXUS أو متجر Steam مباشرة.",["Steam يعرض عام 2026 كنافذة الإصدار.","اللعبة غير متاحة للشراء أو التنزيل.","يمكن إضافتها إلى قائمة الأمنيات لتلقي إشعار Steam."],["اليوم والشهر الدقيقان","وجود وصول مبكر أو اختبار قبل الإطلاق"]],
+    demo:["تجذب الألعاب غير الصادرة روابط تنزيل مزيفة، لذلك نعد النسخة شرعية فقط إذا ربطها FLEXUS أو Steam من قناة رسمية.",["لا يوجد زر Download Demo على Steam.","لا يظهر Steam Playtest عام.","اللعبة الكاملة غير متاحة بعد."],["موعد ومدة التجربة العامة","طريقة توزيع نسخة Gamescom على الجمهور"]],
+    multiplayer:["التعاون أساسي، لكن تفاصيل الشبكة قد تصل قرب الإطلاق. التخطيط الآمن حالياً هو تعاون Windows عبر الإنترنت دون افتراض اللعب المحلي أو المشترك بين المنصات.",["التعاون عبر الإنترنت مدرج رسمياً.","اللعب الفردي مدرج على Steam.","الطاقم يقسم مهام القيادة والمقصورة."],["اللعب والتقدم المشترك بين المنصات","الشاشة المنقسمة والمطابقة والغرف الخاصة"]],
+    "how-many-players":["عدد الشخصيات الظاهرة في الفيديو لا يحدد حد الشبكة. سننشر رقماً فقط عندما يظهر في بيانات المتجر أو تصريح واضح من المطور.",["التعاون عبر الإنترنت مؤكد.","اللعب الفردي مؤكد.","الوصف الرسمي يتحدث عن طاقم من الأصدقاء."],["الحد الأقصى للردهة","النطاق الموصى به لعدد أفراد الطاقم"]],
+    platforms:["استخدام يد تحكم في الفيديو لا يثبت إصداراً للمنصات. يبقى Windows هو المؤكد حتى تظهر صفحة متجر منصة أو إعلان FLEXUS.",["صفحة Windows على Steam متاحة.","الحد الأدنى Windows 10 بنواة 64-bit.","DirectX 12 ضمن المتطلبات."],["إصدارات PlayStation وXbox وSwitch","دعم macOS وLinux وSteam Deck"]],
+    gameplay:["هوية اللعبة تأتي من تفاعل الطيران والخدمة والشحن والطقس في الوقت نفسه، لا من محاكاة الطيران وحدها. لا نستنتج أنظمة تقدم لم تُعرض رسمياً.",["اختيار الركاب والشحن قبل الإقلاع.","تقسيم العمل بين القيادة والمقصورة.","الاضطراب والفيزياء يؤثران في الركاب والأغراض."],["مدة المهمة وبنية التقدم","الترقيات والصعوبة وإعادة اللعب الكاملة"]],
+    trailer:["الفيديو الرسمي دليل على التجربة المقصودة، لكنه لا يثبت السعر أو عدد اللاعبين أو التاريخ. نفصل ملاحظات الصورة عن حقائق المتجر.",["منظور أول داخل قمرة القيادة والمقصورة.","مهام متعددة للطاقم خلال الرحلة نفسها.","فيزياء الركاب والأغراض جزء أساسي."],["بقاء كل مشهد في نسخة الإطلاق","الواجهة والأداء ونطاق الميزات النهائي"]],
+    characters:["لا نحول النماذج المرئية إلى أسماء أو فئات مختلقة. ننشر الأدوار والأسماء والتخصيص فقط عندما يصفها FLEXUS.",["أدوار للقيادة والعمل داخل المقصورة.","للركاب احتياجات ويتأثرون بالفوضى الفيزيائية.","الركاب والشحنات الأخطر قد تمنح عائداً أكبر."],["أسماء وسير الشخصيات القابلة للعب","الفئات والتخصيص وتقدم الشخصية"]],
+    "system-requirements":["المتطلبات الدنيا تعني حد التشغيل ولا تضمن دقة أو معدل إطارات مرتفعاً. ننتظر المتطلبات الموصى بها والاختبارات قبل توقع الأداء.",["Windows 10 64-bit وDirectX 12.","معالج Core i5 بسرعة 2.5 GHz وذاكرة 8 GB.","GTX 1060 أو RX 6600 XT ومساحة 4 GB."],["المواصفات الموصى بها والهدف الرسومي","أداء Steam Deck والحواسيب المحمولة والرسوميات المدمجة"]],
+    news:["هذه صفحة سجل موثق وليست مجمع شائعات. نحفظ تاريخ المصدر وما تغير ونفصل أخبار الشعبية عن توفر المنتج.",["نافذة الإصدار الرسمية 2026.","الفيديو والوصف الرسميان متاحان.","أعلن FLEXUS مليوني قائمة أمنيات في 31 يوليو."],["موعد الإعلان التالي","التاريخ والسعر والتجربة العامة والحد الأقصى للطاقم"]],
+    wiki:["قبل الإصدار تكون الدقة أهم من عدد الصفحات. لن نخترع عناصر أو مهام أو أسماء حتى تؤكدها الوثائق الرسمية أو اللعب الفعلي.",["الأدلة الأساسية تربط بالمصادر الأولى.","المؤكد والمشاهد والمجهول منفصلون.","ست لغات تستخدم سجل حالة واحداً."],["المهام والعناصر التي تظهر بعد الإصدار","قائمة الركاب والشحن والتقدم الكاملة"]]
+  },
+  tr: {
+    "release-date":["Yalnızca yıl verilen bir takvim geliştirme ve test sürecinde değişebilir. FLEXUS veya Steam yeni bir tarih yayımlamadan belirli gün ve ayı kesin bilgi olarak göstermiyoruz.",["Steam çıkış yılını 2026 olarak listeliyor.","Oyun henüz satın alınamıyor veya indirilemiyor.","Steam bildirimi için istek listesine eklenebiliyor."],["Kesin çıkış günü ve ayı","Erken erişim ya da çıkış öncesi test planı"]],
+    demo:["Çıkmamış oyunlar sahte indirme sayfaları çeker. Bir PC demosunu ancak FLEXUS ya da Steam resmî olarak bağlantı verirse güvenilir kabul ediyoruz.",["Steam'de Download Demo düğmesi yok.","Herkese açık Steam Playtest görünmüyor.","Tam oyun henüz erişilebilir değil."],["Herkese açık demonun tarihi ve süresi","Gamescom sürümünün oyunculara nasıl ulaşacağı"]],
+    multiplayer:["Eşli oyun temel özellik olsa da ağ ayrıntıları çıkışa yakın açıklanabilir. Şimdilik yalnızca Windows çevrimiçi eşli oyunu kesin kabul edin.",["Çevrimiçi eşli oyun resmen listeleniyor.","Tek oyunculu mod Steam'de yer alıyor.","Pilot ve kabin görevleri ekip arasında bölünüyor."],["Çapraz oyun ve çapraz ilerleme","Yerel bölünmüş ekran, eşleştirme ve özel lobiler"]],
+    "how-many-players":["Fragmanda görülen karakter sayısı ağ sınırı değildir. Azami oyuncu sayısını ancak mağaza verisi veya açık geliştirici açıklaması yayımlandığında yazacağız.",["Çevrimiçi eşli oyun doğrulandı.","Tek oyunculu mod doğrulandı.","Resmî metin arkadaşlardan oluşan bir ekipten söz ediyor."],["Azami lobi boyutu","Önerilen en düşük ve en yüksek ekip sayısı"]],
+    platforms:["Kontrolcü görüntüsü konsol sürümünü kanıtlamaz. Yeni bir platform mağaza sayfası veya FLEXUS duyurusu gelene kadar yalnızca Windows doğrulanmıştır.",["Windows Steam sayfası yayında.","Asgari işletim sistemi Windows 10 64-bit.","PC gereksinimlerinde DirectX 12 var."],["PlayStation, Xbox ve Switch sürümleri","macOS, Linux ve Steam Deck desteği"]],
+    gameplay:["Oyunun farkı yalnız uçuş simülasyonu değil; uçuş, servis, yük ve hava olaylarının aynı anda birbirini etkilemesidir. Gösterilmeyen ilerleme sistemlerini tahmin etmiyoruz.",["Kalkıştan önce yolcu ve yük seçimi.","Pilot ile kabin ekibi arasında görev paylaşımı.","Türbülans ve fizik yolcuları ve nesneleri etkiliyor."],["Görev süresi ve ilerleme yapısı","Yükseltmeler, zorluk ve tekrar oynanabilirlik sistemi"]],
+    trailer:["Resmî fragman hedeflenen deneyimi gösterir fakat fiyatı, oyuncu sınırını veya tarihi kanıtlamaz. Görsel gözlemlerle mağaza gerçeklerini ayrı etiketliyoruz.",["Birinci şahıs kokpit ve kabin görüntüsü.","Aynı uçuşta birden fazla ekip görevi.","Yolcu ve nesne fiziği oynanışın merkezinde."],["Her sahnenin çıkış sürümünde kalıp kalmayacağı","Nihai arayüz, performans ve özellik kapsamı"]],
+    characters:["Ekran görüntülerindeki modellere ad veya sınıf uydurmuyoruz. Rol, ad ve özelleştirme yalnızca FLEXUS açıkladığında yayımlanır.",["Pilot ve kabin çalışma rolleri görülüyor.","Yolcuların ihtiyaçları ve fiziksel tepkileri var.","Riskli yolcu ve yükler daha yüksek kazanç sağlayabilir."],["Oynanabilir karakter adları ve geçmişleri","Sınıflar, kozmetikler ve karakter ilerlemesi"]],
+    "system-requirements":["Asgari gereksinimler yüksek ayar veya sabit kare hızı garantisi değildir. Önerilen sistem ve test sonuçları gelmeden kesin performans vaadi vermiyoruz.",["Windows 10 64-bit ve DirectX 12.","2,5 GHz Core i5 dengi ve 8 GB RAM.","GTX 1060 veya RX 6600 XT ile 4 GB alan."],["Önerilen sistem ve hedef çözünürlük","Steam Deck, dizüstü GPU ve tümleşik grafik performansı"]],
+    news:["Bu bir söylenti akışı değil, tarihli doğrulama kaydıdır. Kaynağı ve değişen bilgiyi saklar; popülerlik haberini ürünün oynanabilirliğinden ayırır.",["Resmî çıkış aralığı 2026.","Fragman ve Steam açıklaması yayında.","31 Temmuz'da iki milyon istek listesi açıklandı."],["Sonraki geliştirici duyurusunun tarihi","Kesin çıkış, fiyat, herkese açık demo ve ekip sınırı"]],
+    wiki:["Çıkış öncesinde doğruluk sayfa sayısından önemlidir. Resmî belge veya gerçek oynanış olmadan eşya, görev ya da karakter adı üretmiyoruz.",["Ana rehberler birincil kaynaklara bağlanıyor.","Doğrulanan, gözlenen ve bilinmeyen ayrı gösteriliyor.","Altı dil aynı merkezî durum kaydını kullanıyor."],["Çıkıştan sonra doğrulanacak görevler ve eşyalar","Tam yolcu, yük ve ilerleme katalogları"]]
+  },
+  uk: {
+    "release-date":["Річне вікно може змінитися через розробку й тестування. Ми не називаємо точний день або місяць, доки FLEXUS чи Steam не опублікують їх напряму.",["Steam указує 2026 рік.","Гру ще не можна купити чи завантажити.","Її можна додати до списку бажаного для сповіщення Steam."],["Точний день і місяць релізу","Ранній доступ або тестування до релізу"]],
+    demo:["Невидані ігри часто мають фальшиві сторінки завантаження. Демо вважається справжнім лише за прямим посиланням FLEXUS або Steam.",["На Steam немає кнопки Download Demo.","Публічний Steam Playtest не відображається.","Повна гра ще недоступна."],["Дата й тривалість публічного демо","Як збірка Gamescom стане доступною гравцям"]],
+    multiplayer:["Кооператив є основою, але мережеві деталі можуть з'явитися ближче до релізу. Наразі варто розраховувати лише на онлайн-кооператив у Windows.",["Онлайн-кооператив офіційно вказаний.","Одиночна гра є у функціях Steam.","Екіпаж розподіляє керування й роботу в салоні."],["Кросплей і спільний прогрес","Локальний поділ екрана, матчмейкінг і приватні лобі"]],
+    "how-many-players":["Кількість персонажів у трейлері не визначає мережевий ліміт. Число буде опубліковане лише після появи в Steam або прямій заяві розробника.",["Онлайн-кооператив підтверджено.","Одиночну гру підтверджено.","Офіційний опис говорить про екіпаж друзів."],["Максимальний розмір лобі","Рекомендований мінімум і максимум екіпажу"]],
+    platforms:["Геймпад у відео не доводить консольну версію. До появи сторінки іншої платформи або заяви FLEXUS підтверджено лише Windows.",["Сторінка Windows у Steam уже працює.","Мінімальна ОС — Windows 10 64-bit.","У вимогах указано DirectX 12."],["Версії PlayStation, Xbox і Switch","Підтримка macOS, Linux і Steam Deck"]],
+    gameplay:["Головна відмінність — одночасний вплив польоту, обслуговування, вантажу й погоди, а не лише симуляція пілота. Неоголошений прогрес ми не домислюємо.",["Вибір пасажирів і вантажу до зльоту.","Розподіл обов'язків між пілотом і салоном.","Турбулентність і фізика впливають на людей та предмети."],["Тривалість місій і структура прогресу","Повна система покращень, складності й повторних проходжень"]],
+    trailer:["Офіційний трейлер підтверджує напрям гри, але не ціну, ліміт гравців чи дату. Спостереження з відео позначаються окремо від даних Steam.",["Вид від першої особи в кабіні пілота й салоні.","Кілька завдань екіпажу в одному польоті.","Фізика пасажирів і предметів є центральною."],["Чи залишаться всі сцени у фінальній версії","Остаточний інтерфейс, продуктивність і набір функцій"]],
+    characters:["Ми не вигадуємо імена чи класи за зовнішністю моделей. Ролі, імена й персоналізація публікуються лише після опису FLEXUS.",["Є ролі пілота й роботи в салоні.","Пасажири мають потреби й реагують на фізичний хаос.","Ризиковані пасажири та вантаж можуть дати більшу винагороду."],["Імена й біографії ігрових персонажів","Класи, косметика й розвиток персонажів"]],
+    "system-requirements":["Мінімальні вимоги — це поріг запуску, а не гарантія високих налаштувань чи FPS. Для прогнозу потрібні рекомендовані характеристики й тести.",["Windows 10 64-bit і DirectX 12.","Core i5 2,5 GHz або аналог і 8 GB RAM.","GTX 1060 або RX 6600 XT та 4 GB місця."],["Рекомендовані вимоги й цільова роздільність","Робота на Steam Deck, ноутбуках та інтегрованій графіці"]],
+    news:["Це журнал перевірок, а не стрічка чуток. Він зберігає дату, джерело й змінену інформацію та відділяє популярність від доступності гри.",["Офіційне вікно релізу — 2026 рік.","Трейлер і опис Steam опубліковані.","31 липня FLEXUS оголосила 2 млн списків бажаного."],["Дата наступного оголошення","Точний реліз, ціна, публічне демо й максимум екіпажу"]],
+    wiki:["До релізу точність важливіша за кількість сторінок. Ми не створюємо предмети, місії чи імена без офіційних документів або перевіреного геймплею.",["Основні гайди ведуть до першоджерел.","Підтверджене, побачене й невідоме розділено.","Шість мов використовують один центральний статус."],["Місії й предмети, що стануть відомі після релізу","Повні каталоги пасажирів, вантажів і прогресу"]]
+  }
+};
+
+function applyLocalizedIntentDetails(locale, target) {
+  Object.entries(LOCALIZED_INTENT_DETAILS[locale]).forEach(([slug, [why, confirmed, unknown]]) => {
+    const page = target.pages[slug];
+    Object.assign(page, { why, confirmed, unknown });
+    if (locale === "ja") page.faq = [[`${page.name}の現在の結論は？`, page.answer],["どの情報源を確認していますか？","Steam、FLEXUSの公式映像、出典を明記した開発者発言を優先します。"],["まだ分からないことは？",unknown.join("、") + "は未発表です。"]];
+    if (locale === "ar") page.faq = [[`ما الخلاصة الحالية حول ${page.name}؟`,page.answer],["ما المصادر التي يتم فحصها؟","نعطي الأولوية لـSteam ومواد FLEXUS الرسمية وتصريحات المطور المنسوبة بوضوح."],["ما الذي لم يُعلن؟",unknown.join("، ") + "."]];
+    if (locale === "tr") page.faq = [[`${page.name} için güncel sonuç nedir?`,page.answer],["Hangi kaynaklar kontrol ediliyor?","Steam, resmî FLEXUS medyası ve kaynağı açık geliştirici açıklamaları önceliklidir."],["Neler hâlâ açıklanmadı?",unknown.join("; ") + "."]];
+    if (locale === "uk") page.faq = [[`Який поточний висновок щодо «${page.name}»?`,page.answer],["Які джерела перевіряються?","Пріоритет мають Steam, офіційні матеріали FLEXUS і чітко атрибутовані заяви розробника."],["Що ще не оголошено?",unknown.join("; ") + "."]];
+  });
+}
+
+applyLocalizedIntentDetails("ja", ja);
+applyLocalizedIntentDetails("ar", ar);
+applyLocalizedIntentDetails("tr", tr);
+applyLocalizedIntentDetails("uk", uk);
 
 export const SEO = { en, "zh-cn": zh, ja, ar, tr, uk };
