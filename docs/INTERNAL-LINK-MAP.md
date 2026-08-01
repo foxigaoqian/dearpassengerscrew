@@ -19,8 +19,10 @@ structure.
 ## Link layers
 
 1. **Homepage discovery**
-   - Every core guide and tool is linked from each localized homepage.
-   - English authority pages are linked from the English homepage.
+   - Primary guides and the four highest-use tools are linked from the English homepage.
+   - Secondary tools and authority pages are distributed through contextual modules,
+     topic hubs and a restrained footer instead of being forced into the homepage body.
+   - Localized homepages expose their translated core guide and tool set.
    - News and wiki children are reachable through their hubs.
 2. **Contextual search-intent links**
    - Every guide, authority article, wiki entry, news report, media page and
@@ -55,3 +57,6 @@ structure.
 The current graph keeps every page within two clicks of the appropriate
 localized homepage. Footer links count for discovery, while contextual links
 are measured separately so sitewide navigation cannot hide a weak topic graph.
+The English homepage currently contains 13 genuine in-copy contextual links;
+directory, header and footer links remain discovery navigation rather than being
+misclassified as editorial recommendations.
