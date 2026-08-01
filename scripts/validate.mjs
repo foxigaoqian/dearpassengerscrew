@@ -1,6 +1,6 @@
 import worker from "../src/index.js";
 import fs from "node:fs/promises";
-import { PAGE_SLUGS, TOOL_SLUGS } from "../src/seo-content.js";
+import { PAGE_SLUGS, TOOL_SLUGS, SEO, UPDATE_LOGS } from "../src/seo-content.js";
 import {
   AUTHORITY_SLUGS,
   WIKI_SLUGS,
@@ -46,6 +46,15 @@ let visualContrastRulesChecked = 0;
 
 if (Object.keys(INTENT_DEPTH).sort().join("|") !== [...PAGE_SLUGS].sort().join("|")) {
   failures.push({ intentDepthCoverage: Object.keys(INTENT_DEPTH), expected: PAGE_SLUGS });
+}
+
+for (const locale of locales) {
+  const pages = Object.values(SEO[locale].pages);
+  for (const field of ["why", "confirmed", "unknown", "faq"]) {
+    const unique = new Set(pages.map((page) => JSON.stringify(page[field]))).size;
+    if (unique !== PAGE_SLUGS.length) failures.push({ locale, repeatedLocalizedIntentField: field, unique, expected: PAGE_SLUGS.length });
+  }
+  if (!UPDATE_LOGS[locale] || UPDATE_LOGS[locale].length < 3) failures.push({ locale, missingLocalizedUpdateLog: true });
 }
 
 const expectedGraphKeys = [
@@ -227,6 +236,9 @@ for (const [sourcePath, html] of documents) {
 
 const countTags = (html, tag) => html.match(new RegExp(`<${tag}(?:\\s|>)`, "g"))?.length || 0;
 const englishHome = documents.get("/");
+if (!englishHome.includes('/assets/site.css?v=20260801-2') || !englishHome.includes('rel="preload" href="/assets/site.css')) {
+  failures.push({ invalidVersionedAsyncStylesheet: true });
+}
 const englishHomeH2 = countTags(englishHome, "h2");
 const englishHomeSections = countTags(englishHome, "section");
 const untranslatedShellLabels = [
@@ -261,6 +273,12 @@ for (const locale of nonEnglishLocales) {
     }
     const untranslated = untranslatedShellLabels.filter((label) => localizedHtml.includes(label));
     if (untranslated.length) failures.push({ localizedPath, untranslatedShellLabels: untranslated });
+    if (!localizedHtml.includes('href="/editorial-policy/"') || localizedHtml.includes('href="/' + locale + '/news/">' + (localizedHtml.match(/<div class="answer-status">[\s\S]*?<a[^>]*>(.*?) ↗<\/a>/)?.[1] || ""))) {
+      failures.push({ localizedPath, invalidMethodologyDestination: true });
+    }
+    if (["Two-million-wishlist and Steam Top 6 report added", "Steam information rechecked", "Multilingual intelligence hub launched"].some((title) => localizedHtml.includes(title))) {
+      failures.push({ localizedPath, englishUpdateLogLeak: true });
+    }
   }
   for (const slug of TOOL_SLUGS) {
     const localizedPath = `/${locale}/tools/${slug}/`;
@@ -357,6 +375,7 @@ const sitemapResponse = await worker.fetch(
 const sitemap = await sitemapResponse.text();
 const sitemapUrls = sitemap.match(/<url>/g)?.length || 0;
 const sitemapLocations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]).pathname);
+const sitemapEntries = new Map([...sitemap.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].map((match) => [new URL(match[1]).pathname, match[2]]));
 
 if (sitemapUrls !== paths.length) {
   failures.push({ sitemapUrls, expected: paths.length });
@@ -364,6 +383,10 @@ if (sitemapUrls !== paths.length) {
 
 if (sitemap.includes("https://dearpassengerscrew.com/en/")) {
   failures.push({ sitemapContainsLegacyEnglishPrefix: true });
+}
+
+for (const [path, expectedLastmod] of [["/", "2026-08-01"], ["/about/", "2026-08-01"], ["/editorial-policy/", "2026-08-01"], ["/corrections/", "2026-07-30"], ["/media/", "2026-07-14"]]) {
+  if (sitemapEntries.get(path) !== expectedLastmod) failures.push({ path, sitemapLastmod: sitemapEntries.get(path), expectedLastmod });
 }
 
 if (
