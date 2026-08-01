@@ -554,7 +554,8 @@ export const STATIC_CONTENT = {
     "Dear Passengers Crew is an independent, unofficial research and player-utility site. It is not affiliated with FLEXUS, Valve or Steam.",
     [
       { heading: "Why this site exists", paragraphs: ["Players repeatedly search for an exact date, demo, download, price, player count and platform list before those details exist. Our job is to answer quickly without turning an information gap into a rumor.", "The site also organizes official media, source-backed news, wiki entries and practical tools so the same fact does not need to be rediscovered on every visit."] },
-      { heading: "What we publish", paragraphs: ["We publish direct-answer guides, a status ledger, a media archive, source-labelled news, a pre-release wiki and small planning tools. Each factual page includes a last-checked date and direct source links."] },
+      { heading: "Who prepares the pages", paragraphs: ["Pages are published under the Dear Passengers Crew Editorial Desk, the organizational byline used across this independent project. The desk maintains the central fact record, source ledger, uncertainty labels and update history.", "Source extraction and comparison may be assisted by automation. Publication decisions, uncertainty labels and corrections follow the editorial policy; the site does not claim access to private developer data or a live Valve wishlist counter."] },
+      { heading: "What we publish", paragraphs: ["We publish direct-answer guides, a status ledger, a media archive, source-labelled news, a pre-release wiki and small planning tools. Each factual page includes a last-checked date and direct source links.", "The public GitHub repository provides an additional technical record of material site revisions. Factual corrections can be submitted through its issue tracker until a dedicated editorial mailbox is configured."] },
       { heading: "Ownership and affiliation", paragraphs: ["Dear Passengers, its artwork, footage and trademarks belong to their respective owners. Official media is used for identification, reporting and commentary. Our writing, organization and tools are independent."] }
     ],
     [],
@@ -567,7 +568,7 @@ export const STATIC_CONTENT = {
     "Every material claim is classified as confirmed, attributed, observed, interpreted or unknown.",
     [
       { heading: "Evidence levels", paragraphs: ["Confirmed means published in an official listing or direct FLEXUS channel. Attributed means a named publication reports a developer statement. Observed means visible in official footage. Interpretation explains likely player impact without presenting it as a promised rule. Unknown means no reliable answer exists."] },
-      { heading: "Update process", paragraphs: ["Release, demo, price, player count, platform and requirements pages are rechecked when official store data changes. Related pages and the update log should change in the same revision so contradictory answers do not remain indexed."] },
+      { heading: "Update process", paragraphs: ["Release, demo, price, player count, platform and requirements pages are rechecked when official store data changes. Related pages and the update log should change in the same revision so contradictory answers do not remain indexed.", "Automated comparison may help identify a changed source, but a check date is not treated as a content-change date. The sitemap lastmod value changes only when the page itself receives a material revision."] },
       { heading: "What we avoid", paragraphs: ["We do not invent countdown dates, turn user tags into pricing, publish unofficial installers, claim every trailer object is a final mechanic or present wishlist reports as independently audited Valve totals."] }
     ],
     [],
