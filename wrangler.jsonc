@@ -3,6 +3,7 @@
   "name": "dear-passengers-crew",
   "main": "src/index.js",
   "compatibility_date": "2026-08-01",
+  "workers_dev": false,
   "routes": [
     {
       "pattern": "dearpassengerscrew.com/*",
