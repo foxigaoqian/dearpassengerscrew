@@ -3,7 +3,12 @@
   "name": "dear-passengers-crew",
   "main": "src/index.js",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/media/*",
+      "/favicon.png"
+    ]
   },
   "compatibility_date": "2026-08-01",
   "workers_dev": false,

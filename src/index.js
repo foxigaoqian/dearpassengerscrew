@@ -24,7 +24,8 @@ const HERO = `${SITE}/media/hero-1920.webp`;
 const HERO_MOBILE = `${SITE}/media/hero-mobile.webp`;
 const CAPSULE = `${SITE}/media/game-header.webp`;
 const BRAND_ICON = `${SITE}/favicon.png`;
-const TRAILER_ART = "https://i.ytimg.com/vi/hEsuA_rqTxk/maxresdefault.jpg";
+const BRAND_MARK = `${SITE}/media/brand-mark-v1.webp`;
+const TRAILER_ART = `${SITE}/media/trailer-hEsuA-rqTxk.webp`;
 const SITE_ORGANIZATION_ID = `${SITE}/#organization`;
 const GAME_ID = `${SITE}/#dear-passengers-game`;
 const GOOGLE_SITE_VERIFICATION = "_7cJXUxMVxMiIiJFwRlgOQ_AY5a8MZybpMWZu3GurBM";
@@ -362,7 +363,7 @@ function iconLinks() {
 }
 
 function styleTag() {
-  return `<style>html{background:#06101a;color:#f5f7fa}body{margin:0;background:#06101a;color:#f5f7fa;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.header{z-index:20}.hero,.article-hero{position:relative}.reveal{opacity:1}</style><link rel="preload" href="/assets/site.css?v=${STYLE_VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="/assets/site.css?v=${STYLE_VERSION}" rel="stylesheet"><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`;
+  return `<style>html{background:#06101a;color:#f5f7fa}body{margin:0;background:#06101a;color:#f5f7fa;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.header{z-index:20}.hero,.article-hero{position:relative}</style><link rel="stylesheet" href="/assets/site.css?v=${STYLE_VERSION}"><noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`;
 }
 
 function siteOrganizationSchema() {
@@ -410,7 +411,7 @@ function videoSchema() {
 }
 
 function trailerFacade(title = "Play official trailer") {
-  return `<button class="video-facade" type="button" data-trailer="${TRAILER}" aria-label="${esc(title)}"><img src="${TRAILER_ART}" alt="" width="1280" height="720" loading="lazy" decoding="async"><span><b>▶</b> PLAY OFFICIAL TRAILER</span></button><noscript><a class="video-fallback" href="${TRAILER_PAGE}" target="_blank" rel="noopener">Watch the official trailer on YouTube ↗</a></noscript>`;
+  return `<button class="video-facade" type="button" data-trailer="${TRAILER}" aria-label="${esc(title)}"><img src="${TRAILER_ART}" alt="" width="960" height="540" loading="lazy" decoding="async"><span><b>▶</b> PLAY OFFICIAL TRAILER</span></button><noscript><a class="video-fallback" href="${TRAILER_PAGE}" target="_blank" rel="noopener">Watch the official trailer on YouTube ↗</a></noscript>`;
 }
 
 const menuIcon = `<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
@@ -461,7 +462,7 @@ function shellScript() {
         queued=false;
       };
       addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(updateProgress)}},{passive:true});
-      requestAnimationFrame(updateProgress);
+      addEventListener('load',()=>requestAnimationFrame(updateProgress),{once:true});
     }
     document.querySelectorAll('[data-trailer]').forEach(button=>button.addEventListener('click',()=>{
       const iframe=document.createElement('iframe');
@@ -811,7 +812,7 @@ function page(locale) {
   <div class="ticker" aria-hidden="true"><div>${[...t.ticker, ...t.ticker, ...t.ticker].map((x) => `<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <div class="scroll-progress" aria-hidden="true"><i></i></div>
   <header class="header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_MARK}" alt="" aria-hidden="true" width="96" height="96"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
     <button class="menu-button" type="button" aria-label="${esc(labels.openNav)}" aria-expanded="false" aria-controls="site-navigation"><span>${esc(labels.menu)}</span>${menuIcon}</button>
     <nav id="site-navigation" aria-label="${esc(labels.primaryNav)}">${locale === "en"
       ? '<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/multiplayer/">Multiplayer</a><a href="/gameplay/">Gameplay</a><a href="/wiki/">Wiki</a>'
@@ -889,7 +890,7 @@ function page(locale) {
     ${resourceCards(locale)}
 
     <section class="final">
-      <img src="${TRAILER_ART}" alt="Dear Passengers official trailer artwork" width="1280" height="720" loading="lazy" decoding="async">
+      <img src="${TRAILER_ART}" alt="Dear Passengers official trailer artwork" width="960" height="540" loading="lazy" decoding="async">
       <div><p class="kicker">${esc(labels.joinCrew)}</p><h2>${esc(t.finalTitle)}</h2><p>${esc(t.finalText)}</p><a class="primary" href="${STEAM}" target="_blank" rel="noopener">${esc(t.steam)} <b>↗</b></a></div>
     </section>
   </main>
@@ -975,7 +976,7 @@ function pageHeader(locale, currentPath = "") {
     : `<a href="${localizedPath(locale, "release-date")}">${esc(data.pages["release-date"].name)}</a><a href="${localizedPath(locale, "demo")}">${esc(data.pages.demo.name)}</a><a href="${localizedPath(locale, "multiplayer")}">${esc(data.pages.multiplayer.name)}</a><a href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)}</a>`;
   return `<a class="skip-link" href="#main-content">${esc(labels.skip)}</a><div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header inner-header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_MARK}" alt="" aria-hidden="true" width="96" height="96"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
     <button class="menu-button" type="button" aria-label="${esc(labels.openNav)}" aria-expanded="false" aria-controls="site-navigation"><span>${esc(labels.menu)}</span>${menuIcon}</button>
     <nav id="site-navigation" aria-label="${esc(labels.primaryNav)}">${nav}</nav>
     <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — ${esc(labels.chooseLanguage)}" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
@@ -1013,7 +1014,7 @@ function pageFooter(locale) {
   const siteInfo = SITE_INFO_LABELS[locale] || SITE_INFO_LABELS.en;
   const information = [["/",siteInfo.home],["/about/",siteInfo.about],["/editorial-policy/",siteInfo.policy],["/contact/",siteInfo.contact],["/privacy-policy/",siteInfo.privacy]]
     .map(([url,label]) => `<a data-sitewide-link="true" href="${url}"${locale === "en" ? "" : ' hreflang="en"'}>${esc(label)}</a>`).join("");
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="${esc(labels.guide)}"><strong>${esc(labels.guide)}</strong>${core}</nav><nav aria-label="${esc(labels.relatedQuestions)}"><strong>${esc(labels.relatedQuestions)}</strong>${questions}</nav><nav aria-label="${esc(labels.tools)}"><strong>${esc(labels.tools)}</strong>${tools}</nav><nav aria-label="${esc(siteInfo.heading)}"><strong>${esc(siteInfo.heading)}</strong>${information}</nav></div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a><a href="/sitemap.xml">SITEMAP</a></div></footer>`;
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_MARK}" alt="" aria-hidden="true" width="96" height="96"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="${esc(labels.guide)}"><strong>${esc(labels.guide)}</strong>${core}</nav><nav aria-label="${esc(labels.relatedQuestions)}"><strong>${esc(labels.relatedQuestions)}</strong>${questions}</nav><nav aria-label="${esc(labels.tools)}"><strong>${esc(labels.tools)}</strong>${tools}</nav><nav aria-label="${esc(siteInfo.heading)}"><strong>${esc(siteInfo.heading)}</strong>${information}</nav></div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a><a href="/sitemap.xml">SITEMAP</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
@@ -1445,7 +1446,7 @@ const SECURITY_HEADERS = {
   "x-frame-options": "DENY",
   "referrer-policy": "strict-origin-when-cross-origin",
   "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
-  "content-security-policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https://shared.fastly.steamstatic.com https://shared.akamai.steamstatic.com https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; upgrade-insecure-requests"
+  "content-security-policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https://shared.fastly.steamstatic.com https://shared.akamai.steamstatic.com; frame-src https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; upgrade-insecure-requests"
 };
 
 function responseHeaders(contentType, cacheControl = "public,max-age=300,s-maxage=3600,stale-while-revalidate=86400", modified = LAST_CHECKED) {
@@ -1458,7 +1459,7 @@ function responseHeaders(contentType, cacheControl = "public,max-age=300,s-maxag
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     const canonicalPath = url.pathname.replace(/\/{2,}/g, "/");
     const canonicalParts = canonicalPath.split("/").filter(Boolean);
@@ -1469,6 +1470,18 @@ export default {
     const isLocalPreview = url.hostname === "localhost" || url.hostname === "127.0.0.1";
     if ((!isLocalPreview && url.hostname !== "dearpassengerscrew.com") || url.protocol !== "https:" || normalizedPath !== url.pathname) {
       return Response.redirect(`${SITE}${normalizedPath}${url.search}`, 301);
+    }
+    if (env?.ASSETS && (url.pathname.startsWith("/media/") || url.pathname === "/favicon.png")) {
+      const assetResponse = await env.ASSETS.fetch(request);
+      if (assetResponse.status !== 404) {
+        const headers = new Headers(assetResponse.headers);
+        headers.set("cache-control", "public,max-age=31536000,immutable");
+        return new Response(assetResponse.body, {
+          status: assetResponse.status,
+          statusText: assetResponse.statusText,
+          headers
+        });
+      }
     }
     if (url.pathname === "/robots.txt") {
       return new Response(`User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\nSitemap: ${SITE}/image-sitemap.xml\n`, { headers: responseHeaders("text/plain; charset=utf-8", "public,max-age=3600,s-maxage=86400") });

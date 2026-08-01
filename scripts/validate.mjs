@@ -175,7 +175,7 @@ for (const path of paths) {
     !html.includes('<link rel="preload" as="image"') ||
     !html.includes('<picture class="hero-picture">') ||
     html.includes('fonts.googleapis.com') ||
-    html.includes('<link rel="stylesheet"')
+    !html.includes('<link rel="stylesheet" href="/assets/site.css?v=')
   )) {
     failures.push({ path, invalidLcpOrRenderBlockingSetup: true });
   }
@@ -236,8 +236,8 @@ for (const [sourcePath, html] of documents) {
 
 const countTags = (html, tag) => html.match(new RegExp(`<${tag}(?:\\s|>)`, "g"))?.length || 0;
 const englishHome = documents.get("/");
-if (!englishHome.includes('/assets/site.css?v=20260801-2') || !englishHome.includes('rel="preload" href="/assets/site.css')) {
-  failures.push({ invalidVersionedAsyncStylesheet: true });
+if (!englishHome.includes('/assets/site.css?v=20260801-2') || !englishHome.includes('rel="stylesheet" href="/assets/site.css')) {
+  failures.push({ invalidVersionedBlockingStylesheet: true });
 }
 for (const locale of locales) {
   const homePath = locale === "en" ? "/" : `/${locale}/`;
@@ -447,6 +447,15 @@ if (
   failures.push({ invalidSharedStylesheet: true, cssBytes: css.length });
 }
 
+for (const [path, html] of documents) {
+  if (!/<link rel="stylesheet" href="\/assets\/site\.css\?v=[^"]+">/.test(html)) {
+    failures.push({ path, missingRenderBlockingStylesheet: true });
+  }
+  if (/rel="preload"[^>]+as="style"[^>]+onload=/.test(html)) {
+    failures.push({ path, layoutShiftProneAsyncStylesheet: true });
+  }
+}
+
 const visualContrastRules = [
   ".feed-section .feed-card{color:#f7fbff}",
   ".feed-section .feed-card strong{color:#fff",
@@ -463,7 +472,7 @@ if (css.lastIndexOf(".feed-section .feed-card small{color:#ffd37a") < css.lastIn
   failures.push({ feedCaptionContrastOverriddenByDarkText: true });
 }
 
-for (const asset of ["public/media/hero-1920.webp", "public/media/hero-mobile.webp", "public/media/game-header.webp", "public/favicon.png", "public/favicon.ico"]) {
+for (const asset of ["public/media/hero-1920.webp", "public/media/hero-mobile.webp", "public/media/game-header.webp", "public/media/brand-mark-v1.webp", "public/media/trailer-hEsuA-rqTxk.webp", "public/favicon.png", "public/favicon.ico"]) {
   try {
     await fs.access(new URL(`../${asset}`, import.meta.url));
   } catch {
@@ -538,6 +547,19 @@ const faviconResponse = await worker.fetch(
 );
 if (faviconResponse.status !== 200 || !faviconResponse.headers.get("content-type")?.includes("image/svg+xml")) {
   failures.push({ faviconStatus: faviconResponse.status, faviconType: faviconResponse.headers.get("content-type") });
+}
+
+const immutableAssetResponse = await worker.fetch(
+  new Request("https://dearpassengerscrew.com/media/brand-mark-v1.webp"),
+  { ASSETS: { fetch: async () => new Response("asset", { headers: { "content-type": "image/webp" } }) } }
+);
+if (!immutableAssetResponse.headers.get("cache-control")?.includes("max-age=31536000") || !immutableAssetResponse.headers.get("cache-control")?.includes("immutable")) {
+  failures.push({ invalidImmutableAssetCache: immutableAssetResponse.headers.get("cache-control") });
+}
+
+const wranglerConfig = JSON.parse(await fs.readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8"));
+if (wranglerConfig.assets?.binding !== "ASSETS" || !wranglerConfig.assets?.run_worker_first?.includes("/media/*")) {
+  failures.push({ invalidStaticAssetRouting: wranglerConfig.assets });
 }
 
 if (failures.length) {
