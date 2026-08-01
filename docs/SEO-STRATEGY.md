@@ -54,7 +54,8 @@ class or mechanic to make an article look complete.
 
 ## Internal-link model
 
-- Homepage links to every core intent and tool.
+- Homepage links directly to the primary intents and highest-use player tools;
+  secondary destinations are reached through related modules, hubs and the footer.
 - Release, demo, news and wiki hubs link to their supporting clusters.
 - Deep articles link laterally within their cluster and across to media, status,
   policy and primary sources.
