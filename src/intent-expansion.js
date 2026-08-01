@@ -67,7 +67,7 @@ export const INTENT_EXPANSION = {
   trailer: [
     section("A scene-by-scene evidence standard", [
       "The strongest trailer observations are concrete: a player occupies the cockpit, crew members work in the cabin, objects move during unstable flight and passengers require attention. These can be linked to a timestamp or official screenshot. Claims about exact statistics, lobby size or final controls cannot.",
-      "The media archive uses descriptive captions instead of fictional lore. That keeps screenshots useful for players and search engines while preserving the line between what appears on screen and what FLEXUS has documented as a launch feature."
+      "The media archive uses descriptive captions instead of fictional lore. That keeps screenshots useful for readers while preserving the line between what appears on screen and what FLEXUS has documented as a launch feature."
     ]),
     section("What future footage should clarify", [
       "A longer gameplay walkthrough could answer how a mission begins, how players choose duties, what failure looks like and whether the crew returns to a persistent hub. Interface footage may also reveal inventory, voice communication, objectives and controller prompts.",

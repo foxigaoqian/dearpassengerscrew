@@ -31,6 +31,17 @@ const languages = {
   uk: { label: "UA", name: "Українська", dir: "ltr" }
 };
 
+const localeTags = { en: "en-US", "zh-cn": "zh-CN", ja: "ja-JP", ar: "ar", tr: "tr-TR", uk: "uk-UA" };
+
+function formattedVerifiedDate(locale = "en") {
+  return new Intl.DateTimeFormat(localeTags[locale] || "en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC"
+  }).format(new Date(`${LAST_CHECKED}T12:00:00Z`));
+}
+
 const copy = {
   en: {
     title: "Dear Passengers — Release Date, Demo, Multiplayer & Game Guide",
@@ -39,7 +50,7 @@ const copy = {
     eyebrow: "Independent verified game intelligence",
     intro: "Release date, demo, platforms and co-op details—confirmed facts clearly separated from unknowns.",
     cta1: "Check live status", cta2: "Can our crew play?",
-    last: "Last checked · July 31, 2026", ticker: ["2026 · STEAM", "LIVE INTEL", "NOT AVAILABLE YET"],
+    ticker: ["2026 · STEAM", "DAILY SOURCE CHECK", "NOT AVAILABLE YET"],
     statusTitle: "What is confirmed today.",
     statusIntro: "A clean snapshot of the facts players need before they wishlist, wait or assemble a crew.",
     cards: [
@@ -51,7 +62,7 @@ const copy = {
       ["System baseline", "8 GB RAM", "GTX 1060 / RX 6600 XT"]
     ],
     questionsTitle: "What are players actually trying to find?",
-    questionsIntro: "Each answer begins with the evidence, then names what remains unknown.",
+    questionsIntro: "Quick answers to the questions players ask most, with the remaining unknowns clearly marked.",
     questions: [
       ["When will Dear Passengers release?", "The official Steam page lists a 2026 release window. No exact day or month has been announced."],
       ["Can I play a demo now?", "No public demo is currently listed on Steam. Treat third-party download claims cautiously."],
@@ -98,7 +109,7 @@ const copy = {
     eyebrow: "独立核实的游戏情报中心",
     intro: "发售日期、Demo、平台和联机信息——已确认与未公布内容清楚分开。",
     cta1: "查看当前状态", cta2: "我的队伍能玩吗？",
-    last: "最后核实 · 2026年7月31日", ticker: ["2026 · STEAM", "实时情报", "暂不可玩"],
+    ticker: ["2026 · STEAM", "每日来源核查", "暂不可玩"],
     statusTitle: "今天已经确认的信息。",
     statusIntro: "在你加入愿望单、继续等待或召集队友之前，先看清真正确定的事实。",
     cards: [
@@ -157,7 +168,7 @@ const copy = {
     eyebrow: "独立検証ゲームインテリジェンス",
     intro: "発売日、デモ、プラットフォーム、協力プレイ——確定情報と未発表情報を明確に分離。",
     cta1: "最新状況を見る", cta2: "このクルーで遊べる？",
-    last: "最終確認 · 2026年7月31日", ticker: ["2026 · STEAM", "LIVE INTEL", "まだプレイ不可"],
+    ticker: ["2026 · STEAM", "毎日ソース確認", "まだプレイ不可"],
     statusTitle: "現在確認できること。",
     statusIntro: "ウィッシュリスト登録や仲間集めの前に、必要な事実だけを確認。",
     cards: [["発売時期","2026年","Steamで確認"],["対応機種","Windows PC","Steamページ公開済み"],["公開デモ","未配信","公式DLなし"],["最大人数","未発表","オンライン協力は確認"],["価格","未発表","無料とは断定不可"],["最低メモリ","8 GB RAM","GTX 1060 / RX 6600 XT"]],
@@ -183,7 +194,7 @@ const copy = {
     eyebrow: "معلومات مستقلة تم التحقق منها",
     intro: "موعد الإصدار والتجربة والمنصات واللعب التعاوني—نفصل المؤكد بوضوح عما لم يُعلن.",
     cta1: "عرض الحالة", cta2: "هل يمكن لطاقمنا اللعب؟",
-    last: "آخر تحقق · 31 يوليو 2026", ticker: ["STEAM · 2026", "معلومات مباشرة", "غير متاح الآن"],
+    ticker: ["STEAM · 2026", "فحص يومي للمصدر", "غير متاح الآن"],
     statusTitle: "ما تم تأكيده اليوم.",
     statusIntro: "ملخص واضح للحقائق التي تحتاجها قبل الانتظار أو جمع الطاقم.",
     cards: [["نافذة الإصدار","2026","مؤكد على Steam"],["المنصة","Windows PC","صفحة Steam متاحة"],["تجربة عامة","غير متاحة","لا يوجد تنزيل رسمي"],["أقصى عدد","غير معلن","التعاون عبر الإنترنت مؤكد"],["السعر","غير معلن","لا تفترض أنها مجانية"],["الذاكرة الدنيا","8 GB RAM","GTX 1060 / RX 6600 XT"]],
@@ -205,7 +216,7 @@ const copy = {
     description: "Dear Passengers için bağımsız bilgi merkezi: çıkış, demo, platformlar, co-op, fragman, oynanış ve sistem gereksinimleri.",
     nav: ["Oyun durumu","Oyuncu soruları","Oynanış","Ekip kontrolü"], eyebrow: "Bağımsız doğrulanmış oyun bilgisi",
     intro: "Çıkış, demo, platform ve co-op ayrıntıları—doğrulananlar ve bilinmeyenler açıkça ayrılır.", cta1: "Canlı durumu gör", cta2: "Ekibimiz oynayabilir mi?",
-    last: "Son kontrol · 31 Temmuz 2026", ticker: ["2026 · STEAM","CANLI BİLGİ","HENÜZ YOK"],
+    ticker: ["2026 · STEAM","GÜNLÜK KAYNAK KONTROLÜ","HENÜZ YOK"],
     statusTitle: "Bugün doğrulananlar.", statusIntro: "Beklemeden veya ekip kurmadan önce gereken net gerçekler.",
     cards: [["Çıkış","2026","Steam'de onaylı"],["Platform","Windows PC","Steam sayfası açık"],["Demo","Henüz yok","Resmi indirme yok"],["Maksimum oyuncu","Açıklanmadı","Online co-op onaylı"],["Fiyat","Açıklanmadı","Ücretsiz varsaymayın"],["Minimum bellek","8 GB RAM","GTX 1060 / RX 6600 XT"]],
     questionsTitle: "Oyuncular gerçekte ne arıyor?", questionsIntro: "Önce kanıt, sonra bilinmeyenler.",
@@ -224,7 +235,7 @@ const copy = {
     description: "Незалежний центр інформації Dear Passengers: дата виходу, демо, платформи, кооператив, трейлер, геймплей і вимоги.",
     nav: ["Статус гри","Питання","Геймплей","Перевірка команди"], eyebrow: "Незалежна перевірена інформація",
     intro: "Дата виходу, демо, платформи й кооператив—підтверджені факти окремо від невідомого.", cta1: "Переглянути статус", cta2: "Чи може команда грати?",
-    last: "Перевірено · 31 липня 2026", ticker: ["2026 · STEAM","LIVE INTEL","ЩЕ НЕДОСТУПНО"],
+    ticker: ["2026 · STEAM","ЩОДЕННА ПЕРЕВІРКА ДЖЕРЕЛ","ЩЕ НЕДОСТУПНО"],
     statusTitle: "Що підтверджено сьогодні.", statusIntro: "Факти, потрібні перед очікуванням або збором команди.",
     cards: [["Вихід","2026","Підтверджено Steam"],["Платформа","Windows PC","Сторінка Steam активна"],["Публічне демо","Немає","Офіційного завантаження немає"],["Максимум гравців","Не оголошено","Онлайн-кооп підтверджено"],["Ціна","Не оголошено","Не вважайте гру безкоштовною"],["Мінімум RAM","8 GB","GTX 1060 / RX 6600 XT"]],
     questionsTitle: "Що насправді шукають гравці?", questionsIntro: "Спочатку докази, потім те, що досі невідомо.",
@@ -267,6 +278,59 @@ function iconLinks() {
   return `<link rel="icon" href="${CAPSULE}" type="image/jpeg" sizes="any"><link rel="apple-touch-icon" href="${CAPSULE}"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">`;
 }
 
+const menuIcon = `<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+const chevronIcon = `<svg aria-hidden="true" viewBox="0 0 20 20" width="14" height="14"><path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function shellScript() {
+  return `
+    const menuButton=document.querySelector('.menu-button');
+    const siteNav=document.querySelector('#site-navigation');
+    const languageButton=document.querySelector('.language-button');
+    const languagePanel=document.querySelector('#language-menu');
+    const setMenu=(open)=>{
+      if(!menuButton||!siteNav)return;
+      siteNav.classList.toggle('open',open);
+      document.body.classList.toggle('menu-open',open);
+      menuButton.setAttribute('aria-expanded',String(open));
+      menuButton.setAttribute('aria-label',open?'Close navigation':'Open navigation');
+    };
+    menuButton?.addEventListener('click',()=>setMenu(!siteNav.classList.contains('open')));
+    siteNav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setMenu(false)));
+    languageButton?.addEventListener('click',(event)=>{
+      event.stopPropagation();
+      const open=languageButton.getAttribute('aria-expanded')!=='true';
+      languageButton.setAttribute('aria-expanded',String(open));
+      languagePanel?.toggleAttribute('data-open',open);
+    });
+    document.addEventListener('click',(event)=>{
+      if(languagePanel&&!event.target.closest('.language')){
+        languageButton?.setAttribute('aria-expanded','false');
+        languagePanel.removeAttribute('data-open');
+      }
+    });
+    document.addEventListener('keydown',(event)=>{
+      if(event.key==='Escape'){
+        const menuWasOpen=siteNav?.classList.contains('open');
+        setMenu(false);
+        languageButton?.setAttribute('aria-expanded','false');
+        languagePanel?.removeAttribute('data-open');
+        if(menuWasOpen)menuButton?.focus();
+      }
+    });
+    const progress=document.querySelector('.scroll-progress i');
+    if(progress){
+      let queued=false;
+      const updateProgress=()=>{
+        const max=document.documentElement.scrollHeight-innerHeight;
+        progress.style.transform='scaleX('+(max>0?Math.min(scrollY/max,1):0)+')';
+        queued=false;
+      };
+      addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(updateProgress)}},{passive:true});
+      updateProgress();
+    }
+  `;
+}
+
 function officialFigure(mediaIndex, label = "Official gameplay evidence") {
   const [name, url] = OFFICIAL_MEDIA[mediaIndex % OFFICIAL_MEDIA.length];
   return `<figure class="article-figure"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers official screenshot: ${esc(name)}" loading="lazy"></a><figcaption><span>${esc(label)}</span><strong>${esc(name)}</strong><small>Official FLEXUS media via Steam · Open full resolution ↗</small></figcaption></figure>`;
@@ -298,17 +362,17 @@ function semanticLinks(locale, sourceKey, heading) {
           : data.ui.sourceNote;
     return `<li><a class="semantic-link" data-context-link="true" href="${targetPath(target, locale)}"><strong>${esc(label)}</strong><span>${esc(reason)}</span><b>↗</b></a></li>`;
   }).join("");
-  return `<section class="semantic-section"><p class="kicker">SEMANTIC CONNECTIONS</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(locale === "en" ? "Continue with the next question in this topic cluster. Every link below resolves a specific adjacent search intent." : data.ui.sourceNote)}</p><ul class="semantic-list">${links}</ul></section>`;
+  return `<section class="semantic-section"><p class="kicker">RELATED PLAYER QUESTIONS</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(locale === "en" ? "Continue with the next practical question about release, access, multiplayer or gameplay." : data.ui.sourceNote)}</p><ul class="semantic-list">${links}</ul></section>`;
 }
 
 function homepageEditorial(locale) {
   if (locale !== "en") return "";
   return `
     <section class="verification-bar" aria-label="Editorial verification">
-      <div><span>INDEPENDENT GUIDE</span><strong>Built for players, not search engines alone.</strong></div>
-      <div><span>METHOD</span><strong>Steam facts · official footage · attributed interviews</strong></div>
-      <div><span>LAST CHECKED</span><strong>${LAST_CHECKED}</strong></div>
-      <a href="/editorial-policy/">How verification works ↗</a>
+      <div><span>PLAYER BRIEFING</span><strong>Current release, demo and co-op answers in one place.</strong></div>
+      <div><span>SOURCE MONITORING</span><strong>Steam checked daily · the displayed date changes only after a successful source review</strong></div>
+      <div><span>LAST VERIFIED</span><strong>${formattedVerifiedDate("en")} · no official Steam field changed today</strong></div>
+      <a href="/editorial-policy/">View sources and update policy ↗</a>
     </section>
     <section class="editorial-chapter chapter-light" id="overview">
       <div class="chapter-rail"><b>01</b><span>GAME OVERVIEW</span></div>
@@ -328,9 +392,9 @@ function homepageEditorial(locale) {
     <section class="editorial-chapter chapter-dark intent-chapter">
       <div class="chapter-rail"><b>02</b><span>PLAYER QUESTIONS</span></div>
       <div class="chapter-copy">
-        <p class="kicker">THE FOUR QUESTIONS THAT DEFINE THE SEARCH</p>
+        <p class="kicker">FOUR QUESTIONS BEFORE BOARDING</p>
         <h2>Know what is real before boarding.</h2>
-        <p class="chapter-lead">Each answer starts with the direct verdict, then links to a dedicated briefing where the source, uncertainty and update history are preserved.</p>
+        <p class="chapter-lead">Start with the short answer, then open the detailed guide when you need sources, caveats or the latest update.</p>
         <div class="intent-lines">
           <article><span>01</span><div><h3>When does Dear Passengers release?</h3><p>Steam says 2026, but no month, day, unlock time or preload schedule is public. The <a data-context-link="true" href="/release-date/">Dear Passengers release-date tracker</a> separates the official window from placeholder dates and speculation.</p></div></article>
           <article><span>02</span><div><h3>Is there a demo you can play now?</h3><p>No public Steam demo is currently available. A Gamescom build and a later public demo have been discussed in an attributed interview. The <a data-context-link="true" href="/demo/">Dear Passengers demo guide</a> explains what is planned and how to identify the legitimate build.</p></div></article>
@@ -413,13 +477,12 @@ function resourceCards(locale) {
       ["PLAN YOUR FLIGHT", ["release-date", "demo", "platforms", "system-requirements"], "page"],
       ["BUILD THE CREW", ["multiplayer", "how-many-players", "characters", "gameplay"], "page"],
       ["FOLLOW THE GAME", ["trailer", "news", "wiki"], "page"],
-      ["PLAYER TOOLS", ["status-tracker", "countdown", "crew-check", "can-i-run-it", "system-compare", "role-quiz"], "tool"],
-      ["VERIFIED INTELLIGENCE", ["price", "download", "steam", "solo", "crossplay", "languages", "developer", "confirmed-features"], "authority"]
+      ["PLAYER TOOLS", ["status-tracker", "countdown", "crew-check", "can-i-run-it"], "tool"]
     ];
     const columns = groups.map(([heading, slugs, kind]) => `<div class="directory-group"><strong>${heading}</strong>${slugs.map((slug) => {
       const target = `${kind}:${slug}`;
       const label = LINK_TARGETS[target]?.[0] || slug;
-      return `<a data-context-link="true" href="${targetPath(target, "en")}"><span>${esc(label)}</span><b>↗</b></a>`;
+      return `<a href="${targetPath(target, "en")}"><span>${esc(label)}</span><b>↗</b></a>`;
     }).join("")}</div>`).join("");
     return `<section class="section resource-hub compact-directory"><div class="section-head split"><div><p class="kicker">COMPLETE FLIGHT DIRECTORY</p><h2>Every answer has one clear destination.</h2></div><p>Browse by task instead of scrolling through duplicated cards. Core guides, player tools and evidence pages remain within two clicks of the homepage.</p></div><div class="directory-grid">${columns}</div></section>`;
   }
@@ -435,11 +498,12 @@ function resourceCards(locale) {
     const item = AUTHORITY_CONTENT[slug];
     return `<a class="resource-card authority-card reveal" href="/${slug}/"><span>INTELLIGENCE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN BRIEFING ↗</b></a>`;
   }).join("") : "";
-  return `<section class="section resource-hub"><div class="section-head"><p class="kicker">SEARCH INTENT ARCHITECTURE</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div><div class="resource-grid">${guides}${authority}${tools}</div></section>`;
+  return `<section class="section resource-hub"><div class="section-head"><p class="kicker">GUIDES AND PLAYER TOOLS</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div><div class="resource-grid">${guides}${authority}${tools}</div></section>`;
 }
 
 function page(locale) {
   const t = copy[locale] || copy.en;
+  const data = SEO[locale] || SEO.en;
   const lang = languages[locale];
   const statusCards = t.cards.map(([k, v, note], index) => `<article class="status-card reveal"><span>0${index + 1}</span><p>${esc(k)}</p><strong>${esc(v)}</strong><small>${esc(note)}</small></article>`).join("");
   const questions = t.questions.map(([q, a], index) => `<details class="question reveal"${index === 0 ? " open" : ""}><summary><b>0${index + 1}</b>${esc(q)}<i>+</i></summary><p>${esc(a)}</p></details>`).join("");
@@ -506,18 +570,24 @@ function page(locale) {
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <style>${styles()}</style>
 </head>
-<body>
+<body class="home-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="ticker" aria-hidden="true"><div>${[...t.ticker, ...t.ticker, ...t.ticker].map((x) => `<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
+  <div class="scroll-progress" aria-hidden="true"><i></i></div>
   <header class="header">
     <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
-    <button class="menu-button" aria-label="Menu">MENU</button>
-    <nav>${locale === "en"
+    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
+    <nav id="site-navigation" aria-label="Primary navigation">${locale === "en"
       ? '<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/multiplayer/">Multiplayer</a><a href="/gameplay/">Gameplay</a><a href="/wiki/">Wiki</a>'
       : [["release-date", t.nav[0]], ["demo", t.nav[1]], ["gameplay", t.nav[2]], ["multiplayer", t.nav[3]]].map(([slug, item]) => `<a href="${localizedPath(locale, slug)}">${esc(item)}</a>`).join("")}</nav>
-    <div class="language"><button>${esc(lang.label)}⌄</button><div>${langMenu}</div></div>
+    <div class="language"><button class="language-button" type="button" aria-label="Choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${langMenu}</div></div>
   </header>
 
-  <main>
+  <nav class="mobile-dock" aria-label="Quick page navigation">
+    ${t.nav.map((label,index)=>`<a href="${["#status","#questions","#gameplay","#crew"][index]}"><b>0${index+1}</b><span>${esc(label)}</span></a>`).join("")}
+  </nav>
+
+  <main id="main-content">
     <section class="hero">
       <div class="hero-bg"></div><div class="hero-grid"></div>
       <div class="floating-baggage" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -536,13 +606,14 @@ function page(locale) {
     ${homepageEditorial(locale)}
 
     <section id="status" class="section status">
-      <div class="section-head"><p class="kicker">LIVE STATUS · ${esc(t.last)}</p><h2>${esc(t.statusTitle)}</h2><p>${esc(t.statusIntro)}</p></div>
+      <div class="section-head"><p class="kicker">CURRENT STATUS · ${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p><h2>${esc(t.statusTitle)}</h2><p>${esc(t.statusIntro)}</p></div>
       <div class="status-grid">${statusCards}</div>
       <a class="source-link" href="${STEAM}" target="_blank" rel="noopener">SOURCE · OFFICIAL STEAM PAGE ↗</a>
+      <a class="source-link" href="/confirmed-features/">OPEN THE COMPLETE CONFIRMED-FEATURE CHECKLIST ↗</a>
     </section>
 
     <section id="questions" class="section questions">
-      <div class="section-head split"><div><p class="kicker">SEARCH INTENT · ANSWERED</p><h2>${esc(t.questionsTitle)}</h2></div><p>${esc(t.questionsIntro)}</p></div>
+      <div class="section-head split"><div><p class="kicker">PASSENGER QUESTIONS</p><h2>${esc(t.questionsTitle)}</h2></div><p>${esc(t.questionsIntro)}</p></div>
       <div class="question-list">${questions}</div>
     </section>
 
@@ -600,7 +671,7 @@ function page(locale) {
       result.className='result show '+key;
       result.innerHTML='<span><i></i>'+results[key][0]+'</span><p>'+results[key][1]+'</p>';
     });
-    document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));
+    ${shellScript()}
     document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));
     const observer=new IntersectionObserver(entries=>entries.forEach(entry=>entry.isIntersecting&&entry.target.classList.add('seen')),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
@@ -665,12 +736,12 @@ function pageHeader(locale, currentPath = "") {
   const nav = locale === "en"
     ? `<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/news/">News</a><a href="/wiki/">Wiki</a><a href="/media/">Media</a>`
     : `<a href="${localizedPath(locale, "release-date")}">${esc(data.pages["release-date"].name)}</a><a href="${localizedPath(locale, "demo")}">${esc(data.pages.demo.name)}</a><a href="${localizedPath(locale, "multiplayer")}">${esc(data.pages.multiplayer.name)}</a><a href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)}</a>`;
-  return `<div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
+  return `<a class="skip-link" href="#main-content">Skip to main content</a><div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header inner-header">
     <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
-    <button class="menu-button" aria-label="Menu">MENU</button>
-    <nav>${nav}</nav>
-    <div class="language"><button>${esc(lang.label)}⌄</button><div>${languageMenu}</div></div>
+    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
+    <nav id="site-navigation" aria-label="Primary navigation">${nav}</nav>
+    <div class="language"><button class="language-button" type="button" aria-label="Choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
   </header>`;
 }
 
@@ -697,14 +768,11 @@ function pageFooter(locale) {
   const intelligence = locale === "en" ? [
     ["/price/", "Price status"],
     ["/download/", "Safe download"],
-    ["/languages/", "Language support"],
     ["/developer/", "FLEXUS profile"],
     ["/media/", "Official media"],
-    ["/about/", "About this guide"],
-    ["/editorial-policy/", "Editorial policy"],
-    ["/corrections/", "Corrections"]
+    ["/corrections/", "Report a correction"]
   ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${LAST_CHECKED}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>INTELLIGENCE</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">133-URL KNOWLEDGE GRAPH</a></div></footer>`;
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${CAPSULE}" alt="" aria-hidden="true"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">COMPLETE SITE INDEX</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
@@ -776,8 +844,8 @@ function intentPage(locale, slug) {
   <meta property="og:type" content="article"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.meta)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
   <script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
   ${pageHeader(locale,currentPath)}
-  <main class="inner-main">
-    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>PUBLISHED · JULY 2026</span><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>STATUS · VERIFIED</span></div></section>
+  <main class="inner-main" id="main-content">
+    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>OFFICIAL SOURCE MONITORING · DAILY</span><span>STATUS · VERIFIED</span></div></section>
     ${briefingToc}
     <section class="article-body">
       <article>
@@ -789,10 +857,10 @@ function intentPage(locale, slug) {
       </article>
       <aside><div class="aside-card"><span>${esc(data.ui.current)}</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>${esc(data.ui.sources)}</span>${sourceCards}</div><div class="aside-card"><span>UPDATE STANDARD</span><p>When an official source changes, this page records the new answer and keeps the old state in its update history.</p></div></aside>
     </section>${locale === "en" ? clusterHub(slug) : ""}
-    <section class="section compact-section"><div class="section-head"><p class="kicker">INTERNAL KNOWLEDGE GRAPH</p><h2>${esc(data.ui.related)}</h2></div>${relatedGrid(locale,slug)}</section>
+    <section class="section compact-section"><div class="section-head"><p class="kicker">NEXT FLIGHT BRIEFINGS</p><h2>${esc(data.ui.related)}</h2></div>${relatedGrid(locale,slug)}</section>
     <section class="section compact-section log-section"><div class="section-head"><p class="kicker">SOURCE HISTORY</p><h2>${esc(data.ui.log)}</h2></div>${updateLog(locale)}</section>
   </main>${pageFooter(locale)}
-  <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script>
+  <script>${shellScript()}document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script>
   </body></html>`;
 }
 
@@ -857,22 +925,22 @@ function deepContentPage(kind, slug) {
   <meta property="og:type" content="${kind === "news" ? "article" : "website"}"><meta property="og:title" content="${esc(item.title)}"><meta property="og:description" content="${esc(item.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${HERO}">
   <script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
   ${pageHeader("en","")}
-  <main class="inner-main"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} INTELLIGENCE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${LAST_CHECKED}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
+  <main class="inner-main" id="main-content"><section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span>${kind === "wiki" || kind === "news" ? `<a href="/${kind}/">${kind}</a><span>/</span>` : ""}<span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${kind === "news" ? `VERIFIED DISPATCH · ${item.date}` : `${kind.toUpperCase()} PLAYER GUIDE`}</p><h1>${esc(item.title)}</h1><p>${esc(item.description)}</p><div class="article-meta"><span>LAST VERIFIED · ${esc(formattedVerifiedDate("en"))}</span><span>PRIMARY SOURCES · ${item.sources.length}</span></div></section>
   <section class="answer-strip"><span>DIRECT ANSWER</span><strong>${esc(item.answer)}</strong></section>
-  <section class="article-body authority-body"><article>${sections}${semanticLinks("en", `${kind}:${slug}`, "Follow the connected search intent.")}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>EDITORIAL LABELS</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/editorial-policy/">READ POLICY ↗</a></div></aside></section>
-  <section class="section compact-section"><div class="section-head"><p class="kicker">INTERNAL KNOWLEDGE GRAPH</p><h2>Continue the investigation.</h2></div>${deepRelated(kind,slug)}</section></main>${pageFooter("en")}
-  <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script></body></html>`;
+  <section class="article-body authority-body"><article>${sections}${semanticLinks("en", `${kind}:${slug}`, "Related guides and player questions.")}${faqs}</article><aside><div class="aside-card"><span>CURRENT ANSWER</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>SOURCE LEDGER</span>${sourceCards}</div><div class="aside-card"><span>HOW TO READ THIS GUIDE</span><p>Confirmed · attributed · observed · interpreted · unknown</p><a class="source-link" href="/editorial-policy/">READ POLICY ↗</a></div></aside></section>
+  <section class="section compact-section"><div class="section-head"><p class="kicker">NEXT FLIGHT BRIEFINGS</p><h2>Continue with related player guides.</h2></div>${deepRelated(kind,slug)}</section></main>${pageFooter("en")}
+  <script>${shellScript()}document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script></body></html>`;
 }
 
 function mediaPage() {
   const canonical = `${SITE}/media/`;
   const gallery = OFFICIAL_MEDIA.map(([name,url],index)=>`<figure class="media-tile"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Official Dear Passengers screenshot: ${esc(name)}" loading="${index<2?"eager":"lazy"}"><span>OFFICIAL SCREENSHOT · ${String(index+1).padStart(2,"0")}</span><figcaption>${esc(name)}</figcaption></a></figure>`).join("");
   const schema = {"@context":"https://schema.org","@type":"CollectionPage",name:"Dear Passengers Official Media Archive",description:"Official screenshots and announcement trailer published by FLEXUS via Steam.",url:canonical,mainEntity:OFFICIAL_MEDIA.map(([name,url])=>({"@type":"ImageObject",name,contentUrl:url,creditText:"FLEXUS via Steam"}))};
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>${pageHeader("en","")}<main class="inner-main">
-  <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots & trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${LAST_CHECKED}</span></div></section>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dear Passengers Official Screenshots and Trailer</title><meta name="description" content="Browse ten official Dear Passengers screenshots and the official announcement trailer with descriptive labels and source credit."><link rel="canonical" href="${canonical}">${iconLinks()}<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="x-default" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>${pageHeader("en","")}<main class="inner-main" id="main-content">
+  <section class="article-hero authority-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="/">Home</a><span>/</span><span>Media</span></div><p class="eyebrow"><i></i>OFFICIAL MEDIA ARCHIVE</p><h1>Dear Passengers screenshots and trailer</h1><p>Ten full-resolution Steam screenshots and the announcement trailer, organized for players researching cockpit, cabin, passengers, cargo and hazards.</p><div class="article-meta"><span>SOURCE · FLEXUS VIA STEAM</span><span>LAST VERIFIED · ${esc(formattedVerifiedDate("en"))}</span></div></section>
   <section class="section media-archive"><div class="media-grid authority-video"><div class="video"><iframe src="${TRAILER}" title="Dear Passengers official announcement trailer" loading="lazy" allowfullscreen></iframe></div><div class="media-copy"><p class="kicker">PRIMARY RECORDING</p><h2>Official announcement trailer</h2><p>Edited official footage establishes the game's cockpit-and-cabin fantasy. It should not be treated as a frame-by-frame promise of final controls or event frequency.</p><a class="primary" href="https://www.youtube.com/watch?v=hEsuA_rqTxk" target="_blank" rel="noopener">WATCH ON YOUTUBE ↗</a></div></div><div class="media-wall">${gallery}</div></section>
   <div class="section compact-section media-semantic">${semanticLinks("en", "media:media", "Read the evidence behind the footage.")}</div>
-  <section class="section compact-section"><div class="section-head"><p class="kicker">READ THE FOOTAGE</p><h2>Connect images to verified context.</h2></div>${deepRelated("authority","confirmed-features")}</section></main>${pageFooter("en")}<script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));</script></body></html>`;
+  <section class="section compact-section"><div class="section-head"><p class="kicker">READ THE FOOTAGE</p><h2>Connect images to verified context.</h2></div>${deepRelated("authority","confirmed-features")}</section></main>${pageFooter("en")}<script>${shellScript()}</script></body></html>`;
 }
 
 function toolOptions(items) {
@@ -941,12 +1009,12 @@ function toolPage(locale, slug) {
   const canonical = localizedUrl(locale, `tools/${slug}`);
   const schema = {"@context":"https://schema.org","@type":"SoftwareApplication",name:tool[0],description:tool[1],applicationCategory:"GameApplication",operatingSystem:"Web",url:canonical};
   return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", `tools/${slug}`)}"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script><style>${styles()}</style></head><body>
-  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${LAST_CHECKED}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
+  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main" id="main-content"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
   <section class="tool-stage">${toolMarkup(locale,slug)}</section>
   ${toolGuide(locale,slug)}
   <div class="section compact-section tool-semantic">${semanticLinks(locale, `tool:${slug}`, data.ui.related)}</div>
   <section class="section compact-section"><div class="section-head"><p class="kicker">EXPLORE THE INTELLIGENCE HUB</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div>${relatedGrid(locale)}</section></main>${pageFooter(locale)}
-  <script>document.querySelector('.menu-button').addEventListener('click',()=>document.querySelector('.header nav').classList.toggle('open'));${toolScript(locale,slug)}</script></body></html>`;
+  <script>${shellScript()}${toolScript(locale,slug)}</script></body></html>`;
 }
 
 function styles() {
@@ -974,6 +1042,7 @@ body{background:radial-gradient(circle at 80% 10%,#12233a 0,#07111e 34%,#040a12 
 /* Editorial flight-dossier system: long-form rhythm, clear hierarchy, restrained cards */
 body{font-family:"Manrope",ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .chapter-sand{background:#dfd5c5;color:#0b1729}
+.directory-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 .hero h1,.section-head h2,.media-copy h2,.crew-layout h2,.final h2,.overview-heading h2,.briefing-card h3,.article-hero h1,.tool-hero h1,.chapter-copy h2,.chapter-copy h3,.article-body h2,.article-body h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700}
 .hero h1{font-weight:800;letter-spacing:-.035em;line-height:.78}.hero h1 .hero-title-main{letter-spacing:-.035em;line-height:.76}.hero-shout strong{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:20px;font-weight:700}.lead{max-width:690px}
 .verification-bar{width:min(1180px,calc(100% - 48px));min-height:112px;margin:28px auto;display:grid;grid-template-columns:1fr 1.3fr .65fr auto;align-items:center;gap:28px;padding:22px 28px;background:#fffdf7;color:#0b1729;border:1px solid #d8d1c5;border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.18)}.verification-bar>div{display:grid;gap:7px}.verification-bar span{font-size:8px;letter-spacing:.16em;color:#8a5b10;font-weight:800}.verification-bar strong{font-size:12px;line-height:1.45}.verification-bar a{padding:15px 18px;border:1px solid #b9b2a6;color:#8a4c05;font-size:9px;font-weight:800;letter-spacing:.08em;text-align:center}
@@ -982,9 +1051,30 @@ body{font-family:"Manrope",ui-sans-serif,system-ui,-apple-system,BlinkMacSystemF
 .inner-main{padding-top:0}.inner-header{z-index:50}.article-hero{min-height:760px;padding-top:190px;padding-bottom:82px}.article-hero h1{max-width:960px;font-size:clamp(66px,7.3vw,112px);line-height:.88;letter-spacing:-.025em}.article-hero>p:not(.eyebrow){max-width:780px;line-height:1.75}.article-toc{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;padding:22px clamp(24px,7vw,112px);background:#fffdf7;color:#0b1729;border-bottom:1px solid #d2cabd;position:relative;z-index:2}.article-toc strong,.article-toc a{padding:9px 16px;border-right:1px solid #d2cabd;font-size:9px;line-height:1.25}.article-toc strong{color:#9a570d;letter-spacing:.14em}.article-toc a:hover{color:#b85b00}.article-body{grid-template-columns:minmax(0,790px) 286px;justify-content:center;gap:90px;padding-top:95px;padding-bottom:95px;background:#f4efe4}.article-body article{max-width:790px}.article-body article>section{padding-bottom:74px;margin-bottom:74px}.article-body h2{font-size:clamp(48px,5.2vw,72px);line-height:.94;letter-spacing:-.02em}.article-body h3{font-size:31px}.article-body p,.article-body li{font-size:16px;line-height:1.88}.long-copy{font-size:16px;max-width:790px}.current-answer h2{font-size:clamp(42px,4.4vw,62px);line-height:1}.answer-status{margin-top:34px;padding:22px 24px;display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;background:#0b1729;color:#fff;border-left:5px solid #ff9f0a}.answer-status span{font-size:8px;color:#ffb132;letter-spacing:.13em}.answer-status strong{font-size:12px}.answer-status a{font-size:9px;color:#ffb132}.intent-depth{padding:0!important;border-bottom:0!important}.depth-block{position:relative;padding:0 0 78px;margin:0 0 78px;border-bottom:1px solid #b6b0a7}.depth-block .section-number{display:block;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:60px;line-height:1;color:#c56a09}.depth-block h2{margin-top:12px}.article-figure{margin:42px 0 0}.article-figure img{aspect-ratio:16/9;object-fit:cover}.article-body aside{position:sticky;top:145px}.aside-card{border-radius:0}.fact-columns{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}.fact-columns>div{min-width:0}.fact-columns h3{margin-top:0}.fact-columns .evidence-list li{display:block;padding:15px 16px;font-size:13px;line-height:1.55}.fact-columns .evidence-list i{display:block;margin-bottom:6px}.semantic-list{grid-template-columns:1fr}.semantic-link{min-height:0;padding:20px 0;border-left:0;border-right:0}.compact-section{padding-top:78px;padding-bottom:78px}.compact-section .mini-grid{max-width:1180px;margin:auto}.compact-section .section-head{max-width:1180px;margin-left:auto;margin-right:auto}.mini-link{min-height:132px}.log-section{padding-top:0}
 @media(max-width:1100px){.verification-bar{grid-template-columns:1fr 1fr}.editorial-chapter{grid-template-columns:100px minmax(0,790px);gap:45px}.directory-grid{grid-template-columns:repeat(3,1fr)}.article-body{grid-template-columns:minmax(0,720px);gap:45px}.article-body aside{position:static;grid-template-columns:repeat(3,1fr)}}
 @media(max-width:760px){.verification-bar{width:calc(100% - 24px);grid-template-columns:1fr;padding:22px}.editorial-chapter{grid-template-columns:1fr;padding:82px 22px}.chapter-rail{display:none}.chapter-copy h2{font-size:56px}.chapter-copy h3{font-size:31px}.chapter-copy .chapter-lead{font-size:20px}.chapter-links{grid-template-columns:1fr}.intent-lines article{grid-template-columns:45px 1fr;gap:12px}.directory-grid{grid-template-columns:1fr}.directory-group{padding:22px}.article-hero{min-height:700px;padding:170px 22px 70px}.article-hero h1{font-size:58px}.article-toc{justify-content:flex-start;overflow:auto;flex-wrap:nowrap;padding:14px 12px}.article-toc strong,.article-toc a{white-space:nowrap}.article-body{padding:72px 22px}.article-body aside{grid-template-columns:1fr}.answer-status{grid-template-columns:1fr}.fact-columns{grid-template-columns:1fr}.authority-bullets{grid-template-columns:1fr}.hero h1{font-size:21vw}.hero h1 .hero-title-main{line-height:.82}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+${uiPolishStyles()}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.scroll-progress i{display:none}}
 
 `;
+}
+
+function uiPolishStyles() {
+  return `
+/* UI/UX Pro Max implementation: cinematic flight deck + editorial bento system */
+:root{color-scheme:dark;--ui-bg:#050b12;--ui-bg-2:#071523;--ui-surface:#0c1c2b;--ui-surface-soft:rgba(255,255,255,.055);--ui-text:#f7f9fc;--ui-muted:#a6b3c0;--ui-orange:#ff9f0a;--ui-orange-2:#ff6b19;--ui-cyan:#45e0d0;--ui-paper:#f3ede2;--ui-ink:#0a1725;--ui-border:rgba(255,255,255,.13);--ui-radius:22px;--ui-ease:cubic-bezier(.16,1,.3,1)}
+html{scroll-padding-top:140px;overscroll-behavior-y:none}body{min-width:320px;background:radial-gradient(circle at 76% 4%,#143657 0,transparent 25%),linear-gradient(180deg,#050b12,#071522 48%,#040a11);font-size:16px;line-height:1.5}::selection{background:var(--ui-orange);color:var(--ui-ink)}a,button,summary,select{touch-action:manipulation}a,button,summary{cursor:pointer}a:active,button:active,summary:active{opacity:.82}button,select{min-height:44px}a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid var(--ui-cyan);outline-offset:4px;border-radius:6px}.skip-link{position:fixed;z-index:130;left:16px;top:12px;padding:12px 16px;background:var(--ui-paper);color:var(--ui-ink);font-size:13px;font-weight:800;transform:translateY(-160%);transition:transform .2s var(--ui-ease)}.skip-link:focus{transform:none}.scroll-progress{position:fixed;z-index:120;inset:0 0 auto;height:3px;background:rgba(255,255,255,.08)}.scroll-progress i{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--ui-orange-2),var(--ui-orange),var(--ui-cyan));will-change:transform}
+.ticker{height:32px;background:linear-gradient(90deg,#ff6518,#ff9f0a 48%,#ffd35a);box-shadow:0 1px 0 rgba(255,255,255,.26) inset}.ticker div{animation-duration:30s}.header{position:fixed;z-index:100;top:44px;left:clamp(12px,3vw,46px);right:clamp(12px,3vw,46px);height:76px;grid-template-columns:minmax(228px,300px) minmax(0,1fr) 92px;padding:0 14px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:linear-gradient(135deg,rgba(6,16,28,.94),rgba(9,31,49,.82));box-shadow:0 24px 70px rgba(0,0,0,.36),0 1px 0 rgba(255,255,255,.1) inset;backdrop-filter:blur(20px) saturate(1.25)}.header .brand,.header .menu-button,.header .language{position:relative;z-index:3}.brand>span.brand-mark{width:48px;height:48px;border-radius:14px}.brand>b{font-size:12px}.header nav{display:flex;gap:clamp(16px,2vw,32px)}.header nav a{min-height:44px;display:grid;place-items:center;color:#bdc8d3;font-size:10px;font-weight:800;letter-spacing:.045em;transition:color .2s var(--ui-ease)}.header nav a:after{bottom:5px;height:2px;background:linear-gradient(90deg,var(--ui-orange),var(--ui-cyan))}.header nav a:hover{color:#fff}.menu-button{align-items:center;justify-content:center;gap:8px;min-width:58px;border:0;background:transparent;color:#fff}.menu-button svg{transition:transform .24s var(--ui-ease)}.menu-button[aria-expanded=true] svg{transform:rotate(90deg)}.language-button{width:84px!important;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--ui-border)!important;border-radius:12px!important;background:rgba(255,255,255,.05)!important;color:#fff}.language-button svg{transition:transform .2s var(--ui-ease)}.language-button[aria-expanded=true] svg{transform:rotate(180deg)}.language:hover>div,.language:focus-within>div{display:none}.language>div[data-open]{display:grid}.language>div{top:51px;border:1px solid var(--ui-border);border-radius:14px;background:#071522;box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden}.language a{min-height:44px;display:flex;align-items:center;padding:10px 13px}.language a:hover,.language a[aria-current=page]{background:linear-gradient(90deg,var(--ui-orange),#ffbb37);color:var(--ui-ink)}
+.hero{min-height:940px;margin:0 12px 12px;padding:176px clamp(28px,5.6vw,90px) 100px;border-radius:0 0 38px 38px;align-items:center;overflow:hidden;background:#06101a;box-shadow:0 36px 100px rgba(0,0,0,.34)}.hero:before{background:radial-gradient(circle at 71% 26%,rgba(58,196,255,.25),transparent 24%),radial-gradient(circle at 85% 70%,rgba(255,143,30,.21),transparent 28%)}.hero:after{content:"";position:absolute;z-index:-1;right:-11vw;top:40%;width:46vw;height:46vw;border:1px solid rgba(69,224,208,.16);border-radius:50%;box-shadow:0 0 0 8vw rgba(69,224,208,.025),0 0 0 16vw rgba(255,159,10,.02);pointer-events:none}.hero-bg{background-image:linear-gradient(90deg,rgba(2,8,16,.99) 0%,rgba(3,12,22,.88) 34%,rgba(3,12,22,.08) 72%,rgba(3,12,22,.42) 100%),linear-gradient(0deg,#06101a 0%,transparent 38%),url("${HERO}");background-position:center;filter:saturate(1.14) contrast(1.05)}.hero-grid{background-size:88px 88px;opacity:.56}.hero-copy{width:min(820px,67vw)}.eyebrow,.kicker{letter-spacing:.17em}.eyebrow{color:#d2dce5}.hero h1{font-size:clamp(86px,10vw,166px);line-height:.76;margin:28px 0 24px}.hero h1>span:first-child{font-size:.39em}.hero h1 .hero-title-main{background:linear-gradient(100deg,#fff 0 42%,#ffd67a 69%,#ff7a1b 100%);-webkit-background-clip:text;background-clip:text}.hero-shout{margin-bottom:17px}.hero-shout span{background:linear-gradient(135deg,var(--ui-orange-2),var(--ui-orange))}.hero-shout strong{font-size:19px}.lead{max-width:640px;color:#d5dee7;font-size:17px;line-height:1.72}.actions{gap:12px}.primary,.secondary{min-height:56px;height:auto;border-radius:13px;transition:transform .2s var(--ui-ease),background .2s var(--ui-ease),border-color .2s var(--ui-ease),box-shadow .2s var(--ui-ease)}.primary{background:linear-gradient(135deg,var(--ui-orange-2),var(--ui-orange));box-shadow:0 15px 38px rgba(255,125,24,.22)}.primary:hover,.secondary:hover{transform:translateY(-2px)}.capsule{top:155px;right:4.6vw;width:268px;border-radius:19px;background:rgba(6,20,34,.74);transform:rotate(2.3deg);transition:transform .25s var(--ui-ease),border-color .25s var(--ui-ease)}.capsule:hover{transform:rotate(0) translateY(-4px);border-color:rgba(255,182,62,.7)}.capsule img{border-radius:12px}.hero-facts{right:4.6vw;bottom:62px;width:390px;border-radius:19px;background:linear-gradient(135deg,rgba(9,28,45,.88),rgba(4,14,25,.75))}.hero-facts>div{height:68px}.hero-facts b{font-size:11px}.media-credit{bottom:19px}
+.floating-baggage i{animation-iteration-count:2}.mobile-dock{display:none}.section{padding-left:clamp(24px,6vw,96px);padding-right:clamp(24px,6vw,96px)}.section-head{max-width:760px}.section-head>p:last-child,.media-copy>p,.crew-layout>div>p:last-child,.final p{font-size:16px;line-height:1.75}.section-head h2,.media-copy h2,.crew-layout h2,.final h2{line-height:.94}.verification-bar{position:relative;width:min(1200px,calc(100% - 48px));grid-template-columns:1fr 1.35fr .8fr auto;gap:26px;margin:22px auto 30px;padding:25px 28px;border:0;border-radius:18px;background:linear-gradient(135deg,#fffdf8,#eee4d3);box-shadow:0 24px 70px rgba(0,0,0,.22)}.verification-bar:before,.verification-bar:after{content:"";position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:#071522;transform:translateY(-50%)}.verification-bar:before{left:-11px}.verification-bar:after{right:-11px}.verification-bar strong{font-size:13px}.verification-bar a{min-height:48px;display:grid;place-items:center;border-radius:10px;transition:background .2s var(--ui-ease),color .2s var(--ui-ease)}.verification-bar a:hover{background:var(--ui-ink);color:#fff}
+.editorial-chapter{grid-template-columns:120px minmax(0,760px);gap:64px;padding-top:112px;padding-bottom:112px}.chapter-rail{position:sticky;top:155px;align-self:start;border-right-color:rgba(10,23,37,.35)}.chapter-dark .chapter-rail{border-right-color:rgba(255,255,255,.34)}.chapter-rail b{font-size:92px}.chapter-light{background:linear-gradient(135deg,#f7f2e9,#e8dece);background-image:linear-gradient(rgba(11,23,39,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(11,23,39,.035) 1px,transparent 1px),linear-gradient(135deg,#f7f2e9,#e8dece);background-size:72px 72px,72px 72px,auto}.chapter-dark{background:radial-gradient(circle at 90% 8%,rgba(38,148,220,.16),transparent 28%),linear-gradient(180deg,#071523,#091a2c)}.chapter-sand{background:linear-gradient(135deg,#e8ddcb,#d8cbb7)}.chapter-copy{max-width:740px}.chapter-copy h2{font-size:clamp(56px,5.5vw,82px);line-height:.92;margin-bottom:32px}.chapter-copy h3{font-size:32px}.chapter-copy p{max-width:72ch;font-size:16px;line-height:1.82}.chapter-copy .chapter-lead{font-size:22px;line-height:1.5}.chapter-links{gap:12px;border:0}.chapter-links a{min-height:132px;border:1px solid rgba(11,23,39,.25);border-radius:16px;background:rgba(255,255,255,.36);transition:transform .2s var(--ui-ease),background .2s var(--ui-ease)}.chapter-links a:hover{transform:translateY(-3px);background:#fff}.intent-lines article{border-bottom-color:rgba(255,255,255,.14);transition:padding .22s var(--ui-ease),background .22s var(--ui-ease)}.intent-lines article:hover{padding-left:18px;background:linear-gradient(90deg,rgba(255,159,10,.09),transparent)}.intent-lines h3{font-size:32px}
+.status{background:radial-gradient(circle at 86% 8%,rgba(45,153,222,.18),transparent 30%),#071421}.status-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.status-card{grid-column:span 3;min-height:190px;border:1px solid var(--ui-border);border-radius:20px;overflow:hidden}.status-card:nth-child(1){grid-column:span 7;min-height:235px}.status-card:nth-child(2){grid-column:span 5;min-height:235px}.status-card:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--ui-orange),transparent);opacity:.65}.status-card:nth-child(2):before,.status-card:nth-child(6):before{background:linear-gradient(90deg,var(--ui-cyan),transparent)}.status-card strong{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:clamp(28px,3vw,43px)}.status-card:hover{transform:translateY(-4px);border-color:rgba(255,174,43,.55)}.questions{background:linear-gradient(180deg,#050c15,#071522)}.questions .question{padding:0 18px;border-color:rgba(255,255,255,.13);transition:background .2s var(--ui-ease),border-color .2s var(--ui-ease)}.questions .question:hover,.questions .question[open]{background:rgba(255,255,255,.025)}.question summary{min-height:88px}.question summary i{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--ui-border);border-radius:50%}.question[open] summary i{color:var(--ui-orange);border-color:rgba(255,159,10,.55)}
+.media{margin:12px;border-radius:30px;padding:10px;background:linear-gradient(135deg,var(--ui-orange-2),var(--ui-orange),#ffd267)}.media-grid{min-height:560px;border-radius:22px}.video{border-radius:22px 0 0 22px}.media-copy{border-radius:0 22px 22px 0;padding:clamp(38px,5vw,72px)}.gameplay{margin:12px;border-radius:30px}.game-shot{height:min(620px,54vw);border-radius:24px}.features{grid-template-columns:repeat(3,minmax(0,1fr))}.feature{min-height:220px}.feed-grid{gap:12px;background:transparent}.feed-card{border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.18)}.manifest-layout{gap:14px;border:0}.spec-board{gap:10px}.spec-board>div{border:1px solid rgba(10,23,37,.24);border-radius:14px;background:rgba(255,255,255,.34)}.language-board{border-radius:18px}.dispatch-grid{gap:12px;border:0}.dispatch-card{border:1px solid var(--ui-border);border-radius:18px}.source-manifest-grid{gap:12px;border:0}.source-manifest-grid>a{border:1px solid var(--ui-border);border-radius:18px}.crew{margin:12px;border-radius:30px}.crew-form select,.crew-form button{min-height:56px}.crew-form label{font-size:10px}.timeline{gap:12px;border:0}.timeline-item{border:1px solid var(--ui-border);border-radius:18px}.compact-directory .directory-grid{gap:12px;border:0}.directory-group{border:1px solid var(--ui-border);border-radius:17px}.directory-group a{min-height:46px;align-items:center}.final{margin:12px;border-radius:30px}.site-footer{margin:12px;border-radius:28px 28px 0 0}
+.article-hero{min-height:680px;padding-top:176px}.article-hero h1{max-width:1050px;font-size:clamp(58px,6.6vw,98px);line-height:.9}.article-toc{position:sticky;top:132px;z-index:35;box-shadow:0 12px 30px rgba(0,0,0,.08)}.article-toc a{min-height:44px;display:flex;align-items:center}.article-body{grid-template-columns:minmax(0,740px) 300px;gap:76px}.article-body article{max-width:740px}.article-body p,.article-body li{line-height:1.82}.article-body h2{font-size:clamp(44px,4.8vw,66px)}.aside-card{border-radius:14px}.answer-status{border-radius:0 12px 12px 0}.article-figure{border-radius:16px;overflow:hidden}.semantic-link,.mini-link,.authority-tile,.resource-card{transition:transform .2s var(--ui-ease),background .2s var(--ui-ease),border-color .2s var(--ui-ease)}
+html[lang="zh-cn"] .hero h1,html[lang="ja"] .hero h1,html[lang="ar"] .hero h1{font-size:clamp(64px,8vw,126px)}html[lang="zh-cn"] .chapter-copy h2,html[lang="ja"] .chapter-copy h2,html[lang="ar"] .chapter-copy h2{font-family:"Manrope",system-ui,sans-serif;font-size:clamp(44px,5vw,68px);line-height:1.08;letter-spacing:-.025em}html[lang="zh-cn"] .article-hero h1,html[lang="ja"] .article-hero h1,html[lang="ar"] .article-hero h1{font-family:"Manrope",system-ui,sans-serif;line-height:1.08}
+@media(max-width:1100px){.header{grid-template-columns:minmax(215px,1fr) minmax(0,1.4fr) 84px}.header nav{gap:14px}.verification-bar{grid-template-columns:1fr 1fr}.verification-bar a{grid-column:2}.status-card:nth-child(1),.status-card:nth-child(2){grid-column:span 6}.status-card{grid-column:span 4}.article-body{grid-template-columns:minmax(0,720px);gap:48px}.article-body aside{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:980px){body.menu-open{overflow:hidden}.header{left:14px;right:14px;grid-template-columns:minmax(0,1fr) auto auto}.header nav{position:fixed;inset:0;z-index:1;height:100dvh;padding:132px 24px 104px;display:flex!important;flex-direction:column;align-items:stretch;justify-content:center;gap:4px;background:radial-gradient(circle at 80% 10%,rgba(35,144,210,.22),transparent 28%),rgba(4,12,21,.985);transform:translateY(-104%);opacity:0;visibility:hidden;transition:transform .32s var(--ui-ease),opacity .24s ease,visibility .32s}.header nav.open{transform:none;opacity:1;visibility:visible}.header nav a{justify-items:start;place-items:center start;min-height:58px;padding:0 8px;border-bottom:1px solid rgba(255,255,255,.1);font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:clamp(28px,7vw,42px);letter-spacing:.02em;color:#eef4fa}.header nav a:after{display:none}.menu-button{display:flex}.capsule{top:142px}.hero-copy{width:100%}.verification-bar{width:calc(100% - 28px)}.editorial-chapter{grid-template-columns:88px minmax(0,720px);gap:36px}.chapter-rail b{font-size:72px}.media-grid,.crew-layout,.manifest-layout,.tool-guide-layout{grid-template-columns:1fr}.video{min-height:420px;border-radius:22px 22px 0 0}.media-copy{border-radius:0 0 22px 22px}.dispatch-grid{grid-template-columns:1fr}.article-toc{top:130px}.article-body aside{position:static}}
+@media(max-width:760px){html{scroll-padding-top:112px}body.home-page{padding-bottom:78px}.ticker{height:28px}.header{top:max(36px,env(safe-area-inset-top));left:10px;right:10px;height:64px;padding:0 8px;border-radius:17px}.header .brand{gap:8px;min-width:0}.brand>span.brand-mark{width:44px;height:44px;border-radius:12px}.header .brand>b{font-size:9px;white-space:nowrap}.header .brand small{font-size:6px}.menu-button{min-width:48px;padding:0}.menu-button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.language-button{width:58px!important;min-width:58px;padding:0 5px}.language-button svg{display:none}.language>div{position:fixed;top:108px;left:12px;right:12px;width:auto;max-height:calc(100dvh - 130px);overflow:auto}.mobile-dock{position:fixed;z-index:90;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));height:62px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:5px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(5,15,26,.92);box-shadow:0 18px 60px rgba(0,0,0,.4);backdrop-filter:blur(18px)}.mobile-dock a{min-width:0;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:13px;color:#b5c1cd}.mobile-dock a:active,.mobile-dock a:focus-visible{background:rgba(255,159,10,.13);color:#fff}.mobile-dock b{font-size:8px;color:var(--ui-orange);letter-spacing:.12em}.mobile-dock span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;font-weight:700}.hero{min-height:auto;margin:0 6px 8px;padding:116px 18px 28px;border-radius:0 0 26px 26px;display:block}.hero:after{width:90vw;height:90vw;right:-50vw;top:12%}.hero-bg{background-image:linear-gradient(0deg,#06101a 1%,rgba(2,10,18,.16) 45%,rgba(2,10,18,.88) 100%),linear-gradient(90deg,rgba(2,10,18,.4),transparent 75%),url("${HERO}");background-position:58% top}.hero-copy{padding-top:238px}.hero h1{font-size:clamp(66px,20vw,88px);line-height:.78;margin:20px 0 18px}.hero h1>span:first-child{font-size:.48em}.hero-shout{align-items:flex-start;flex-direction:column;gap:8px}.hero-shout strong{font-size:15px;line-height:1.2}.lead{font-size:16px;line-height:1.67;text-shadow:0 2px 18px #000}.actions{grid-template-columns:1fr 1fr;margin-top:24px}.primary,.secondary{min-width:0;min-height:54px;padding:0 14px;font-size:9px}.capsule{top:120px;left:18px!important;right:auto!important;width:178px;border-radius:15px;transform:rotate(-2deg)}.capsule span{font-size:6px}.hero-facts{position:relative;inset:auto!important;width:100%;margin-top:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:16px}.hero-facts>div{height:auto;min-height:84px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;padding:12px;border-right:1px solid rgba(255,255,255,.1);border-bottom:0}.hero-facts>div:last-child{border-right:0}.hero-facts small{font-size:6px}.hero-facts b{font-size:10px;line-height:1.25}.hero-facts i{position:absolute;align-self:flex-end}.media-credit{display:none}.verification-bar{width:calc(100% - 20px);grid-template-columns:1fr;gap:18px;margin:12px auto 20px;padding:24px 20px;border-radius:16px}.verification-bar a{grid-column:auto;width:100%}.editorial-chapter{grid-template-columns:1fr;padding:72px 20px}.chapter-rail{display:none}.chapter-copy h2{font-size:clamp(44px,13vw,56px);line-height:.96;margin:15px 0 28px}.chapter-copy h3{font-size:28px;line-height:1.1;margin-top:42px}.chapter-copy p{font-size:16px;line-height:1.78}.chapter-copy .chapter-lead{font-size:20px}.chapter-links{grid-template-columns:1fr}.intent-lines{margin-top:38px}.intent-lines article{grid-template-columns:40px minmax(0,1fr);gap:10px;padding:27px 0}.intent-lines article:hover{padding-left:0}.intent-lines h3{font-size:27px}.section{padding:72px 20px}.section-head{margin-bottom:36px}.section-head h2,.media-copy h2,.crew-layout h2,.final h2{font-size:clamp(40px,12vw,52px);line-height:.96}.section-head.split{gap:12px}.status-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.status-card,.status-card:nth-child(1),.status-card:nth-child(2){grid-column:span 1;min-height:168px;padding:18px}.status-card:nth-child(1),.status-card:nth-child(2){grid-column:span 2;min-height:182px}.status-card strong{font-size:28px}.status-card small{font-size:12px;line-height:1.45}.questions .question{padding:0 4px}.question summary{grid-template-columns:32px minmax(0,1fr) 34px;gap:8px;min-height:82px;font-size:18px;line-height:1.32}.question p{padding:0 42px 28px 40px;font-size:15px!important;line-height:1.7}.media,.gameplay,.crew,.final,.site-footer{margin-left:6px;margin-right:6px;border-radius:24px}.media{padding:6px}.media-grid{min-height:0}.video{min-height:0;aspect-ratio:16/9}.media-copy{padding:42px 20px}.game-shot{height:360px;border-radius:19px}.features{grid-template-columns:1fr}.feature{min-height:180px}.feed-grid,.source-manifest-grid{grid-template-columns:1fr}.feed-card{min-height:300px}.spec-board{grid-template-columns:1fr}.dispatch-card{min-height:250px}.crew-layout{gap:38px}.crew-form{grid-template-columns:1fr}.timeline{grid-template-columns:1fr}.timeline-item{min-height:190px}.directory-grid{grid-template-columns:1fr!important}.directory-group{padding:20px}.directory-group a{font-size:12px}.final{min-height:580px;padding:70px 20px}.article-hero{min-height:590px;padding:158px 20px 60px}.article-hero h1{font-size:clamp(46px,13vw,60px);line-height:.96}.article-hero>p:not(.eyebrow){font-size:16px}.article-toc{top:108px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:10px 8px;scrollbar-width:none}.article-toc::-webkit-scrollbar{display:none}.article-toc strong,.article-toc a{min-height:44px;white-space:nowrap}.article-body{padding:66px 20px}.article-body article>section{padding-bottom:54px;margin-bottom:54px}.article-body h2{font-size:clamp(38px,11vw,50px);line-height:1}.article-body h3{font-size:27px}.article-body p,.article-body li,.long-copy{font-size:16px;line-height:1.78}.article-body aside{grid-template-columns:1fr}.answer-status{grid-template-columns:1fr}.fact-columns{grid-template-columns:1fr}.authority-bullets{grid-template-columns:1fr}.site-footer nav>a{min-height:44px;display:flex;align-items:center}.footer-top{padding-bottom:92px}}
+@media(max-width:430px){.header .brand>b{max-width:118px;overflow:hidden;text-overflow:ellipsis}.actions{grid-template-columns:1fr}.hero-copy{padding-top:225px}.hero-facts{grid-template-columns:1fr}.hero-facts>div{min-height:66px;border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}.hero-facts>div:last-child{border-bottom:0}.status-grid{grid-template-columns:1fr}.status-card,.status-card:nth-child(1),.status-card:nth-child(2){grid-column:1;min-height:156px}.mobile-dock span{font-size:8px}}
+  `;
 }
 function sitemap() {
   const entries = [];

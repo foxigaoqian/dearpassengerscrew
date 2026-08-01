@@ -1,4 +1,4 @@
-export const LAST_CHECKED = "2026-07-31";
+export const LAST_CHECKED = "2026-08-01";
 
 export const PAGE_SLUGS = [
   "release-date",
@@ -24,6 +24,12 @@ export const TOOL_SLUGS = [
 ];
 
 export const UPDATE_LOG = [
+  {
+    date: "2026-08-01",
+    status: "Verified",
+    title: "Official Steam record checked again",
+    detail: "The 2026 release window, Windows support, single-player, online co-op, six interface languages and minimum PC requirements remain unchanged. No public demo, exact date, price or maximum crew size is listed."
+  },
   {
     date: "2026-07-31",
     status: "Verified",

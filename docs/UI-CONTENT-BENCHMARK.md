@@ -88,7 +88,7 @@ No competitor source code or body copy is included. The system reconstructs the 
 
 ## Internal-link policy
 
-Homepage navigation points directly to release, demo, multiplayer, gameplay and wiki pages. Contextual links use descriptive anchor text inside relevant paragraphs. The task directory exposes every primary guide, tool and intelligence page without repeating a large card for each destination.
+Homepage navigation points directly to release, demo, multiplayer, gameplay and wiki pages. Contextual links use descriptive anchor text inside relevant paragraphs. The compact directory exposes the primary guides and four highest-use tools; secondary pages remain reachable through related modules, topic hubs and the footer.
 
 Every English URL must have:
 
@@ -97,7 +97,7 @@ Every English URL must have:
 - a crawl depth of three or less from the English homepage;
 - no generic contextual anchor such as “click here” or “learn more.”
 
-The current automated validation reports 3,266 unique internal-link edges, 578 contextual edges and a maximum crawl depth of two.
+The current automated validation reports 3,191 unique internal-link edges, 559 contextual edges and a maximum crawl depth of two. The homepage has 13 genuine in-copy contextual links, down from 38, while all navigation layers still pass the incoming-link and crawl-depth rules.
 
 ## Content depth policy
 
