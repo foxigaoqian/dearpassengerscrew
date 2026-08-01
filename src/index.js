@@ -40,6 +40,81 @@ const languages = {
 
 const localeTags = { en: "en-US", "zh-cn": "zh-CN", ja: "ja-JP", ar: "ar", tr: "tr-TR", uk: "uk-UA" };
 
+const UI_LABELS = {
+  en: {
+    skip:"Skip to main content", brand:"Independent flight guide", menu:"Menu", openNav:"Open navigation", primaryNav:"Primary navigation", chooseLanguage:"choose language",
+    release:"Release", demo:"Public demo", maxPlayers:"Max players", steamApp:"Official Steam app", mediaCredit:"Official FLEXUS game media · © FLEXUS",
+    currentStatus:"Current status", sourceSteam:"Source · Official Steam page", checklist:"Open the complete confirmed-feature checklist", passengerQuestions:"Passenger questions",
+    flightLoop:"The flight loop", officialGameplay:"Official gameplay", underPressure:"Passengers under pressure", crewCompatibility:"Crew compatibility", verificationLayers:"Verification layers", joinCrew:"Join the crew",
+    relatedQuestions:"Related player questions", relatedIntro:"Continue with the next practical question about release, access, multiplayer or gameplay.", guide:"Guide", tool:"Tool",
+    sourceDaily:"Official source monitoring · Daily", verifiedStatus:"Status · Verified", currentAnswer:"Current answer", sourcesChecked:"Sources checked", verificationStatus:"Verification status",
+    separated:"Confirmed facts separated from unknowns", methodology:"Read the methodology", evidenceCheck:"Evidence check", factTitle:"What is confirmed—and what is not.", updateStandard:"Update standard",
+    updateText:"When an official source changes, this page records the new answer and keeps the old state in its update history.", nextBriefings:"Next flight briefings", sourceHistory:"Source history",
+    deepBriefing:"Deep briefing", inBriefing:"In this briefing", faq:"FAQ", officialScene:"Official scene evidence", secondScene:"Second official scene", officialCredit:"Official FLEXUS media via Steam · Open full resolution",
+    tools:"Tools", interactiveTool:"Interactive player tool", noData:"No login · No data stored", exploreHub:"Explore the intelligence hub", toolNotes:"Verified tool notes"
+  },
+  "zh-cn": {
+    skip:"跳到主要内容", brand:"独立游戏情报指南", menu:"菜单", openNav:"打开导航", primaryNav:"主导航", chooseLanguage:"选择语言",
+    release:"发售", demo:"公开 Demo", maxPlayers:"最多人数", steamApp:"官方 Steam 应用", mediaCredit:"FLEXUS 官方游戏素材 · © FLEXUS",
+    currentStatus:"当前状态", sourceSteam:"来源 · Steam 官方页面", checklist:"查看完整的已确认功能清单", passengerQuestions:"玩家问题",
+    flightLoop:"航班核心循环", officialGameplay:"官方玩法画面", underPressure:"压力下的乘客", crewCompatibility:"队伍兼容性", verificationLayers:"信息核实层级", joinCrew:"加入机组",
+    relatedQuestions:"相关玩家问题", relatedIntro:"继续查看与发售、试玩、联机和玩法直接相关的实用答案。", guide:"指南", tool:"工具",
+    sourceDaily:"官方来源监测 · 每日", verifiedStatus:"状态 · 已核实", currentAnswer:"当前结论", sourcesChecked:"已核查来源", verificationStatus:"核实状态",
+    separated:"已确认事实与未知信息已分开", methodology:"查看核实方法", evidenceCheck:"证据核对", factTitle:"哪些已经确认，哪些仍未公布？", updateStandard:"更新标准",
+    updateText:"官方来源发生变化时，本页会更新答案，并在更新记录中保留此前状态。", nextBriefings:"继续阅读", sourceHistory:"来源更新记录",
+    deepBriefing:"深度简报", inBriefing:"本页目录", faq:"常见问题", officialScene:"官方场景证据", secondScene:"第二张官方场景", officialCredit:"FLEXUS 官方 Steam 素材 · 打开原图",
+    tools:"工具", interactiveTool:"玩家互动工具", noData:"无需登录 · 不保存数据", exploreHub:"探索完整情报中心", toolNotes:"工具核实说明"
+  },
+  ja: {
+    skip:"メインコンテンツへ移動", brand:"独立ゲーム情報ガイド", menu:"メニュー", openNav:"ナビゲーションを開く", primaryNav:"メインナビゲーション", chooseLanguage:"言語を選択",
+    release:"発売", demo:"公開デモ", maxPlayers:"最大人数", steamApp:"Steam公式アプリ", mediaCredit:"FLEXUS公式ゲーム素材 · © FLEXUS",
+    currentStatus:"現在の状況", sourceSteam:"出典 · Steam公式ページ", checklist:"確認済み機能の一覧を見る", passengerQuestions:"プレイヤーの疑問",
+    flightLoop:"フライトの流れ", officialGameplay:"公式ゲームプレイ", underPressure:"混乱する乗客", crewCompatibility:"クルー互換性", verificationLayers:"検証レベル", joinCrew:"クルーに参加",
+    relatedQuestions:"関連する質問", relatedIntro:"発売、アクセス、協力プレイ、ゲーム内容について次の実用的な回答へ進みます。", guide:"ガイド", tool:"ツール",
+    sourceDaily:"公式ソース監視 · 毎日", verifiedStatus:"状態 · 検証済み", currentAnswer:"現在の回答", sourcesChecked:"確認したソース", verificationStatus:"検証状況",
+    separated:"確定情報と未発表情報を分離", methodology:"検証方法を見る", evidenceCheck:"証拠の確認", factTitle:"確定していること、未発表のこと。", updateStandard:"更新基準",
+    updateText:"公式情報が変わると回答を更新し、以前の状態は更新履歴に残します。", nextBriefings:"次のガイド", sourceHistory:"ソース更新履歴",
+    deepBriefing:"詳細ブリーフィング", inBriefing:"このページの内容", faq:"よくある質問", officialScene:"公式シーンの証拠", secondScene:"2つ目の公式シーン", officialCredit:"Steam掲載のFLEXUS公式素材 · 原寸で開く",
+    tools:"ツール", interactiveTool:"プレイヤー向けツール", noData:"ログイン不要 · データ保存なし", exploreHub:"情報ハブを探索", toolNotes:"検証済みツール注記"
+  },
+  ar: {
+    skip:"انتقل إلى المحتوى الرئيسي", brand:"دليل طيران مستقل", menu:"القائمة", openNav:"افتح التنقل", primaryNav:"التنقل الرئيسي", chooseLanguage:"اختر اللغة",
+    release:"الإصدار", demo:"النسخة التجريبية", maxPlayers:"أقصى عدد", steamApp:"تطبيق Steam الرسمي", mediaCredit:"مواد اللعبة الرسمية من FLEXUS · © FLEXUS",
+    currentStatus:"الحالة الحالية", sourceSteam:"المصدر · صفحة Steam الرسمية", checklist:"افتح قائمة الميزات المؤكدة", passengerQuestions:"أسئلة اللاعبين",
+    flightLoop:"دورة الرحلة", officialGameplay:"أسلوب لعب رسمي", underPressure:"ركاب تحت الضغط", crewCompatibility:"توافق الطاقم", verificationLayers:"مستويات التحقق", joinCrew:"انضم إلى الطاقم",
+    relatedQuestions:"أسئلة لاعبين مرتبطة", relatedIntro:"تابع إلى إجابة عملية عن الإصدار أو الوصول أو اللعب الجماعي أو أسلوب اللعب.", guide:"دليل", tool:"أداة",
+    sourceDaily:"مراقبة المصادر الرسمية · يومياً", verifiedStatus:"الحالة · تم التحقق", currentAnswer:"الإجابة الحالية", sourcesChecked:"المصادر المفحوصة", verificationStatus:"حالة التحقق",
+    separated:"تم فصل الحقائق المؤكدة عن المجهول", methodology:"اقرأ منهجية التحقق", evidenceCheck:"فحص الأدلة", factTitle:"ما المؤكد وما الذي لم يُعلن؟", updateStandard:"معيار التحديث",
+    updateText:"عند تغير مصدر رسمي تُحدّث الإجابة ويُحفظ الوضع السابق في سجل التحديثات.", nextBriefings:"أدلة الرحلة التالية", sourceHistory:"سجل المصادر",
+    deepBriefing:"إحاطة تفصيلية", inBriefing:"في هذه الإحاطة", faq:"أسئلة شائعة", officialScene:"دليل من مشهد رسمي", secondScene:"مشهد رسمي ثانٍ", officialCredit:"وسائط FLEXUS الرسمية عبر Steam · افتح الدقة الكاملة",
+    tools:"الأدوات", interactiveTool:"أداة تفاعلية للاعب", noData:"لا تسجيل دخول · لا تخزين للبيانات", exploreHub:"استكشف مركز المعلومات", toolNotes:"ملاحظات أداة موثقة"
+  },
+  tr: {
+    skip:"Ana içeriğe geç", brand:"Bağımsız uçuş rehberi", menu:"Menü", openNav:"Gezintiyi aç", primaryNav:"Ana gezinti", chooseLanguage:"dil seç",
+    release:"Çıkış", demo:"Herkese açık demo", maxPlayers:"Maksimum oyuncu", steamApp:"Resmî Steam uygulaması", mediaCredit:"Resmî FLEXUS oyun medyası · © FLEXUS",
+    currentStatus:"Güncel durum", sourceSteam:"Kaynak · Resmî Steam sayfası", checklist:"Tüm doğrulanmış özellikleri aç", passengerQuestions:"Oyuncu soruları",
+    flightLoop:"Uçuş döngüsü", officialGameplay:"Resmî oynanış", underPressure:"Baskı altındaki yolcular", crewCompatibility:"Ekip uyumluluğu", verificationLayers:"Doğrulama katmanları", joinCrew:"Ekibe katıl",
+    relatedQuestions:"İlgili oyuncu soruları", relatedIntro:"Çıkış, erişim, çok oyunculu mod veya oynanışla ilgili sonraki pratik yanıta geçin.", guide:"Rehber", tool:"Araç",
+    sourceDaily:"Resmî kaynak takibi · Günlük", verifiedStatus:"Durum · Doğrulandı", currentAnswer:"Güncel yanıt", sourcesChecked:"Kontrol edilen kaynaklar", verificationStatus:"Doğrulama durumu",
+    separated:"Doğrulanmış bilgiler bilinmeyenlerden ayrıldı", methodology:"Yöntemi okuyun", evidenceCheck:"Kanıt kontrolü", factTitle:"Neler doğrulandı, neler açıklanmadı?", updateStandard:"Güncelleme standardı",
+    updateText:"Resmî kaynak değiştiğinde yanıt güncellenir ve eski durum güncelleme geçmişinde saklanır.", nextBriefings:"Sonraki uçuş rehberleri", sourceHistory:"Kaynak geçmişi",
+    deepBriefing:"Ayrıntılı brifing", inBriefing:"Bu brifingde", faq:"Sık sorulan sorular", officialScene:"Resmî sahne kanıtı", secondScene:"İkinci resmî sahne", officialCredit:"Steam üzerinden resmî FLEXUS medyası · Tam çözünürlüğü aç",
+    tools:"Araçlar", interactiveTool:"Etkileşimli oyuncu aracı", noData:"Giriş yok · Veri saklanmaz", exploreHub:"Bilgi merkezini keşfet", toolNotes:"Doğrulanmış araç notları"
+  },
+  uk: {
+    skip:"Перейти до основного вмісту", brand:"Незалежний путівник", menu:"Меню", openNav:"Відкрити навігацію", primaryNav:"Основна навігація", chooseLanguage:"обрати мову",
+    release:"Реліз", demo:"Публічна демо", maxPlayers:"Максимум гравців", steamApp:"Офіційний застосунок Steam", mediaCredit:"Офіційні матеріали FLEXUS · © FLEXUS",
+    currentStatus:"Поточний стан", sourceSteam:"Джерело · Офіційна сторінка Steam", checklist:"Відкрити список підтверджених функцій", passengerQuestions:"Запитання гравців",
+    flightLoop:"Цикл польоту", officialGameplay:"Офіційний геймплей", underPressure:"Пасажири під тиском", crewCompatibility:"Сумісність екіпажу", verificationLayers:"Рівні перевірки", joinCrew:"Приєднатися до екіпажу",
+    relatedQuestions:"Пов’язані запитання", relatedIntro:"Перейдіть до наступної практичної відповіді про реліз, доступ, мультиплеєр або геймплей.", guide:"Гайд", tool:"Інструмент",
+    sourceDaily:"Моніторинг офіційних джерел · Щодня", verifiedStatus:"Статус · Перевірено", currentAnswer:"Поточна відповідь", sourcesChecked:"Перевірені джерела", verificationStatus:"Статус перевірки",
+    separated:"Підтверджені факти відокремлено від невідомого", methodology:"Прочитати методологію", evidenceCheck:"Перевірка доказів", factTitle:"Що підтверджено, а що ще не оголошено?", updateStandard:"Стандарт оновлень",
+    updateText:"Коли офіційне джерело змінюється, сторінка оновлює відповідь і зберігає попередній стан в історії.", nextBriefings:"Наступні гайди", sourceHistory:"Історія джерел",
+    deepBriefing:"Детальний брифінг", inBriefing:"У цьому брифінгу", faq:"Поширені запитання", officialScene:"Доказ з офіційної сцени", secondScene:"Друга офіційна сцена", officialCredit:"Офіційні медіа FLEXUS у Steam · Відкрити повний розмір",
+    tools:"Інструменти", interactiveTool:"Інтерактивний інструмент", noData:"Без входу · Дані не зберігаються", exploreHub:"Дослідити інформаційний центр", toolNotes:"Перевірені примітки до інструмента"
+  }
+};
+
 function formattedVerifiedDate(locale = "en") {
   return new Intl.DateTimeFormat(localeTags[locale] || "en-US", {
     year: "numeric",
@@ -397,13 +472,59 @@ function shellScript() {
   `;
 }
 
-function officialFigure(mediaIndex, label = "Official gameplay evidence") {
+const LOCALIZED_DEPTH = {
+  "zh-cn": {
+    briefing:"玩家简报", briefingText:"把发售、Demo、联机和配置的当前答案集中在一个地方。", monitoring:"来源监测", monitoringText:"每日检查 Steam；只有完成有效核查后才更新页面日期。", lastVerified:"最后核实", noChange:"本次核查未发现 Steam 关键字段变化。", policy:"查看来源与更新方法",
+    overviewRail:"游戏概览", overviewKicker:"DEAR PASSENGERS · 完整解释", overviewTitle:"Dear Passengers 是什么游戏？", overviewLead:"这是一款第一人称合作航空喜剧：驾驶飞机只是问题的一半。", overviewP1:"FLEXUS 开发并发行本作。机组要同时处理驾驶、客舱服务、乘客、货物和天气；一个位置的决定可能立即在另一个位置制造危机。", overviewP2:"官方 Steam 页面确认了 2026 年发售窗口、Windows PC、单人和在线合作。具体日期、价格、最大队伍人数和公开下载仍未公布，本站会把这些未知项与事实分开。", confirmedTitle:"目前已经确认什么？", confirmedText:"官方最低配置为 8 GB 内存、GTX 1060 或 RX 6600 XT、DirectX 12 和 4 GB 可用空间。Steam 还列出了六种界面语言。", questionsRail:"玩家问题", questionsKicker:"登机前的四个问题", questionsTitle:"先确认事实，再召集队友。", questionsLead:"每项先给直接答案；需要证据、限制条件和更新记录时，再进入独立指南。",
+    loopRail:"航班循环", loopKicker:"从乘客名单到空中混乱", loopTitle:"一次航班可能如何运转？", loopLead:"现有官方素材显示的不是互不相关的小游戏，而是一套连续的合作循环。", loopHeads:["起飞前：选择风险","驾驶舱：为整架飞机负责","客舱：阻止连锁反应","单人与合作：仍待说明"],
+    loopText:["官方描述提到起飞前选择乘客与货物，这很可能构成风险与回报的第一步；经济和路线细节仍未知。","天气、颠簸和操作会影响客舱；飞行员的动作可能让未固定物品和服务任务立刻失控。","客舱成员要服务乘客、管理货物并处理不断扩大的事故。我们只把画面可见内容描述为职责，不虚构固定职业。","Steam 确认单人和在线合作，但没有说明单人如何补足岗位，也没有公布最大大厅人数。"],
+    mediaKicker:"官方客舱画面", mediaTitle:"一架飞机，四个同时发生的问题。", mediaIntro:"这些官方截图是驾驶压力、客舱工作、乘客处理和危险货物的视觉证据，不是装饰。", feed:"官方画面", inspect:"查看官方原图",
+    manifestKicker:"航班配置清单", manifestTitle:"一眼看清实用信息。", manifestIntro:"以下硬件数据来自当前 Steam 页面；未公布的推荐配置不会被伪装成官方要求。", languageTitle:"Steam 列出六种界面语言。", languageText:"英语、阿拉伯语、简体中文、土耳其语、乌克兰语和日语已列为界面语言；完整音频和字幕未勾选。",
+    sourceKicker:"来源清单", sourceTitle:"每个答案优先使用一手资料。", sourceLabels:["主要商店页面","官方视频","署名采访","核实方法"], sourceTitles:["Steam 官方页面","FLEXUS 公告预告片","Demo 与发售说明","编辑与修正政策"], sourceTexts:["发售窗口、模式、语言和 PC 配置。","可见岗位、客舱风险、货物和飞行情境。","Gamescom 版本及之后公开 Demo 的计划。","如何标记已确认、采访信息、画面观察和未知项。"]
+  },
+  ja: {
+    briefing:"プレイヤーブリーフィング", briefingText:"発売、デモ、協力プレイ、動作環境の現在の回答を一か所に集約。", monitoring:"ソース監視", monitoringText:"Steamを毎日確認し、検証が完了したときだけ日付を更新します。", lastVerified:"最終確認", noChange:"今回の確認ではSteamの主要項目に変更はありません。", policy:"ソースと更新方法を見る",
+    overviewRail:"ゲーム概要", overviewKicker:"DEAR PASSENGERS · 解説", overviewTitle:"Dear Passengersとは？", overviewLead:"飛行機を操縦するだけでは終わらない、一人称協力型の航空コメディです。", overviewP1:"FLEXUSが開発・販売。操縦、客室サービス、乗客、貨物、天候が同時に動き、一つの判断が機内の別の問題を引き起こします。", overviewP2:"Steamで2026年、Windows PC、シングルプレイ、オンライン協力が確認済みです。正確な日付、価格、最大人数、公開ビルドは未発表です。", confirmedTitle:"現在確認済みの情報", confirmedText:"最低要件は8 GB RAM、GTX 1060またはRX 6600 XT、DirectX 12、空き容量4 GB。インターフェースは6言語が記載されています。", questionsRail:"プレイヤーの疑問", questionsKicker:"搭乗前の4つの質問", questionsTitle:"仲間を集める前に事実を確認。", questionsLead:"まず短い回答を示し、根拠や注意点、更新履歴が必要なら専用ガイドへ案内します。",
+    loopRail:"フライトの流れ", loopKicker:"乗客リストから混乱まで", loopTitle:"1回のフライトはどう進む？", loopLead:"公開情報からは、独立したミニゲームではなく連続する協力ループが見えます。", loopHeads:["離陸前：リスクを選ぶ","操縦席：機体全体を考える","客室：連鎖を止める","ソロと協力：未解決の点"], loopText:["乗客と貨物を選ぶ説明があり、リスクと報酬の入口になる可能性があります。経済やルートの詳細は未発表です。","天候や乱気流、操縦が客室へ影響し、急な動きが貨物やサービスの問題を生みます。","客室では乗客対応、サービス、貨物、緊急事態が重なります。映像で確認できない固定クラスは作りません。","シングルとオンライン協力は確認済みですが、ソロ補助や最大ロビー人数は未発表です。"],
+    mediaKicker:"公式客室映像", mediaTitle:"1機の中で、4つの問題が同時進行。", mediaIntro:"公式スクリーンショットを、操縦・客室・乗客・貨物の視覚的根拠として掲載します。", feed:"公式シーン", inspect:"公式画像を見る",
+    manifestKicker:"機体マニフェスト", manifestTitle:"実用情報を一目で確認。", manifestIntro:"数値は現在のSteam掲載から引用。未発表の推奨要件とは区別します。", languageTitle:"Steamでは6つの表示言語。", languageText:"英語、アラビア語、簡体字中国語、トルコ語、ウクライナ語、日本語。フル音声と字幕は未チェックです。",
+    sourceKicker:"ソース一覧", sourceTitle:"すべての回答は一次情報を優先。", sourceLabels:["主要ストア情報","公式映像","記名インタビュー","検証方法"], sourceTitles:["Steam公式ページ","FLEXUS発表トレーラー","デモと発売コメント","編集・訂正ポリシー"], sourceTexts:["発売時期、モード、言語、PC要件。","役割、客室の危険、貨物、飛行情況。","Gamescom版と後日の公開デモ計画。","確定・発言・観察・不明をどう区別するか。"]
+  },
+  ar: {
+    briefing:"إحاطة اللاعب", briefingText:"إجابات الإصدار والديمو والتعاون والمتطلبات في مكان واحد.", monitoring:"مراقبة المصادر", monitoringText:"نفحص Steam يومياً ولا يتغير التاريخ إلا بعد مراجعة ناجحة.", lastVerified:"آخر تحقق", noChange:"لم تتغير الحقول الرئيسية في Steam خلال هذه المراجعة.", policy:"اعرض المصادر وسياسة التحديث",
+    overviewRail:"نظرة عامة", overviewKicker:"DEAR PASSENGERS · شرح", overviewTitle:"ما هي Dear Passengers؟", overviewLead:"كوميديا طيران تعاونية بمنظور الشخص الأول؛ قيادة الطائرة ليست سوى نصف المشكلة.", overviewP1:"تطوّر FLEXUS اللعبة وتنشرها. تتقاطع قرارات قمرة القيادة وخدمة المقصورة والركاب والشحن والطقس في الوقت الفعلي، وقد يصنع قرار واحد أزمة في مكان آخر.", overviewP2:"تؤكد Steam نافذة إصدار 2026 على Windows PC واللعب الفردي والتعاون عبر الإنترنت. اليوم والسعر والحد الأقصى للطاقم والبناء العام لم تُعلن.", confirmedTitle:"ما المؤكد الآن؟", confirmedText:"الحد الأدنى المنشور هو 8 GB RAM وGTX 1060 أو RX 6600 XT وDirectX 12 ومساحة 4 GB. كما تُدرج Steam ست لغات للواجهة.", questionsRail:"أسئلة اللاعبين", questionsKicker:"أربعة أسئلة قبل الصعود", questionsTitle:"اعرف الحقيقة قبل جمع الطاقم.", questionsLead:"نبدأ بإجابة مباشرة ثم نربط بدليل مستقل للمصادر والقيود وسجل التحديث.",
+    loopRail:"دورة الرحلة", loopKicker:"من قائمة الركاب إلى الفوضى", loopTitle:"كيف تبدو دورة الرحلة؟", loopLead:"تشير المواد الرسمية إلى دورة تعاونية متصلة وليست ألعاباً مصغرة منفصلة.", loopHeads:["قبل الإقلاع: اختر المخاطرة","في قمرة القيادة: قد الطائرة كلها","في المقصورة: أوقف سلسلة المشاكل","فردي أو تعاوني: أسئلة مفتوحة"], loopText:["تذكر الأوصاف اختيار الركاب والشحن قبل المغادرة، لكن الاقتصاد والمسارات ما زالت غير موثقة.","الطقس والاضطراب والمناورات تؤثر في المقصورة وقد تحول جسماً غير مثبت إلى أزمة.","يخدم الطاقم الركاب ويدير الشحن ويستجيب للمشكلات. لا نصف ذلك كفئات ثابتة ما لم تعلن FLEXUS ذلك.","Steam تؤكد اللعب الفردي والتعاون عبر الإنترنت، لكنها لا تشرح مساعدة اللاعب الفردي أو الحد الأقصى للمجموعة."],
+    mediaKicker:"مشاهد المقصورة الرسمية", mediaTitle:"طائرة واحدة، أربع مشاكل في الوقت نفسه.", mediaIntro:"الصور الرسمية دليل بصري على ضغط القيادة والعمل في المقصورة والركاب والشحن، وليست زينة.", feed:"مشهد رسمي", inspect:"اعرض الصورة الرسمية",
+    manifestKicker:"بيان الطائرة", manifestTitle:"الحقائق العملية في نظرة واحدة.", manifestIntro:"المواصفات من قائمة Steam الحالية، مع فصل التوصيات غير المعلنة.", languageTitle:"ست لغات للواجهة على Steam.", languageText:"الإنجليزية والعربية والصينية المبسطة والتركية والأوكرانية واليابانية؛ الصوت الكامل والترجمة غير محددين.",
+    sourceKicker:"بيان المصادر", sourceTitle:"المصادر الأصلية تقود كل إجابة.", sourceLabels:["القائمة الأساسية","وسائط رسمية","مقابلة منسوبة","المنهجية"], sourceTitles:["صفحة Steam الرسمية","عرض FLEXUS الرسمي","تعليقات الديمو والإصدار","سياسة التحرير والتصحيح"], sourceTexts:["نافذة الإصدار والأنماط واللغات ومتطلبات PC.","الأدوار الظاهرة ومخاطر المقصورة والشحن والطيران.","نسخة Gamescom وخطة ديمو عام لاحقاً.","كيفية تصنيف المؤكد والمنسوب والمشاهد والمجهول."]
+  },
+  tr: {
+    briefing:"Oyuncu brifingi", briefingText:"Çıkış, demo, co-op ve sistem yanıtlarını tek yerde görün.", monitoring:"Kaynak takibi", monitoringText:"Steam her gün kontrol edilir; tarih yalnızca başarılı incelemeden sonra değişir.", lastVerified:"Son doğrulama", noChange:"Bu incelemede Steam'in temel alanlarında değişiklik görülmedi.", policy:"Kaynakları ve güncelleme politikasını gör",
+    overviewRail:"Oyun özeti", overviewKicker:"DEAR PASSENGERS · AÇIKLAMA", overviewTitle:"Dear Passengers nedir?", overviewLead:"Uçağı uçurmanın sorunun yalnızca yarısı olduğu birinci şahıs co-op havayolu komedisi.", overviewP1:"FLEXUS tarafından geliştirilen ve yayınlanan oyunda kokpit kararları, kabin servisi, yolcular, kargo ve hava koşulları gerçek zamanlı kesişiyor.", overviewP2:"Steam 2026 çıkış aralığını, Windows PC'yi, tek oyunculu modu ve çevrimiçi co-op'u doğruluyor. Kesin tarih, fiyat, en yüksek ekip sayısı ve herkese açık sürüm açıklanmadı.", confirmedTitle:"Şu anda neler doğrulandı?", confirmedText:"Yayımlanan minimum gereksinimler 8 GB RAM, GTX 1060 veya RX 6600 XT, DirectX 12 ve 4 GB depolamadır. Steam altı arayüz dili listeliyor.", questionsRail:"Oyuncu soruları", questionsKicker:"Uçağa binmeden dört soru", questionsTitle:"Ekibi kurmadan önce gerçeği bil.", questionsLead:"Önce kısa yanıtı veriyor, kaynaklar ve güncelleme geçmişi için özel rehbere yönlendiriyoruz.",
+    loopRail:"Uçuş döngüsü", loopKicker:"Manifestodan kaosa", loopTitle:"Bir uçuş nasıl ilerliyor?", loopLead:"Resmî materyaller, ayrı mini oyunlar yerine kesintisiz bir co-op döngüsü gösteriyor.", loopHeads:["Kalkıştan önce: riski seç","Kokpitte: tüm uçak için uç","Kabinde: zincirleme tepkiyi durdur","Solo ve co-op: açık sorular"], loopText:["Açıklamalar kalkıştan önce yolcu ve kargo seçimini belirtiyor; ekonomi ve rota ayrıntıları bilinmiyor.","Hava, türbülans ve manevralar kabini etkiler; sabitlenmemiş eşyalar yeni işler yaratabilir.","Kabin ekibi servis, yolcu, kargo ve krizlerle uğraşır. FLEXUS açıklamadan sabit sınıflar icat etmiyoruz.","Tek oyunculu ve çevrimiçi co-op doğrulandı; solo yardım sistemi ve maksimum lobi sayısı açıklanmadı."],
+    mediaKicker:"Resmî kabin görüntüleri", mediaTitle:"Bir uçak, aynı anda dört sorun.", mediaIntro:"Resmî ekran görüntüleri kokpit baskısı, kabin işi, yolcu yönetimi ve kargo için görsel kanıttır.", feed:"Resmî sahne", inspect:"Resmî görseli incele",
+    manifestKicker:"Uçak manifestosu", manifestTitle:"Pratik gerçekler tek bakışta.", manifestIntro:"Donanım verileri güncel Steam kaydındandır; açıklanmamış öneriler ayrı tutulur.", languageTitle:"Steam'de altı arayüz dili.", languageText:"İngilizce, Arapça, Basitleştirilmiş Çince, Türkçe, Ukraynaca ve Japonca; tam ses ve altyazı işaretli değildir.",
+    sourceKicker:"Kaynak manifestosu", sourceTitle:"Her yanıtta birinci taraf kaynaklar önce gelir.", sourceLabels:["Ana mağaza kaydı","Resmî medya","Atıflı röportaj","Yöntem"], sourceTitles:["Resmî Steam sayfası","FLEXUS duyuru fragmanı","Demo ve çıkış açıklamaları","Editoryal ve düzeltme politikası"], sourceTexts:["Çıkış aralığı, modlar, diller ve PC gereksinimleri.","Görülen roller, kabin riskleri, kargo ve uçuş durumları.","Gamescom sürümü ve daha sonra herkese açık demo planı.","Doğrulanmış, atıflı, gözlenen ve bilinmeyen iddiaların ayrımı."]
+  },
+  uk: {
+    briefing:"Брифінг гравця", briefingText:"Актуальні відповіді про реліз, демо, кооператив і вимоги в одному місці.", monitoring:"Моніторинг джерел", monitoringText:"Steam перевіряється щодня; дата змінюється лише після успішної перевірки.", lastVerified:"Остання перевірка", noChange:"Під час цієї перевірки ключові поля Steam не змінилися.", policy:"Переглянути джерела й правила оновлень",
+    overviewRail:"Огляд гри", overviewKicker:"DEAR PASSENGERS · ПОЯСНЕННЯ", overviewTitle:"Що таке Dear Passengers?", overviewLead:"Кооперативна авіакомедія від першої особи, де керування літаком — лише половина проблеми.", overviewP1:"Гру розробляє й видає FLEXUS. Рішення в кабіні пілота, обслуговування, пасажири, вантаж і погода взаємодіють у реальному часі.", overviewP2:"Steam підтверджує релізне вікно 2026 року, Windows PC, одиночну гру й онлайн-кооператив. Точна дата, ціна, максимум екіпажу та публічна збірка не оголошені.", confirmedTitle:"Що вже підтверджено?", confirmedText:"Опублікований мінімум: 8 GB RAM, GTX 1060 або RX 6600 XT, DirectX 12 і 4 GB місця. Steam також зазначає шість мов інтерфейсу.", questionsRail:"Запитання гравців", questionsKicker:"Чотири запитання перед посадкою", questionsTitle:"Спочатку факти — потім збирайте екіпаж.", questionsLead:"Спершу коротка відповідь, далі окремий гайд із джерелами, застереженнями та історією оновлень.",
+    loopRail:"Цикл польоту", loopKicker:"Від маніфесту до хаосу", loopTitle:"Як виглядає один політ?", loopLead:"Офіційні матеріали показують безперервний кооперативний цикл, а не набір окремих мініігор.", loopHeads:["До зльоту: оберіть ризик","У кабіні: керуйте для всього літака","У салоні: зупиніть ланцюгову реакцію","Соло й кооператив: відкриті питання"], loopText:["Описи згадують вибір пасажирів і вантажу до відправлення; економіка й маршрути поки не описані.","Погода, турбулентність і маневри впливають на салон та можуть перетворити незакріплений предмет на кризу.","Екіпаж обслуговує пасажирів, керує вантажем і реагує на проблеми. Ми не вигадуємо фіксовані класи без заяви FLEXUS.","Steam підтверджує соло й онлайн-кооператив, але не пояснює допомогу соло-гравцю чи максимальний розмір лобі."],
+    mediaKicker:"Офіційні кадри салону", mediaTitle:"Один літак — чотири проблеми одночасно.", mediaIntro:"Офіційні скриншоти є візуальним доказом навантаження в кабіні, роботи в салоні, пасажирів і вантажу.", feed:"Офіційна сцена", inspect:"Переглянути офіційне зображення",
+    manifestKicker:"Маніфест літака", manifestTitle:"Практичні факти одним поглядом.", manifestIntro:"Характеристики взято з актуальної сторінки Steam; неоголошені рекомендації відокремлені.", languageTitle:"Шість мов інтерфейсу в Steam.", languageText:"Англійська, арабська, спрощена китайська, турецька, українська та японська; повне озвучення й субтитри не позначені.",
+    sourceKicker:"Маніфест джерел", sourceTitle:"Першоджерела ведуть кожну відповідь.", sourceLabels:["Основна сторінка","Офіційне медіа","Атрибутоване інтерв’ю","Методологія"], sourceTitles:["Офіційна сторінка Steam","Анонсовий трейлер FLEXUS","Коментарі про демо й реліз","Редакційна політика й виправлення"], sourceTexts:["Релізне вікно, режими, мови та вимоги PC.","Видимі ролі, небезпеки салону, вантаж і політ.","Збірка Gamescom і план публічної демо пізніше.","Як позначають підтверджене, атрибутоване, побачене й невідоме."]
+  }
+};
+
+function officialFigure(mediaIndex, label = "Official gameplay evidence", locale = "en") {
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const [name, url] = OFFICIAL_MEDIA[mediaIndex % OFFICIAL_MEDIA.length];
-  return `<figure class="article-figure"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers official screenshot: ${esc(name)}" width="1920" height="1080" loading="lazy" decoding="async"></a><figcaption><span>${esc(label)}</span><strong>${esc(name)}</strong><small>Official FLEXUS media via Steam · Open full resolution ↗</small></figcaption></figure>`;
+  return `<figure class="article-figure"><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers · ${esc(label)}" width="1920" height="1080" loading="lazy" decoding="async"></a><figcaption><span>${esc(label)}</span><strong>${esc(name)}</strong><small>${esc(labels.officialCredit)} ↗</small></figcaption></figure>`;
 }
 
 function semanticLinks(locale, sourceKey, heading) {
   const data = SEO[locale] || SEO.en;
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const sourceTarget = sourceKey.replace(/^intent:/, "page:");
   const fallback = ["page:gameplay", "page:release-date", "page:multiplayer", "page:demo", "page:wiki", "tool:status-tracker"];
   const targets = [...(LINK_GRAPH[sourceTarget] || []), ...fallback]
@@ -428,11 +549,43 @@ function semanticLinks(locale, sourceKey, heading) {
           : data.ui.sourceNote;
     return `<li><a class="semantic-link" data-context-link="true" href="${targetPath(target, locale)}"><strong>${esc(label)}</strong><span>${esc(reason)}</span><b>↗</b></a></li>`;
   }).join("");
-  return `<section class="semantic-section"><p class="kicker">RELATED PLAYER QUESTIONS</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(locale === "en" ? "Continue with the next practical question about release, access, multiplayer or gameplay." : data.ui.sourceNote)}</p><ul class="semantic-list">${links}</ul></section>`;
+  return `<section class="semantic-section"><p class="kicker">${esc(labels.relatedQuestions)}</p><h2>${esc(heading || data.ui.related)}</h2><p>${esc(labels.relatedIntro)}</p><ul class="semantic-list">${links}</ul></section>`;
+}
+
+function localizedHomepageEditorial(locale) {
+  const data = SEO[locale];
+  const depth = LOCALIZED_DEPTH[locale];
+  const questionSlugs = ["release-date", "demo", "multiplayer", "how-many-players"];
+  const questions = questionSlugs.map((slug, index) => {
+    const item = data.pages[slug];
+    return `<article><span>0${index + 1}</span><div><h3>${esc(item.name)}</h3><p>${esc(item.answer)} <a data-context-link="true" href="${localizedPath(locale, slug)}">${esc(item.name)} · ${esc(data.ui.read)} ↗</a></p></div></article>`;
+  }).join("");
+  return `
+    <section class="verification-bar" aria-label="${esc(depth.briefing)}">
+      <div><span>${esc(depth.briefing)}</span><strong>${esc(depth.briefingText)}</strong></div>
+      <div><span>${esc(depth.monitoring)}</span><strong>${esc(depth.monitoringText)}</strong></div>
+      <div><span>${esc(depth.lastVerified)}</span><strong>${esc(formattedVerifiedDate(locale))} · ${esc(depth.noChange)}</strong></div>
+      <a href="${localizedPath(locale, "news")}">${esc(depth.policy)} ↗</a>
+    </section>
+    <section class="editorial-chapter chapter-light" id="overview">
+      <div class="chapter-rail"><b>01</b><span>${esc(depth.overviewRail)}</span></div>
+      <div class="chapter-copy">
+        <p class="kicker">${esc(depth.overviewKicker)}</p>
+        <h2>${esc(depth.overviewTitle)}</h2>
+        <p class="chapter-lead"><strong>${esc(depth.overviewLead)}</strong></p>
+        <p>${esc(depth.overviewP1)}</p><p>${esc(depth.overviewP2)}</p>
+        <h3>${esc(depth.confirmedTitle)}</h3><p>${esc(depth.confirmedText)}</p>
+        <div class="chapter-links"><a href="${localizedPath(locale, "gameplay")}"><span>${esc(data.pages.gameplay.name)}</span><strong>${esc(data.pages.gameplay.answer)}</strong><b>↗</b></a><a href="${localizedPath(locale, "wiki")}"><span>${esc(data.pages.wiki.name)}</span><strong>${esc(data.pages.wiki.answer)}</strong><b>↗</b></a></div>
+      </div>
+    </section>
+    <section class="editorial-chapter chapter-dark intent-chapter">
+      <div class="chapter-rail"><b>02</b><span>${esc(depth.questionsRail)}</span></div>
+      <div class="chapter-copy"><p class="kicker">${esc(depth.questionsKicker)}</p><h2>${esc(depth.questionsTitle)}</h2><p class="chapter-lead">${esc(depth.questionsLead)}</p><div class="intent-lines">${questions}</div></div>
+    </section>`;
 }
 
 function homepageEditorial(locale) {
-  if (locale !== "en") return "";
+  if (locale !== "en") return localizedHomepageEditorial(locale);
   return `
     <section class="verification-bar" aria-label="Editorial verification">
       <div><span>PLAYER BRIEFING</span><strong>Current release, demo and co-op answers in one place.</strong></div>
@@ -471,8 +624,33 @@ function homepageEditorial(locale) {
     </section>`;
 }
 
+function localizedHomepageDepth(locale) {
+  const data = SEO[locale];
+  const depth = LOCALIZED_DEPTH[locale];
+  const labels = UI_LABELS[locale];
+  const feeds = OFFICIAL_MEDIA.slice(0, 4).map(([name, url], index) =>
+    `<a class="feed-card reveal" href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Dear Passengers · ${esc(depth.feed)} ${index + 1}" width="1920" height="1080" loading="lazy" decoding="async"><span>${esc(depth.feed)} · 0${index + 1}</span><strong>${esc(name)}</strong><small>${esc(depth.inspect)} ↗</small></a>`
+  ).join("");
+  const loop = depth.loopHeads.map((heading, index) => `<h3>${esc(heading)}</h3><p>${esc(depth.loopText[index])}</p>`).join("");
+  const sourceUrls = [SOURCES.steam.url, SOURCES.trailer.url, SOURCES.devua.url, localizedPath(locale, "news")];
+  const sources = depth.sourceTitles.map((title, index) => `<a href="${sourceUrls[index]}"${index < 3 ? ' target="_blank" rel="noopener"' : ""}><span>${esc(depth.sourceLabels[index])}</span><strong>${esc(title)}</strong><p>${esc(depth.sourceTexts[index])}</p><b>↗</b></a>`).join("");
+  return `
+    <section class="editorial-chapter chapter-sand flight-loop-chapter">
+      <div class="chapter-rail"><b>03</b><span>${esc(depth.loopRail)}</span></div>
+      <div class="chapter-copy"><p class="kicker">${esc(depth.loopKicker)}</p><h2>${esc(depth.loopTitle)}</h2><p class="chapter-lead">${esc(depth.loopLead)}</p>${loop}<div class="chapter-links"><a href="${localizedPath(locale, "multiplayer")}"><span>${esc(data.pages.multiplayer.name)}</span><strong>${esc(data.pages.multiplayer.answer)}</strong><b>↗</b></a><a href="${localizedPath(locale, "how-many-players")}"><span>${esc(data.pages["how-many-players"].name)}</span><strong>${esc(data.pages["how-many-players"].answer)}</strong><b>↗</b></a></div></div>
+    </section>
+    <section class="section feed-section">
+      <div class="section-head split"><div><p class="kicker">${esc(depth.mediaKicker)}</p><h2>${esc(depth.mediaTitle)}</h2></div><p>${esc(depth.mediaIntro)}</p></div><div class="feed-grid">${feeds}</div>
+    </section>
+    <section class="section manifest-section">
+      <div class="section-head"><p class="kicker">${esc(depth.manifestKicker)}</p><h2>${esc(depth.manifestTitle)}</h2><p>${esc(depth.manifestIntro)}</p></div>
+      <div class="manifest-layout"><div class="spec-board"><div><span>OS</span><strong>Windows 10 · 64-bit</strong></div><div><span>CPU</span><strong>Intel Core i5 · 2.5 GHz</strong></div><div><span>RAM</span><strong>8 GB</strong></div><div><span>GPU</span><strong>GTX 1060 / RX 6600 XT</strong></div><div><span>DIRECTX</span><strong>Version 12</strong></div><div><span>STORAGE</span><strong>4 GB</strong></div></div><div class="language-board"><p class="kicker">${esc(depth.manifestKicker)}</p><h3>${esc(depth.languageTitle)}</h3><p>${esc(depth.languageText)}</p><a class="primary" href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)} ↗</a><a class="secondary dark-button" href="${localizedPath(locale, "tools/can-i-run-it")}">${esc(data.tools["can-i-run-it"][2])} ↗</a></div></div>
+    </section>
+    <section class="section source-manifest"><div class="section-head"><p class="kicker">${esc(depth.sourceKicker)}</p><h2>${esc(depth.sourceTitle)}</h2></div><div class="source-manifest-grid">${sources}</div></section>`;
+}
+
 function homepageDepth(locale) {
-  if (locale !== "en") return "";
+  if (locale !== "en") return localizedHomepageDepth(locale);
   const feeds = OFFICIAL_MEDIA.slice(0, 4).map(([name, url], index) =>
     `<a class="feed-card reveal" href="/media/"><img src="${url}" alt="Dear Passengers official gameplay: ${esc(name)}" width="1920" height="1080" loading="lazy" decoding="async"><span>LIVE CABIN FEED · 0${index + 1}</span><strong>${esc(name)}</strong><small>Inspect official media ↗</small></a>`
   ).join("");
@@ -538,6 +716,7 @@ function homepageDepth(locale) {
 
 function resourceCards(locale) {
   const data = SEO[locale] || SEO.en;
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   if (locale === "en") {
     const groups = [
       ["PLAN YOUR FLIGHT", ["release-date", "demo", "platforms", "system-requirements"], "page"],
@@ -554,22 +733,23 @@ function resourceCards(locale) {
   }
   const guides = PAGE_SLUGS.map((slug) => {
     const item = data.pages[slug];
-    return `<a class="resource-card reveal" href="${localizedPath(locale, slug)}"><span>GUIDE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
+    return `<a class="resource-card reveal" href="${localizedPath(locale, slug)}"><span>${esc(labels.guide)}</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
   }).join("");
   const tools = TOOL_SLUGS.map((slug) => {
     const item = data.tools[slug];
-    return `<a class="resource-card tool-card reveal" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><h3>${esc(item[2])}</h3><p>${esc(item[1])}</p><b>${esc(data.ui.tool)} ↗</b></a>`;
+    return `<a class="resource-card tool-card reveal" href="${localizedPath(locale, `tools/${slug}`)}"><span>${esc(labels.tool)}</span><h3>${esc(item[2])}</h3><p>${esc(item[1])}</p><b>${esc(data.ui.tool)} ↗</b></a>`;
   }).join("");
   const authority = locale === "en" ? AUTHORITY_SLUGS.map((slug) => {
     const item = AUTHORITY_CONTENT[slug];
     return `<a class="resource-card authority-card reveal" href="/${slug}/"><span>INTELLIGENCE</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>OPEN BRIEFING ↗</b></a>`;
   }).join("") : "";
-  return `<section class="section resource-hub"><div class="section-head"><p class="kicker">GUIDES AND PLAYER TOOLS</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div><div class="resource-grid">${guides}${authority}${tools}</div></section>`;
+  return `<section class="section resource-hub"><div class="section-head"><p class="kicker">${esc(labels.guide)} · ${esc(labels.tool)}</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div><div class="resource-grid">${guides}${authority}${tools}</div></section>`;
 }
 
 function page(locale) {
   const t = copy[locale] || copy.en;
   const data = SEO[locale] || SEO.en;
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const lang = languages[locale];
   const statusCards = t.cards.map(([k, v, note], index) => `<article class="status-card reveal"><span>0${index + 1}</span><p>${esc(k)}</p><strong>${esc(v)}</strong><small>${esc(note)}</small></article>`).join("");
   const questions = t.questions.map(([q, a], index) => `<details class="question reveal"${index === 0 ? " open" : ""}><summary><b>0${index + 1}</b>${esc(q)}<i>+</i></summary><p>${esc(a)}</p></details>`).join("");
@@ -624,19 +804,19 @@ function page(locale) {
   ${styleTag()}
 </head>
 <body class="home-page">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a class="skip-link" href="#main-content">${esc(labels.skip)}</a>
   <div class="ticker" aria-hidden="true"><div>${[...t.ticker, ...t.ticker, ...t.ticker].map((x) => `<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <div class="scroll-progress" aria-hidden="true"><i></i></div>
   <header class="header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
-    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
-    <nav id="site-navigation" aria-label="Primary navigation">${locale === "en"
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
+    <button class="menu-button" type="button" aria-label="${esc(labels.openNav)}" aria-expanded="false" aria-controls="site-navigation"><span>${esc(labels.menu)}</span>${menuIcon}</button>
+    <nav id="site-navigation" aria-label="${esc(labels.primaryNav)}">${locale === "en"
       ? '<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/multiplayer/">Multiplayer</a><a href="/gameplay/">Gameplay</a><a href="/wiki/">Wiki</a>'
       : [["release-date", t.nav[0]], ["demo", t.nav[1]], ["gameplay", t.nav[2]], ["multiplayer", t.nav[3]]].map(([slug, item]) => `<a href="${localizedPath(locale, slug)}">${esc(item)}</a>`).join("")}</nav>
-    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${langMenu}</div></div>
+    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — ${esc(labels.chooseLanguage)}" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${langMenu}</div></div>
   </header>
 
-  <nav class="mobile-dock" aria-label="Quick page navigation">
+  <nav class="mobile-dock" aria-label="${esc(labels.primaryNav)}">
     ${t.nav.map((label,index)=>`<a href="${["#status","#questions","#gameplay","#crew"][index]}"><b>0${index+1}</b><span>${esc(label)}</span></a>`).join("")}
   </nav>
 
@@ -651,35 +831,35 @@ function page(locale) {
         <p class="lead">${esc(t.intro)}</p>
         <div class="actions"><a class="primary" href="#status">${esc(t.cta1)} <b>↓</b></a><a class="secondary" href="#crew">${esc(t.cta2)} <b>↗</b></a></div>
       </div>
-      <a class="capsule" href="${STEAM}" rel="noopener" target="_blank"><img src="${CAPSULE}" alt="Dear Passengers official Steam artwork" width="460" height="215" decoding="async"><span>OFFICIAL STEAM APP · 4534960</span></a>
-      <div class="hero-facts"><div><small>RELEASE</small><b>2026</b><i></i></div><div><small>PUBLIC DEMO</small><b>${esc(t.cards[2][1])}</b><i class="amber"></i></div><div><small>MAX PLAYERS</small><b>${esc(t.cards[3][1])}</b><i class="muted"></i></div></div>
-      <small class="media-credit">OFFICIAL FLEXUS GAME MEDIA · © FLEXUS</small>
+      <a class="capsule" href="${STEAM}" rel="noopener" target="_blank"><img src="${CAPSULE}" alt="Dear Passengers · Steam" width="460" height="215" decoding="async"><span>${esc(labels.steamApp)} · 4534960</span></a>
+      <div class="hero-facts"><div><small>${esc(labels.release)}</small><b>2026</b><i></i></div><div><small>${esc(labels.demo)}</small><b>${esc(t.cards[2][1])}</b><i class="amber"></i></div><div><small>${esc(labels.maxPlayers)}</small><b>${esc(t.cards[3][1])}</b><i class="muted"></i></div></div>
+      <small class="media-credit">${esc(labels.mediaCredit)}</small>
     </section>
 
     ${homepageEditorial(locale)}
 
     <section id="status" class="section status">
-      <div class="section-head"><p class="kicker">CURRENT STATUS · ${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p><h2>${esc(t.statusTitle)}</h2><p>${esc(t.statusIntro)}</p></div>
+      <div class="section-head"><p class="kicker">${esc(labels.currentStatus)} · ${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p><h2>${esc(t.statusTitle)}</h2><p>${esc(t.statusIntro)}</p></div>
       <div class="status-grid">${statusCards}</div>
-      <a class="source-link" href="${STEAM}" target="_blank" rel="noopener">SOURCE · OFFICIAL STEAM PAGE ↗</a>
-      <a class="source-link" href="/confirmed-features/">OPEN THE COMPLETE CONFIRMED-FEATURE CHECKLIST ↗</a>
+      <a class="source-link" href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a>
+      <a class="source-link" href="${locale === "en" ? "/confirmed-features/" : localizedPath(locale, "wiki")}">${esc(labels.checklist)} ↗</a>
     </section>
 
     <section id="questions" class="section questions">
-      <div class="section-head split"><div><p class="kicker">PASSENGER QUESTIONS</p><h2>${esc(t.questionsTitle)}</h2></div><p>${esc(t.questionsIntro)}</p></div>
+      <div class="section-head split"><div><p class="kicker">${esc(labels.passengerQuestions)}</p><h2>${esc(t.questionsTitle)}</h2></div><p>${esc(t.questionsIntro)}</p></div>
       <div class="question-list">${questions}</div>
     </section>
 
     <section class="media section">
       <div class="media-grid">
-        <div class="video reveal">${trailerFacade(`Play ${t.trailerTitle}`)}</div>
+        <div class="video reveal">${trailerFacade(t.trailerTitle)}</div>
         <div class="media-copy"><p class="kicker">${esc(t.trailerEyebrow)}</p><h2>${esc(t.trailerTitle)}</h2><p>${esc(t.trailerText)}</p><ul>${evidence}</ul></div>
       </div>
     </section>
 
     <section id="gameplay" class="section gameplay">
-      <div class="section-head"><p class="kicker">THE FLIGHT LOOP</p><h2>${esc(t.playTitle)}</h2><p>${esc(t.playIntro)}</p></div>
-      <div class="game-shot reveal"><img src="${HERO}" alt="Official Dear Passengers cabin gameplay screenshot" width="1920" height="1080" loading="lazy" decoding="async"><div><span>OFFICIAL GAMEPLAY</span><b>PASSENGERS<br>UNDER PRESSURE</b></div></div>
+      <div class="section-head"><p class="kicker">${esc(labels.flightLoop)}</p><h2>${esc(t.playTitle)}</h2><p>${esc(t.playIntro)}</p></div>
+      <div class="game-shot reveal"><img src="${HERO}" alt="Dear Passengers · ${esc(labels.officialGameplay)}" width="1920" height="1080" loading="lazy" decoding="async"><div><span>${esc(labels.officialGameplay)}</span><b>${esc(labels.underPressure)}</b></div></div>
       <div class="features">${features}</div>
     </section>
 
@@ -687,7 +867,7 @@ function page(locale) {
 
     <section id="crew" class="section crew">
       <div class="crew-layout">
-        <div><p class="kicker">CREW COMPATIBILITY</p><h2>${esc(t.checkerTitle)}</h2><p>${esc(t.checkerIntro)}</p></div>
+        <div><p class="kicker">${esc(labels.crewCompatibility)}</p><h2>${esc(t.checkerTitle)}</h2><p>${esc(t.checkerIntro)}</p></div>
         <form class="crew-form" id="crew-form">
           <label>${esc(t.fields[0])}<select id="platform">${options(t.platform)}</select></label>
           <label>${esc(t.fields[1])}<select id="mode">${options(t.mode)}</select></label>
@@ -699,7 +879,7 @@ function page(locale) {
     </section>
 
     <section class="section evidence">
-      <div class="section-head"><p class="kicker">VERIFICATION LAYERS</p><h2>${esc(t.timelineTitle)}</h2></div>
+      <div class="section-head"><p class="kicker">${esc(labels.verificationLayers)}</p><h2>${esc(t.timelineTitle)}</h2></div>
       <div class="timeline">${timeline}</div>
     </section>
 
@@ -707,7 +887,7 @@ function page(locale) {
 
     <section class="final">
       <img src="${TRAILER_ART}" alt="Dear Passengers official trailer artwork" width="1280" height="720" loading="lazy" decoding="async">
-      <div><p class="kicker">JOIN THE CREW</p><h2>${esc(t.finalTitle)}</h2><p>${esc(t.finalText)}</p><a class="primary" href="${STEAM}" target="_blank" rel="noopener">${esc(t.steam)} <b>↗</b></a></div>
+      <div><p class="kicker">${esc(labels.joinCrew)}</p><h2>${esc(t.finalTitle)}</h2><p>${esc(t.finalText)}</p><a class="primary" href="${STEAM}" target="_blank" rel="noopener">${esc(t.steam)} <b>↗</b></a></div>
     </section>
   </main>
 
@@ -785,21 +965,23 @@ const toolLabels = {
 function pageHeader(locale, currentPath = "") {
   const data = SEO[locale] || SEO.en;
   const lang = languages[locale];
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const languageMenu = Object.entries(languages).map(([code, value]) => `<a href="${localizedPath(code, currentPath)}" ${code === locale ? 'aria-current="page"' : ""}>${esc(value.name)}</a>`).join("");
   const nav = locale === "en"
     ? `<a href="/release-date/">Release</a><a href="/demo/">Demo</a><a href="/news/">News</a><a href="/wiki/">Wiki</a><a href="/media/">Media</a>`
     : `<a href="${localizedPath(locale, "release-date")}">${esc(data.pages["release-date"].name)}</a><a href="${localizedPath(locale, "demo")}">${esc(data.pages.demo.name)}</a><a href="${localizedPath(locale, "multiplayer")}">${esc(data.pages.multiplayer.name)}</a><a href="${localizedPath(locale, "system-requirements")}">${esc(data.pages["system-requirements"].name)}</a>`;
-  return `<a class="skip-link" href="#main-content">Skip to main content</a><div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
+  return `<a class="skip-link" href="#main-content">${esc(labels.skip)}</a><div class="ticker" aria-hidden="true"><div>${[...copy[locale].ticker,...copy[locale].ticker,...copy[locale].ticker].map((x)=>`<span>${esc(x)}</span><b>✦</b>`).join("")}</div></div>
   <header class="header inner-header">
-    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a>
-    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation"><span>MENU</span>${menuIcon}</button>
-    <nav id="site-navigation" aria-label="Primary navigation">${nav}</nav>
-    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — choose language" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
+    <a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a>
+    <button class="menu-button" type="button" aria-label="${esc(labels.openNav)}" aria-expanded="false" aria-controls="site-navigation"><span>${esc(labels.menu)}</span>${menuIcon}</button>
+    <nav id="site-navigation" aria-label="${esc(labels.primaryNav)}">${nav}</nav>
+    <div class="language"><button class="language-button" type="button" aria-label="${esc(lang.label)} — ${esc(labels.chooseLanguage)}" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu"><span>${esc(lang.label)}</span>${chevronIcon}</button><div id="language-menu">${languageMenu}</div></div>
   </header>`;
 }
 
 function pageFooter(locale) {
   const data = SEO[locale] || SEO.en;
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const core = [
     ["release-date", data.pages["release-date"].name],
     ["demo", data.pages.demo.name],
@@ -820,13 +1002,14 @@ function pageFooter(locale) {
     ["/editorial-policy/", "Editorial policy"],
     ["/corrections/", "Report a correction"]
   ].map(([url, label]) => `<a data-sitewide-link="true" href="${url}">${label}</a>`).join("") : "";
-  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>INDEPENDENT FLIGHT GUIDE</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="Game guides"><strong>FLIGHT GUIDE</strong>${core}</nav><nav aria-label="Player questions"><strong>PLAYER QUESTIONS</strong>${questions}</nav><nav aria-label="Player tools"><strong>TOOLS</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM PAGE ↗</a><a href="/sitemap.xml">COMPLETE SITE INDEX</a></div></footer>`;
+  return `<footer class="site-footer"><div class="footer-top"><div class="footer-intro"><a class="brand" href="${localizedPath(locale)}"><span class="brand-mark"><img src="${BRAND_ICON}" alt="" aria-hidden="true" width="256" height="256"></span><b>DEAR PASSENGERS<small>${esc(labels.brand)}</small></b></a><p>${esc(copy[locale].footer)}</p><p>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</p></div><nav aria-label="${esc(labels.guide)}"><strong>${esc(labels.guide)}</strong>${core}</nav><nav aria-label="${esc(labels.relatedQuestions)}"><strong>${esc(labels.relatedQuestions)}</strong>${questions}</nav><nav aria-label="${esc(labels.tools)}"><strong>${esc(labels.tools)}</strong>${tools}</nav>${locale === "en" ? `<nav aria-label="Editorial intelligence"><strong>MORE INFORMATION</strong>${intelligence}</nav>` : ""}</div><div class="footer-bottom"><span>APP ID · 4534960</span><a href="${STEAM}" target="_blank" rel="noopener">${esc(labels.sourceSteam)} ↗</a><a href="/sitemap.xml">SITEMAP</a></div></footer>`;
 }
 
 function relatedGrid(locale, currentSlug = "") {
   const data = SEO[locale] || SEO.en;
-  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,4).map((slug)=>`<a class="mini-link" href="${localizedPath(locale, slug)}"><span>GUIDE</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
-  const tools = TOOL_SLUGS.slice(0,2).map((slug)=>`<a class="mini-link tool-link" href="${localizedPath(locale, `tools/${slug}`)}"><span>TOOL</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
+  const pages = PAGE_SLUGS.filter((slug)=>slug!==currentSlug).slice(0,4).map((slug)=>`<a class="mini-link" href="${localizedPath(locale, slug)}"><span>${esc(labels.guide)}</span><b>${esc(data.pages[slug].name)}</b><i>↗</i></a>`).join("");
+  const tools = TOOL_SLUGS.slice(0,2).map((slug)=>`<a class="mini-link tool-link" href="${localizedPath(locale, `tools/${slug}`)}"><span>${esc(labels.tool)}</span><b>${esc(data.tools[slug][2])}</b><i>↗</i></a>`).join("");
   return `<div class="mini-grid">${pages}${tools}</div>`;
 }
 
@@ -851,18 +1034,40 @@ function clusterHub(slug) {
   return "";
 }
 
+function localizedClusterHub(locale, slug) {
+  if (!["news", "wiki"].includes(slug)) return "";
+  const data = SEO[locale];
+  const labels = UI_LABELS[locale];
+  const targets = slug === "news"
+    ? ["release-date", "demo", "trailer", "platforms"]
+    : ["gameplay", "characters", "multiplayer", "system-requirements"];
+  const cards = targets.map((target) => {
+    const item = data.pages[target];
+    return `<a class="authority-tile wiki-tile" href="${localizedPath(locale, target)}"><span>${esc(labels.guide)}</span><h3>${esc(item.name)}</h3><p>${esc(item.answer)}</p><b>${esc(data.ui.read)} ↗</b></a>`;
+  }).join("");
+  return `<section class="section deep-index localized-cluster"><div class="section-head"><p class="kicker">${esc(labels.relatedQuestions)}</p><h2>${esc(data.pages[slug].name)}</h2><p>${esc(data.pages[slug].why)}</p></div><div class="authority-grid">${cards}</div></section>`;
+}
+
 function intentPage(locale, slug) {
   const data = SEO[locale] || SEO.en;
   const item = data.pages[slug];
   const lang = languages[locale];
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const depth = locale === "en" ? INTENT_DEPTH[slug] : null;
   const depthSections = depth ? [...depth.sections, ...(INTENT_EXPANSION[slug] || [])] : [];
   const fallbackMedia = PAGE_SLUGS.indexOf(slug) % OFFICIAL_MEDIA.length;
-  const depthMarkup = depth ? `<section class="intent-depth"><p class="kicker">DEEP BRIEFING</p>${depthSections.map((entry, index) => {
+  const localizedSections = locale === "en" ? [] : [
+    { heading: `${item.name} · ${data.ui.confirmed}`, paragraphs: [item.why], bullets: item.confirmed },
+    { heading: item.answer, paragraphs: [data.ui.sourceNote], bullets: [] },
+    { heading: data.ui.unknown, paragraphs: [labels.factTitle], bullets: item.unknown },
+    { heading: labels.updateStandard, paragraphs: [labels.updateText, `${labels.sourcesChecked} · ${formattedVerifiedDate(locale)}`], bullets: [] }
+  ];
+  const depthMarkup = depth ? `<section class="intent-depth"><p class="kicker">${esc(labels.deepBriefing)}</p>${depthSections.map((entry, index) => {
       const anchor = `briefing-${index + 1}`;
       return `<div class="depth-block" id="${anchor}"><span class="section-number">${String(index + 2).padStart(2, "0")}</span><h2>${esc(entry.heading)}</h2>${entry.paragraphs.map((text) => `<p class="long-copy">${esc(text)}</p>`).join("")}${entry.bullets?.length ? `<ul class="authority-bullets">${entry.bullets.map((text) => `<li>${esc(text)}</li>`).join("")}</ul>` : ""}${index === 0 ? officialFigure(depth.media[0], "Official scene evidence") : ""}${index === 1 ? officialFigure(depth.media[1], "Second official scene") : ""}</div>`;
-    }).join("")}</section>` : `<section class="intent-depth localized-depth"><p class="kicker">04 · OFFICIAL MEDIA</p><h2>${esc(item.name)}</h2>${officialFigure(fallbackMedia, item.name)}</section>`;
-  const briefingToc = depth ? `<nav class="article-toc" aria-label="In this briefing"><strong>IN THIS BRIEFING</strong><a href="#current-answer">Current answer</a>${depthSections.map((entry, index) => `<a href="#briefing-${index + 1}">${esc(entry.heading)}</a>`).join("")}<a href="#frequently-asked">FAQ</a></nav>` : "";
+    }).join("")}</section>` : `<section class="intent-depth localized-depth"><p class="kicker">${esc(labels.deepBriefing)}</p>${localizedSections.map((entry, index) => `<div class="depth-block" id="briefing-${index + 1}"><span class="section-number">${String(index + 2).padStart(2, "0")}</span><h2>${esc(entry.heading)}</h2>${entry.paragraphs.map((text) => `<p class="long-copy">${esc(text)}</p>`).join("")}${entry.bullets.length ? `<ul class="authority-bullets">${entry.bullets.map((text) => `<li>${esc(text)}</li>`).join("")}</ul>` : ""}${index === 0 ? officialFigure(fallbackMedia, labels.officialScene, locale) : ""}${index === 1 ? officialFigure(fallbackMedia + 1, labels.secondScene, locale) : ""}</div>`).join("")}</section>`;
+  const tocSections = depth ? depthSections : localizedSections;
+  const briefingToc = `<nav class="article-toc" aria-label="${esc(labels.inBriefing)}"><strong>${esc(labels.inBriefing)}</strong><a href="#current-answer">${esc(labels.currentAnswer)}</a>${tocSections.map((entry, index) => `<a href="#briefing-${index + 1}">${esc(entry.heading)}</a>`).join("")}<a href="#frequently-asked">${esc(labels.faq)}</a></nav>`;
   const sourceKeys = slug === "demo" ? ["steam", "devua", "community"] : slug === "news" ? ["steam", "steam15m", "devua"] : ["steam", "trailer"];
   const sourceCards = sourceKeys.map((key) => {
     const source = SOURCES[key];
@@ -896,20 +1101,20 @@ function intentPage(locale, slug) {
   <script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>
   ${pageHeader(locale,currentPath)}
   <main class="inner-main" id="main-content">
-    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>OFFICIAL SOURCE MONITORING · DAILY</span><span>STATUS · VERIFIED</span></div><div class="hero-direct-answer"><span>${esc(data.ui.verified)}</span><strong>${esc(item.answer)}</strong></div></section>
+    <section class="article-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(item.name)}</span></div><p class="eyebrow"><i></i>${esc(data.ui.breadcrumb)}</p><h1>${esc(item.title)}</h1><p>${esc(item.meta)}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>${esc(labels.sourceDaily)}</span><span>${esc(labels.verifiedStatus)}</span></div><div class="hero-direct-answer"><span>${esc(data.ui.verified)}</span><strong>${esc(item.answer)}</strong></div></section>
     ${briefingToc}
     <section class="article-body">
       <article>
-        <section class="current-answer" id="current-answer"><p class="kicker">01 · CURRENT ANSWER</p><h2>${esc(item.answer)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p><div class="inline-sources"><span>SOURCES CHECKED · ${esc(formattedVerifiedDate(locale))}</span>${sourceKeys.map((key)=>`<a href="${SOURCES[key].url}" target="_blank" rel="noopener">${esc(SOURCES[key].name)} ↗</a>`).join("")}</div><div class="answer-status"><span>VERIFICATION STATUS</span><strong>Confirmed facts separated from unknowns</strong><a href="/editorial-policy/">Read the methodology ↗</a></div></section>
+        <section class="current-answer" id="current-answer"><p class="kicker">01 · ${esc(labels.currentAnswer)}</p><h2>${esc(item.answer)}</h2><p class="long-copy">${esc(item.why)}</p><p class="long-copy">${esc(data.ui.sourceNote)}</p><div class="inline-sources"><span>${esc(labels.sourcesChecked)} · ${esc(formattedVerifiedDate(locale))}</span>${sourceKeys.map((key)=>`<a href="${SOURCES[key].url}" target="_blank" rel="noopener">${esc(SOURCES[key].name)} ↗</a>`).join("")}</div><div class="answer-status"><span>${esc(labels.verificationStatus)}</span><strong>${esc(labels.separated)}</strong><a href="${locale === "en" ? "/editorial-policy/" : localizedPath(locale, "news")}">${esc(labels.methodology)} ↗</a></div></section>
         ${depthMarkup}
-        <section class="fact-comparison"><p class="kicker">EVIDENCE CHECK</p><h2>What is confirmed—and what is not.</h2><div class="fact-columns"><div><h3>${esc(data.ui.confirmed)}</h3><ul class="evidence-list">${confirmed}</ul></div><div><h3>${esc(data.ui.unknown)}</h3><ul class="evidence-list">${unknown}</ul></div></div></section>
+        <section class="fact-comparison"><p class="kicker">${esc(labels.evidenceCheck)}</p><h2>${esc(labels.factTitle)}</h2><div class="fact-columns"><div><h3>${esc(data.ui.confirmed)}</h3><ul class="evidence-list">${confirmed}</ul></div><div><h3>${esc(data.ui.unknown)}</h3><ul class="evidence-list">${unknown}</ul></div></div></section>
         ${semanticLinks(locale, `page:${slug}`, data.ui.related)}
         <section id="frequently-asked"><p class="kicker">FAQ</p><h2>${esc(data.ui.faq)}</h2><div class="question-list">${faqs}</div></section>
       </article>
-      <aside><div class="aside-card"><span>${esc(data.ui.current)}</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>${esc(data.ui.sources)}</span>${sourceCards}</div><div class="aside-card"><span>UPDATE STANDARD</span><p>When an official source changes, this page records the new answer and keeps the old state in its update history.</p></div></aside>
-    </section>${locale === "en" ? clusterHub(slug) : ""}
-    <section class="section compact-section"><div class="section-head"><p class="kicker">NEXT FLIGHT BRIEFINGS</p><h2>${esc(data.ui.related)}</h2></div>${relatedGrid(locale,slug)}</section>
-    <section class="section compact-section log-section"><div class="section-head"><p class="kicker">SOURCE HISTORY</p><h2>${esc(data.ui.log)}</h2></div>${updateLog(locale)}</section>
+      <aside><div class="aside-card"><span>${esc(data.ui.current)}</span><strong>${esc(item.answer)}</strong></div><div class="aside-card sources-card source-ledger"><span>${esc(data.ui.sources)}</span>${sourceCards}</div><div class="aside-card"><span>${esc(labels.updateStandard)}</span><p>${esc(labels.updateText)}</p></div></aside>
+    </section>${locale === "en" ? clusterHub(slug) : localizedClusterHub(locale, slug)}
+    <section class="section compact-section"><div class="section-head"><p class="kicker">${esc(labels.nextBriefings)}</p><h2>${esc(data.ui.related)}</h2></div>${relatedGrid(locale,slug)}</section>
+    <section class="section compact-section log-section"><div class="section-head"><p class="kicker">${esc(labels.sourceHistory)}</p><h2>${esc(data.ui.log)}</h2></div>${updateLog(locale)}</section>
   </main>${pageFooter(locale)}
   <script>${shellScript()}document.querySelectorAll('details').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)document.querySelectorAll('details').forEach(other=>{if(other!==item)other.open=false})}));</script>
   </body></html>`;
@@ -1050,10 +1255,11 @@ const TOOL_GUIDES = {
 
 function toolGuide(locale, slug) {
   const data = SEO[locale] || SEO.en;
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const guide = TOOL_GUIDES[slug];
   const mediaIndex = (TOOL_SLUGS.indexOf(slug) + 4) % OFFICIAL_MEDIA.length;
   if (locale !== "en") {
-    return `<section class="section tool-guide"><div class="section-head"><p class="kicker">VERIFIED TOOL NOTES</p><h2>${esc(data.tools[slug][2])}</h2><p>${esc(data.ui.sourceNote)}</p></div>${officialFigure(mediaIndex, data.tools[slug][2])}</section>`;
+    return `<section class="section tool-guide"><div class="section-head"><p class="kicker">${esc(labels.toolNotes)}</p><h2>${esc(data.tools[slug][2])}</h2><p>${esc(data.ui.sourceNote)}</p></div>${officialFigure(mediaIndex, data.tools[slug][2], locale)}</section>`;
   }
   return `<section class="section tool-guide"><div class="tool-guide-layout"><div><p class="kicker">HOW TO READ THE RESULT</p><h2>${esc(guide[0])}</h2><p>${esc(guide[1])}</p><p>${esc(guide[2])}</p><div class="tool-source-row"><a href="${STEAM}" target="_blank" rel="noopener">OFFICIAL STEAM REQUIREMENTS ↗</a><a href="/editorial-policy/">METHODOLOGY ↗</a></div></div>${officialFigure(mediaIndex, "Official gameplay context")}</div></section>`;
 }
@@ -1061,15 +1267,16 @@ function toolGuide(locale, slug) {
 function toolPage(locale, slug) {
   const data = SEO[locale] || SEO.en;
   const lang = languages[locale];
+  const labels = UI_LABELS[locale] || UI_LABELS.en;
   const tool = data.tools[slug];
   const canonical = localizedUrl(locale, `tools/${slug}`);
   const schema = {"@context":"https://schema.org","@type":"SoftwareApplication",name:tool[0],description:tool[1],applicationCategory:"GameApplication",operatingSystem:"Web",url:canonical};
   return `<!doctype html><html lang="${locale}" dir="${lang.dir}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google-site-verification" content="${GOOGLE_SITE_VERIFICATION}"><title>${esc(tool[0])}</title><meta name="description" content="${esc(tool[1])}"><meta name="robots" content="index,follow"><link rel="canonical" href="${canonical}">${iconLinks()}${alternateLinks(`tools/${slug}`)}<link rel="alternate" hreflang="x-default" href="${localizedUrl("en", `tools/${slug}`)}"><meta property="og:title" content="${esc(tool[0])}"><meta property="og:description" content="${esc(tool[1])}"><meta property="og:image" content="${HERO}"><script type="application/ld+json">${JSON.stringify(schema)}</script>${styleTag()}</head><body>
-  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main" id="main-content"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>Tools</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>INTERACTIVE PLAYER TOOL</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>NO LOGIN · NO DATA STORED</span></div></section>
+  ${pageHeader(locale,`tools/${slug}`)}<main class="inner-main tool-main" id="main-content"><section class="article-hero tool-hero"><div class="article-hero-bg"></div><div class="breadcrumbs"><a href="${localizedPath(locale)}">${esc(data.ui.home)}</a><span>/</span><span>${esc(labels.tools)}</span><span>/</span><span>${esc(tool[2])}</span></div><p class="eyebrow"><i></i>${esc(labels.interactiveTool)}</p><h1>${esc(tool[0])}</h1><p>${esc(tool[1])}</p><div class="article-meta"><span>${esc(data.ui.updated)} · ${esc(formattedVerifiedDate(locale))}</span><span>${esc(labels.noData)}</span></div></section>
   <section class="tool-stage">${toolMarkup(locale,slug)}</section>
   ${toolGuide(locale,slug)}
   <div class="section compact-section tool-semantic">${semanticLinks(locale, `tool:${slug}`, data.ui.related)}</div>
-  <section class="section compact-section"><div class="section-head"><p class="kicker">EXPLORE THE INTELLIGENCE HUB</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div>${relatedGrid(locale)}</section></main>${pageFooter(locale)}
+  <section class="section compact-section"><div class="section-head"><p class="kicker">${esc(labels.exploreHub)}</p><h2>${esc(data.ui.related)}</h2><p>${esc(data.ui.sourceNote)}</p></div>${relatedGrid(locale)}</section></main>${pageFooter(locale)}
   <script>${shellScript()}${toolScript(locale,slug)}</script></body></html>`;
 }
 
@@ -1133,6 +1340,7 @@ html[lang="zh-cn"] .hero h1,html[lang="ja"] .hero h1,html[lang="ar"] .hero h1{fo
 @media(max-width:760px){.hero-image{object-position:58% top}.hero-bg{background-image:linear-gradient(0deg,#06101a 1%,rgba(2,10,18,.16) 45%,rgba(2,10,18,.88) 100%),linear-gradient(90deg,rgba(2,10,18,.4),transparent 75%)!important}.header,.mobile-dock{backdrop-filter:none;background:#071522}}
 @media(max-width:430px){.header .brand>b{max-width:118px;overflow:hidden;text-overflow:ellipsis}.actions{grid-template-columns:1fr}.hero-copy{padding-top:225px}.hero-facts{grid-template-columns:1fr}.hero-facts>div{min-height:66px;border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}.hero-facts>div:last-child{border-bottom:0}.status-grid{grid-template-columns:1fr}.status-card,.status-card:nth-child(1),.status-card:nth-child(2){grid-column:1;min-height:156px}.mobile-dock span{font-size:8px}}
 .hero-picture{position:absolute;inset:0;z-index:-4}.hero-picture .hero-image{position:static;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.14) contrast(1.05)}.capsule img,.brand-mark img{width:100%;height:auto;object-fit:cover}.brand-mark{overflow:hidden;transform:none!important}.feed-section .section-head .kicker{color:#46515a}.language-board .kicker{color:#ffb12c}.feed-section .feed-card small{color:#46515a}.hero-direct-answer{max-width:900px;margin-top:24px;padding:16px 20px;border-left:4px solid #ff9f0a;background:rgba(4,14,24,.78)}.hero-direct-answer span{display:block;margin-bottom:7px;color:#ffb12c;font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero-direct-answer strong{font-size:clamp(15px,1.5vw,20px);line-height:1.5}
+.feed-section .section-head>p{color:#59636d}.feed-section .section-head h2{color:#0b1729}.feed-section .feed-card{color:#f7fbff}.feed-section .feed-card:after{background:linear-gradient(0deg,rgba(2,9,15,.99) 0%,rgba(2,9,15,.82) 32%,rgba(2,9,15,.14) 72%)}.feed-section .feed-card strong{color:#fff;text-shadow:0 3px 24px rgba(0,0,0,.95)}.feed-section .feed-card span{color:#55f4c4;text-shadow:0 2px 14px rgba(0,0,0,.9)}.feed-section .feed-card small{color:#ffd37a;text-shadow:0 2px 14px rgba(0,0,0,.95)}.dispatch-section .section-head h2,.source-manifest .section-head h2,.dispatch-card h3,.source-manifest-grid strong,.resource-hub .section-head h2,.tool-guide .section-head h2{color:#f7fbff}.manifest-section .section-head h2,.chapter-light h2,.chapter-sand h2{color:#0b1729}.chapter-dark h2{color:#f7fbff}[dir=rtl] .feed-card span,[dir=rtl] .feed-card strong,[dir=rtl] .feed-card small{left:28px;right:28px;text-align:right}
 @media(max-width:760px){.hero-picture .hero-image{object-position:center top}.header .brand small{font-size:8px}.mobile-dock b{font-size:9px}.mobile-dock span{font-size:10px}.primary,.secondary{font-size:11px}.capsule span{font-size:8px}.hero-facts small{font-size:9px}.article-hero{min-height:520px;padding-top:150px;padding-bottom:44px}.article-hero h1{font-size:clamp(40px,12vw,54px)}}
   `;
 }

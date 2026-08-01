@@ -41,6 +41,8 @@ const descriptions = new Map();
 const failures = [];
 const documents = new Map();
 let accessibilityPagesChecked = 0;
+let multilingualParityPagesChecked = 0;
+let visualContrastRulesChecked = 0;
 
 if (Object.keys(INTENT_DEPTH).sort().join("|") !== [...PAGE_SLUGS].sort().join("|")) {
   failures.push({ intentDepthCoverage: Object.keys(INTENT_DEPTH), expected: PAGE_SLUGS });
@@ -223,6 +225,52 @@ for (const [sourcePath, html] of documents) {
   }
 }
 
+const countTags = (html, tag) => html.match(new RegExp(`<${tag}(?:\\s|>)`, "g"))?.length || 0;
+const englishHome = documents.get("/");
+const englishHomeH2 = countTags(englishHome, "h2");
+const englishHomeSections = countTags(englishHome, "section");
+const untranslatedShellLabels = [
+  "OFFICIAL SOURCE MONITORING · DAILY",
+  "01 · CURRENT ANSWER",
+  "RELATED PLAYER QUESTIONS",
+  "EVIDENCE CHECK",
+  "NEXT FLIGHT BRIEFINGS",
+  "SOURCE HISTORY",
+  "NO LOGIN · NO DATA STORED"
+];
+
+for (const locale of nonEnglishLocales) {
+  const homePath = `/${locale}/`;
+  const homeHtml = documents.get(homePath);
+  const homeH2 = countTags(homeHtml, "h2");
+  const homeSections = countTags(homeHtml, "section");
+  multilingualParityPagesChecked += 1;
+  if (homeH2 < englishHomeH2 - 1 || homeSections < englishHomeSections - 1) {
+    failures.push({ homePath, multilingualStructureGap: true, homeH2, englishHomeH2, homeSections, englishHomeSections });
+  }
+  for (const slug of PAGE_SLUGS) {
+    const localizedPath = `/${locale}/${slug}/`;
+    const englishPath = `/${slug}/`;
+    const localizedHtml = documents.get(localizedPath);
+    const englishHtml = documents.get(englishPath);
+    const localizedH2 = countTags(localizedHtml, "h2");
+    const englishH2 = countTags(englishHtml, "h2");
+    multilingualParityPagesChecked += 1;
+    if (localizedH2 < englishH2 - 1 || countTags(localizedHtml, "section") < countTags(englishHtml, "section")) {
+      failures.push({ localizedPath, multilingualStructureGap: true, localizedH2, englishH2 });
+    }
+    const untranslated = untranslatedShellLabels.filter((label) => localizedHtml.includes(label));
+    if (untranslated.length) failures.push({ localizedPath, untranslatedShellLabels: untranslated });
+  }
+  for (const slug of TOOL_SLUGS) {
+    const localizedPath = `/${locale}/tools/${slug}/`;
+    const localizedHtml = documents.get(localizedPath);
+    multilingualParityPagesChecked += 1;
+    const untranslated = untranslatedShellLabels.filter((label) => localizedHtml.includes(label));
+    if (untranslated.length) failures.push({ localizedPath, untranslatedShellLabels: untranslated });
+  }
+}
+
 const routeSet = new Set(paths);
 const incoming = new Map(paths.map((path) => [path, new Set()]));
 const contextualIncoming = new Map(paths.map((path) => [path, new Set()]));
@@ -361,6 +409,22 @@ if (
   failures.push({ invalidSharedStylesheet: true, cssBytes: css.length });
 }
 
+const visualContrastRules = [
+  ".feed-section .feed-card{color:#f7fbff}",
+  ".feed-section .feed-card strong{color:#fff",
+  ".feed-section .feed-card span{color:#55f4c4",
+  ".feed-section .feed-card small{color:#ffd37a",
+  ".feed-section .section-head h2{color:#0b1729}",
+  ".chapter-dark h2{color:#f7fbff}"
+];
+for (const rule of visualContrastRules) {
+  visualContrastRulesChecked += 1;
+  if (!css.includes(rule)) failures.push({ missingVisualContrastRule: rule });
+}
+if (css.lastIndexOf(".feed-section .feed-card small{color:#ffd37a") < css.lastIndexOf(".feed-section .feed-card small{color:#46515a")) {
+  failures.push({ feedCaptionContrastOverriddenByDarkText: true });
+}
+
 for (const asset of ["public/media/hero-1920.webp", "public/media/hero-mobile.webp", "public/media/game-header.webp", "public/favicon.png", "public/favicon.ico"]) {
   try {
     await fs.access(new URL(`../${asset}`, import.meta.url));
@@ -454,6 +518,8 @@ console.log(
       trailingSlashStatus: trailingSlashResponse.status,
       faviconStatus: faviconResponse.status,
       accessibilityPagesChecked,
+      multilingualParityPagesChecked,
+      visualContrastRulesChecked,
       internalLinksChecked: checkedTargets.size,
       uniqueInternalLinkEdges: [...outgoing.values()].reduce((total, targets) => total + targets.size, 0),
       uniqueContextualLinkEdges: [...contextualIncoming.values()].reduce((total, sources) => total + sources.size, 0),
