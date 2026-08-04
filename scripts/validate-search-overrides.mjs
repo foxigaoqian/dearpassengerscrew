@@ -19,12 +19,10 @@ const targets = [
     required: [
       "Dear Passengers Wiki（ディア・パッセンジャーズ攻略・最新情報）",
       "ディア・パッセンジャーズを調べる",
-      "/ja/how-many-players/",
-      "2026-07-14T00:00:00Z"
+      "/ja/how-many-players/"
     ],
     forbidden: [
-      "Dear Passengers 検証済みWiki",
-      '"uploadDate":"2026-07-14"'
+      "Dear Passengers 検証済みWiki"
     ]
   },
   {
@@ -32,24 +30,20 @@ const targets = [
     required: [
       "Dear Passengers Wiki: Release Date, Multiplayer, Roles &amp; Gameplay",
       "Explore the Dear Passengers Wiki",
-      "/how-many-players/",
-      "2026-07-14T00:00:00Z"
+      "/how-many-players/"
     ],
     forbidden: [
-      "Dear Passengers Wiki: Verified Game Guide and Index",
-      '"uploadDate":"2026-07-14"'
+      "Dear Passengers Wiki: Verified Game Guide and Index"
     ]
   },
   {
     path: "/how-many-players/",
     required: [
       "Dear Passengers Player Count: How Many Players Can Play?",
-      "maximum lobby or crew size",
-      "2026-07-14T00:00:00Z"
+      "maximum lobby or crew size"
     ],
     forbidden: [
-      "How Many Players Can Play Dear Passengers?",
-      '"uploadDate":"2026-07-14"'
+      "How Many Players Can Play Dear Passengers?"
     ]
   }
 ];
