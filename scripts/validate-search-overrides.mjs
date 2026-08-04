@@ -28,7 +28,7 @@ const targets = [
   {
     path: "/wiki/",
     required: [
-      "Dear Passengers Wiki: Release Date, Multiplayer, Roles &amp; Gameplay",
+      "Dear Passengers Wiki: Release Date, Multiplayer, Roles & Gameplay",
       "Explore the Dear Passengers Wiki",
       "/how-many-players/"
     ],
