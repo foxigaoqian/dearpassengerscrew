@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/entry.js && node --check src/index.js && node --check src/seo-content.js && node --check src/authority-content.js && node --check src/intent-depth.js && node --check src/intent-expansion.js && node --check src/link-graph.js && node --check scripts/check-official-sources.mjs",
+    "check": "node --check src/entry.js && node --check src/seo-overrides.js && node --check src/index.js && node --check src/seo-content.js && node --check src/authority-content.js && node --check src/intent-depth.js && node --check src/intent-expansion.js && node --check src/link-graph.js && node --check scripts/check-official-sources.mjs",
     "validate": "npm run check && node scripts/validate.mjs",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
