@@ -1,0 +1,50 @@
+name: Fix video schema uploadDate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/fix-video-upload-date.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-upload-date:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Add timezone to VideoObject uploadDate
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("src/index.js")
+          source = path.read_text(encoding="utf-8")
+          old = 'const TRAILER_PUBLISHED = "2026-07-14";'
+          new = 'const TRAILER_PUBLISHED = "2026-07-14T00:00:00Z";'
+
+          if old not in source:
+              raise SystemExit("Expected TRAILER_PUBLISHED value was not found")
+
+          path.write_text(source.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate project
+        run: npm run validate
+
+      - name: Commit the schema fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/index.js
+          git commit -m "Fix VideoObject uploadDate timezone"
+          git push
